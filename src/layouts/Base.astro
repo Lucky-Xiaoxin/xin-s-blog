@@ -1,0 +1,88 @@
+---
+import { SITE, NAV, SOCIALS, u } from '../const';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: string;
+}
+
+const { title, description = SITE.description, active = '' } = Astro.props;
+
+const pageTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta name="theme-color" content="#f6f2ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101215" media="(prefers-color-scheme: dark)" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href={u('/rss.xml')} />
+    <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到正文</a>
+
+    <header class="masthead">
+      <div class="shell">
+        <div class="masthead__row">
+          <a class="brand" href={u('/')}>
+            {SITE.title}<span class="dot">.</span>
+          </a>
+          <span class="masthead__handle">{SITE.handle}</span>
+        </div>
+        <p class="tagline">{SITE.tagline} · {SITE.description}</p>
+        <nav class="nav" aria-label="主导航">
+          {
+            NAV.map((item) => (
+              <a href={u(item.href)} aria-current={active === item.key ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="shell">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="colophon">
+      <div class="shell">
+        <div class="colophon__row">
+          <span>© {SITE.year} {SITE.author}</span>
+          <span>
+            {
+              SOCIALS.map((s, i) => (
+                <>
+                  {i > 0 && ' / '}
+                  <a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>
+                    {s.label}
+                  </a>
+                </>
+              ))
+            }
+          </span>
+        </div>
+        <div>由 Astro 构建 · 托管于 GitHub Pages</div>
+      </div>
+    </footer>
+  </body>
+</html>

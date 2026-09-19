@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { u } from '../../const';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const tags = new Set<string>();
+  for (const post of posts) for (const tag of post.data.tags) tags.add(tag);
+  return [...tags].map((tag) => ({ params: { tag } }));
+}
+
+const tag = Astro.params.tag!;
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .filter((post) => post.data.tags.includes(tag))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base active="tags" title={`#${tag}`}>
+  <p class="kicker">
+    <a href={u('/tags/')} style="text-decoration:none">标签</a> / {tag}
+  </p>
+  <h1 class="section-title">#{tag}</h1>
+  <p class="section-note">{posts.length} 篇文章</p>
+
+  <PostList posts={posts} />
+</Base>

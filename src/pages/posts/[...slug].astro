@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDay, readingTime, u } from '../../const';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id } }));
+}
+
+const { slug } = Astro.params;
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const index = posts.findIndex((p) => p.id === slug);
+const post = posts[index];
+
+const { Content } = await render(post);
+const older = posts[index + 1];
+const newer = index > 0 ? posts[index - 1] : undefined;
+---
+
+<Base title={post.data.title} description={post.data.description}>
+  <article>
+    <header class="article__head">
+      <p class="kicker">
+        <a href={u('/')} style="text-decoration:none">目录</a>
+        / <a href={u('/tags/')} style="text-decoration:none">标签</a>
+      </p>
+      <h1 class="article__title">{post.data.title}</h1>
+      <p class="article__desc">{post.data.description}</p>
+      <div class="article__meta meta">
+        <time datetime={post.data.pubDate.toISOString()}>发布于 {formatDay(post.data.pubDate)}</time>
+        {
+          post.data.updatedDate && (
+            <time datetime={post.data.updatedDate.toISOString()}>
+              更新于 {formatDay(post.data.updatedDate)}
+            </time>
+          )
+        }
+        <span>{readingTime(post.body)} 分钟</span>
+      </div>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <div class="article__meta meta" style="border-top:1px solid var(--rule);padding-top:1rem">
+      {post.data.tags.map((tag) => (
+        <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+          #{tag}
+        </a>
+      ))}
+    </div>
+
+    <nav class="pager" aria-label="文章导航">
+      <span>
+        {
+          older && (
+            <a href={u(`/posts/${older.id}/`)}>← {older.data.title}</a>
+          )
+        }
+      </span>
+      <span>
+        {
+          newer && (
+            <a href={u(`/posts/${newer.id}/`)}>{newer.data.title} →</a>
+          )
+        }
+      </span>
+    </nav>
+  </article>
+</Base>

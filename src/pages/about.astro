@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, SOCIALS, u } from '../const';
+---
+
+<Base active="about" title="关于">
+  <h1 class="section-title">关于我</h1>
+  <p class="section-note">最后一次更新：2026 年 9 月</p>
+
+  <div class="prose">
+    <p>
+      我是 <strong>{SITE.author}</strong>，一名计算机专业大三学生。这里是我用来整理课程笔记、题解和工具配置的地方——写给一年后的自己看。
+    </p>
+    <h2>这个博客写什么</h2>
+    <ul>
+      <li><strong>计算机系统</strong>：CSAPP、操作系统、网络协议里那些课件讲得不完整的地方</li>
+      <li><strong>算法题解</strong>：周赛和刷题之后的小结，重点是模板之间的差异</li>
+      <li><strong>开发工具</strong>：真正省下时间的配置，而不是清单式的推荐</li>
+    </ul>
+    <h2>这个站点</h2>
+    <p>
+      用 <a href="https://astro.build">Astro</a> 生成纯静态文件，Markdown 写在仓库里，推送到 GitHub 后由 Actions 自动构建并发布到
+      GitHub Pages。订阅用 <a href={u('/rss.xml')}>RSS</a>。
+    </p>
+    <blockquote>
+      <p>
+        目前这是本地原型：站内 {SITE.handle}、上面的自我介绍和所有示例文章都是占位内容，替换成你自己的信息即可。
+      </p>
+    </blockquote>
+    <h2>联系我</h2>
+    <p>
+      {
+        SOCIALS.map((s, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>
+              {s.label}
+            </a>
+          </>
+        ))
+      }
+    </p>
+  </div>
+</Base>
