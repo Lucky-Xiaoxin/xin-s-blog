@@ -1,0 +1,42 @@
+---
+/* 抽象几何构图：圆、方、三角共用一条基线，红点标出圆与方唯一的切点。纯装饰。 */
+---
+
+<div class="hero">
+  <svg viewBox="0 0 720 300" role="presentation" aria-hidden="true">
+    <!-- 辅助线 -->
+    <line x1="32" y1="42" x2="688" y2="42" stroke="var(--rule)" stroke-width="1" />
+    <line x1="300" y1="42" x2="300" y2="258" stroke="var(--rule)" stroke-width="1" />
+    <line x1="600" y1="42" x2="600" y2="258" stroke="var(--rule)" stroke-width="1" />
+
+    <!-- 圆 -->
+    <circle cx="192" cy="150" r="108" fill="none" stroke="var(--ink)" stroke-width="1.25" />
+    <circle
+      cx="192"
+      cy="150"
+      r="54"
+      fill="none"
+      stroke="var(--ink)"
+      stroke-width="1"
+      opacity=".22"
+    />
+
+    <!-- 方 -->
+    <rect x="300" y="42" width="216" height="216" fill="none" stroke="var(--ink)" stroke-width="1.25" />
+
+    <!-- 三角 -->
+    <polygon
+      points="540,258 660,258 600,42"
+      fill="none"
+      stroke="var(--ink)"
+      stroke-width="1.25"
+    />
+
+    <!-- 基线 -->
+    <line x1="32" y1="258" x2="688" y2="258" stroke="var(--ink)" stroke-width="1" />
+
+    <!-- 唯一重音：切点 -->
+    <circle cx="300" cy="150" r="8" fill="var(--red)" />
+  </svg>
+  <slot />
+</div>

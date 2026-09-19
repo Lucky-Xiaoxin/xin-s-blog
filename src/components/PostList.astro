@@ -1,20 +1,22 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
 import { formatDay, readingTime, u } from '../const';
 
 interface Props {
   posts: CollectionEntry<'posts'>[];
-  offset?: number;
 }
 
-const { posts, offset = 0 } = Astro.props;
+const { posts } = Astro.props;
 ---
 
 <ul class="index">
   {
-    posts.map((post, i) => (
+    posts.map((post) => (
       <li class="index__item">
-        <div class="index__no">{String(i + 1 + offset).padStart(2, '0')}</div>
+        <div class="index__badge">
+          <Badge tag={post.data.tags[0]} />
+        </div>
         <div>
           <h2 class="index__title">
             <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
+    "@fontsource/bodoni-moda": "^5.3.0",
     "astro": "^5.13.0"
   }
 }

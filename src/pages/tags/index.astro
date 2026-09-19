@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Badge from '../../components/Badge.astro';
 import { u } from '../../const';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -16,20 +17,20 @@ const tags = [...grouped.entries()].sort(
 );
 ---
 
-<Base active="tags" title="标签">
+<Base size="compact" active="tags" title="标签">
   <h1 class="section-title">标签</h1>
-  <p class="section-note">{tags.length} 个标签 · 共 {posts.length} 篇文章</p>
+  <p class="section-note">
+    {tags.length} 个标签 · 共 {posts.length} 篇文章
+  </p>
 
   <ul class="tagcloud">
     {
       tags.map(([tag, count]) => (
         <li>
-          <a
-            class="tag"
-            href={u(`/tags/${encodeURIComponent(tag)}/`)}
-            style="font-size:.875rem;padding:.4rem .8rem"
-          >
-            {tag} <span style="color:var(--accent)">{count}</span>
+          <a href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+            <Badge tag={tag} />
+            <span class="tagcloud__name">{tag}</span>
+            <span class="tagcloud__count">{count}</span>
           </a>
         </li>
       ))

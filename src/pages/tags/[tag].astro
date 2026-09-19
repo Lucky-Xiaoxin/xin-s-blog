@@ -18,11 +18,13 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Base active="tags" title={`#${tag}`}>
+<Base size="compact" active="tags" title={`#${tag}`}>
   <p class="kicker">
-    <a href={u('/tags/')} style="text-decoration:none">标签</a> / {tag}
+    <a href={u('/tags/')}>标签</a>
+    /
+    {tag}
   </p>
-  <h1 class="section-title">#{tag}</h1>
+  <h1 class="section-title">{tag}</h1>
   <p class="section-note">{posts.length} 篇文章</p>
 
   <PostList posts={posts} />

@@ -3,8 +3,9 @@ import Base from '../layouts/Base.astro';
 import { u } from '../const';
 ---
 
-<Base title="404" description="页面不存在">
-  <p class="kicker">error 404</p>
+<Base size="compact" title="404" description="页面不存在">
+  <p class="kicker">not found</p>
+  <p class="notfound__mark">40<span>4</span></p>
   <h1 class="section-title">这个路径下没有文件</h1>
   <p class="section-note">
     也许是文章改过名字。回到 <a href={u('/')}>目录</a> 重新找。

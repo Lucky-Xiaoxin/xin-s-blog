@@ -20,6 +20,31 @@ export const SOCIALS = [
   { label: 'RSS', href: '/rss.xml' },
 ];
 
+/** 标签类别 -> 几何描边形状，供列表徽章使用 */
+export type Shape = 'triangle' | 'hexagon' | 'square' | 'rhombus' | 'semicircle' | 'circle';
+
+const TAG_SHAPE: Record<string, Shape> = {
+  算法: 'triangle',
+  题解: 'triangle',
+  单调栈: 'triangle',
+  计算机系统: 'hexagon',
+  CSAPP: 'hexagon',
+  读书笔记: 'hexagon',
+  Go: 'square',
+  后端: 'square',
+  课程实验: 'square',
+  建站: 'rhombus',
+  Astro: 'rhombus',
+  'GitHub Pages': 'rhombus',
+  工具: 'semicircle',
+  Linux: 'semicircle',
+  效率: 'semicircle',
+};
+
+export function shapeFor(tag?: string): Shape {
+  return (tag && TAG_SHAPE[tag]) || 'circle';
+}
+
 const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
 /** 拼接带 GitHub Pages 子路径前缀的内部链接 */

@@ -34,7 +34,12 @@ draft: true               # 可选，不发布
 ---
 ```
 
-深色模式跟随系统 `prefers-color-scheme`，代码高亮由 Shiki 在构建期完成，浏览器端零 JS。
+## 视觉规范
+
+- 纯白底 + 单一正红 `#D81E1E`，其余只有黑、灰两级；不用阴影、渐变和深色模式。
+- 标题 Bodoni Moda（几何高对比衬线），通过 `@fontsource/bodoni-moda` 打进仓库，不走 Google CDN；中文回退到本地思源宋体/宋体。正文用系统无衬线，等宽只留给代码。
+- 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，形状本身在 `src/components/Badge.astro`。
+- 代码高亮由 Shiki 在构建期完成，浏览器端零 JS。
 
 ## 部署到 GitHub Pages
 

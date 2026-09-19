@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SITE, formatDay, readingTime, u } from '../const';
+import Hero from '../components/Hero.astro';
+import PostList from '../components/PostList.astro';
+import { formatDay } from '../const';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -11,38 +13,19 @@ const latest = posts[0];
 ---
 
 <Base active="home">
-  <p class="kicker">
-    目录 / {posts.length} 篇{latest ? ` · 最近更新 ${formatDay(latest.data.pubDate)}` : ''}
-  </p>
+  <Hero>
+    <div class="hero__caption">
+      <span class="label">全部文章</span>
+      <span class="meta">
+        {posts.length} 篇 · 最近更新 {latest ? formatDay(latest.data.pubDate) : '—'}
+      </span>
+    </div>
+  </Hero>
 
-  <ul class="index">
-    {
-      posts.map((post, i) => (
-        <li class="index__item">
-          <div class="index__no">{String(i + 1).padStart(2, '0')}</div>
-          <div>
-            <h2 class="index__title">
-              <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
-            </h2>
-            <p class="index__desc">{post.data.description}</p>
-            <div class="index__foot">
-              <span class="meta">{formatDay(post.data.pubDate)}</span>
-              <span class="meta">{readingTime(post.body)} 分钟</span>
-              {post.data.tags.map((tag) => (
-                <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
-                  {tag}
-                </a>
-              ))}
-            </div>
-          </div>
-        </li>
-      ))
-    }
-  </ul>
+  <PostList posts={posts} />
 
-  <p class="section-note" style="margin-top:2.5rem">
-    {SITE.author} · {SITE.handle} — 这里是示例内容与示例文章，改成你自己的只需要动
-    <code style="font-family:var(--font-mono);font-size:.85em">src/const.ts</code> 和
-    <code style="font-family:var(--font-mono);font-size:.85em">src/content/posts/</code>。
+  <p class="section-note" style="margin:3rem 0 0">
+    站名、作者与下面这 {posts.length} 篇都是占位示例，改 src/const.ts 和
+    src/content/posts/ 就能换成你自己的内容。
   </p>
 </Base>

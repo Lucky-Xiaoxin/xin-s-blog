@@ -21,25 +21,31 @@ const older = posts[index + 1];
 const newer = index > 0 ? posts[index - 1] : undefined;
 ---
 
-<Base title={post.data.title} description={post.data.description}>
+<Base size="compact" title={post.data.title} description={post.data.description}>
   <article>
     <header class="article__head">
       <p class="kicker">
-        <a href={u('/')} style="text-decoration:none">目录</a>
-        / <a href={u('/tags/')} style="text-decoration:none">标签</a>
+        <a href={u('/')}>目录</a>
+        /
+        <a href={u('/tags/')}>标签</a>
       </p>
       <h1 class="article__title">{post.data.title}</h1>
       <p class="article__desc">{post.data.description}</p>
-      <div class="article__meta meta">
-        <time datetime={post.data.pubDate.toISOString()}>发布于 {formatDay(post.data.pubDate)}</time>
+      <div class="article__meta">
+        <span class="meta">{formatDay(post.data.pubDate)} 发布</span>
         {
           post.data.updatedDate && (
-            <time datetime={post.data.updatedDate.toISOString()}>
-              更新于 {formatDay(post.data.updatedDate)}
-            </time>
+            <span class="meta">更新于 {formatDay(post.data.updatedDate)}</span>
           )
         }
-        <span>{readingTime(post.body)} 分钟</span>
+        <span class="meta">{readingTime(post.body)} 分钟读完</span>
+        {
+          post.data.tags.map((tag) => (
+            <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+              {tag}
+            </a>
+          ))
+        }
       </div>
     </header>
 
@@ -47,26 +53,24 @@ const newer = index > 0 ? posts[index - 1] : undefined;
       <Content />
     </div>
 
-    <div class="article__meta meta" style="border-top:1px solid var(--rule);padding-top:1rem">
-      {post.data.tags.map((tag) => (
-        <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
-          #{tag}
-        </a>
-      ))}
-    </div>
-
     <nav class="pager" aria-label="文章导航">
       <span>
         {
           older && (
-            <a href={u(`/posts/${older.id}/`)}>← {older.data.title}</a>
+            <a href={u(`/posts/${older.id}/`)}>
+              <span class="pager__dir">更早</span>
+              {older.data.title}
+            </a>
           )
         }
       </span>
-      <span>
+      <span style="text-align:right">
         {
           newer && (
-            <a href={u(`/posts/${newer.id}/`)}>{newer.data.title} →</a>
+            <a href={u(`/posts/${newer.id}/`)}>
+              <span class="pager__dir">更新</span>
+              {newer.data.title}
+            </a>
           )
         }
       </span>
