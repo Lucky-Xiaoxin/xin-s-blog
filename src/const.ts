@@ -1,10 +1,10 @@
 export const SITE = {
   title: '二进制与诗',
-  tagline: '一个计算机专业学生的笔记本站',
-  author: '张三',
-  handle: '@zhangsan',
+  tagline: '一个佛大计算机专业学生的笔记本站',
+  author: '小鑫',
+  handle: '@Xiaoxin',
   description:
-    '计算机系统、算法题解与开发工具的个人笔记。记录课堂上不会讲清楚的那些细节。',
+    '计算机系统、算法题解与开发工具的个人笔记。',
   year: 2026,
 };
 
@@ -15,8 +15,8 @@ export const NAV = [
 ];
 
 export const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/zhangsan' },
-  { label: 'Email', href: 'mailto:zhangsan@example.com' },
+  { label: 'GitHub', href: 'https://github.com/Lucky-Xiaoxin' },
+  { label: 'Email', href: 'posts/yggdya163com/' },
   { label: 'RSS', href: '/rss.xml' },
 ];
 
@@ -39,6 +39,7 @@ const TAG_SHAPE: Record<string, Shape> = {
   工具: 'semicircle',
   Linux: 'semicircle',
   效率: 'semicircle',
+  其它: 'hexagon',
 };
 
 export function shapeFor(tag?: string): Shape {
