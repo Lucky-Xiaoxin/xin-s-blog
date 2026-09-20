@@ -47,13 +47,13 @@ draft: true               # 可选，不发布
 
 下面第 2 步要在第一次 push 之前做，顺序反了会得到一个失败的 deploy 任务。
 
-1. 远程仓库 `https://github.com/Lucky-Xiaoxin/Xin-s-blog` 已建好（空仓库，无分支）。
+1. 远程仓库 `https://github.com/Lucky-Xiaoxin/xin-s-blog`（空仓库，无分支）。仓库名统一用小写，避免项目站子路径的大小写歧义。
 2. 仓库 **Settings → Pages → Build and deployment** 选 **GitHub Actions**（不是 Deploy from a branch）。
 3. 本仓库已经 `git init` 并有过提交，只需改名分支、接上远程、推送：
 
    ```bash
    git branch -M main    # 当前是 master；workflow 只监听 main，不改名不会触发部署
-   git remote add origin https://github.com/Lucky-Xiaoxin/Xin-s-blog.git
+   git remote add origin https://github.com/Lucky-Xiaoxin/xin-s-blog.git
    git push -u origin main
    ```
 
@@ -64,8 +64,8 @@ draft: true               # 可选，不发布
 
 ### 部署前确认三件事
 
-- **子路径**：仓库名是 `Xin-s-blog`，workflow 会把 `BASE_PATH` 注入为 `/Xin-s-blog/`；站内链接与资源前缀由 `src/const.ts` 的 `u()` 统一处理，本地不带前缀也能直接跑。以后若改用 `<用户名>.github.io` 仓库，把 `deploy.yml` 里的 `BASE_PATH` 改成 `/`。
-- **仓库名大小写**：GitHub 项目站对仓库名段的大小写处理不完全一致，含大写的 `Xin-s-blog` 存在资源 404 的风险。更稳的做法是把远程仓库改名为全小写 `xin-s-blog`；若保留现名，上线后第一件事就是核对 `/_astro/` 下的资源是否全部 200。
+- **子路径**：仓库名 `xin-s-blog`，workflow 会把 `BASE_PATH` 注入为 `/xin-s-blog/`；站内链接与资源前缀由 `src/const.ts` 的 `u()` 统一处理，本地不带前缀也能直接跑。以后若改用 `<用户名>.github.io` 仓库，把 `deploy.yml` 里的 `BASE_PATH` 改成 `/`。
+- **仓库名大小写**：项目站子路径对大小写敏感的风险不好排查，所以统一用小写。如果远程仓库当前还是 `Xin-s-blog`，去 GitHub 的 **Settings → General → Repository name** 改成 `xin-s-blog`；`BASE_PATH` 取自仓库名，改完自动跟随，不用动代码。
 - **域名**：`astro.config.mjs` 的 `site` 默认值已是 `https://lucky-xiaoxin.github.io`，RSS 和 sitemap 的绝对地址由它生成；workflow 会用仓库所属用户名覆盖成同一个值。
 
 用自定义域名的话，`SITE_URL` 填 `https://你的域名`、`BASE_PATH` 填 `/`，再加 `public/CNAME` 和对应的 DNS 记录。
