@@ -16,7 +16,7 @@ export const NAV = [
 
 export const SOCIALS = [
   { label: 'GitHub', href: 'https://github.com/Lucky-Xiaoxin' },
-  { label: 'Email', href: 'posts/yggdya163com/' },
+  { label: 'Email', href: 'mailto:yggdya@163.com' },
   { label: 'RSS', href: '/rss.xml' },
 ];
 
@@ -54,6 +54,11 @@ export function u(path = '/') {
   const p = path.startsWith('/') ? path : `/${path}`;
   if (/\.[a-z0-9]+$/i.test(p)) return `${base}${p}`;
   return `${base}${p.replace(/\/$/, '')}/`;
+}
+
+/** 绝对地址（http:/https:/mailto: 等）原样使用，站内路径补上 Pages 子路径前缀 */
+export function resolveHref(href: string) {
+  return /^[a-z][a-z0-9+.-]*:/i.test(href) ? href : u(href);
 }
 
 export function formatDay(date: Date) {

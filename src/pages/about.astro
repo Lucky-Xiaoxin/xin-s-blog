@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE, SOCIALS, u } from '../const';
+import { SITE, SOCIALS, resolveHref, u } from '../const';
 ---
 
 <Base size="compact" active="about" title="关于">
@@ -22,18 +22,14 @@ import { SITE, SOCIALS, u } from '../const';
       用 <a href="https://astro.build">Astro</a> 生成纯静态文件，Markdown 写在仓库里，推送到 GitHub 后由 Actions 自动构建并发布到
       GitHub Pages。订阅用 <a href={u('/rss.xml')}>RSS</a>。
     </p>
-    <blockquote>
-      <p>
-        站内 {SITE.handle}
-      </p>
-    </blockquote>
     <h2>联系我</h2>
     <p>
+      站内 {SITE.handle} ·
       {
         SOCIALS.map((s, i) => (
           <>
             {i > 0 && ' · '}
-            <a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>
+            <a href={resolveHref(s.href)} rel={/^https?:/i.test(s.href) ? 'noopener' : undefined}>
               {s.label}
             </a>
           </>

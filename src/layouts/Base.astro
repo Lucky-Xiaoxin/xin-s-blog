@@ -3,7 +3,7 @@ import '@fontsource/bodoni-moda/400.css';
 import '@fontsource/bodoni-moda/400-italic.css';
 import '@fontsource/bodoni-moda/500.css';
 import '../styles/global.css';
-import { SITE, NAV, SOCIALS, u } from '../const';
+import { SITE, NAV, SOCIALS, resolveHref, u } from '../const';
 
 interface Props {
   title?: string;
@@ -88,7 +88,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
               SOCIALS.map((s, i) => (
                 <>
                   {i > 0 && <span class="sep">/</span>}
-                  <a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>
+                  <a href={resolveHref(s.href)} rel={/^https?:/i.test(s.href) ? 'noopener' : undefined}>
                     {s.label}
                   </a>
                 </>
