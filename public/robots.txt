@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lucky-xiaoxin.github.io/xin-s-blog/sitemap-index.xml

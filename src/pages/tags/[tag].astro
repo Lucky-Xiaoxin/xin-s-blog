@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PostList from '../../components/PostList.astro';
-import { u } from '../../const';
+import { byNewest, u } from '../../const';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -15,7 +15,7 @@ const tag = Astro.params.tag!;
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .filter((post) => post.data.tags.includes(tag))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .sort(byNewest);
 ---
 
 <Base size="compact" active="tags" title={`#${tag}`}>

@@ -11,7 +11,7 @@
   --surface: #f7f7f5;
   --ink: #111214;
   --ink-2: #4b4f55;
-  --ink-3: #8e939a;
+  --ink-3: #686d73;
   --rule: #e4e4e1;
   --red: #d81e1e;
 
@@ -101,10 +101,6 @@ h3 {
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--gutter);
-}
-
-.shell--wide {
-  max-width: 58rem;
 }
 
 /* ============ 页头 ============ */
@@ -319,10 +315,6 @@ main {
 a.tag:hover {
   color: var(--red);
   border-color: var(--red);
-}
-.tag__count {
-  color: var(--red);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ============ Hero：抽象几何构图 ============ */

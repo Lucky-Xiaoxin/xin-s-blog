@@ -5,7 +5,7 @@ export const SITE = {
   handle: '@Xiaoxin',
   description:
     '计算机系统、算法题解与开发工具的个人笔记。',
-  year: 2026,
+  year: new Date().getUTCFullYear(),
 };
 
 export const NAV = [
@@ -42,8 +42,19 @@ const TAG_SHAPE: Record<string, Shape> = {
   其它: 'hexagon',
 };
 
+const warnedTags = new Set<string>();
+
 export function shapeFor(tag?: string): Shape {
-  return (tag && TAG_SHAPE[tag]) || 'circle';
+  if (!tag) return 'circle';
+  const shape = TAG_SHAPE[tag];
+  if (!shape) {
+    if (!warnedTags.has(tag)) {
+      warnedTags.add(tag);
+      console.warn(`[TAG_SHAPE] 标签「${tag}」未登记形状，徽章回退为 circle；请在 src/const.ts 的 TAG_SHAPE 中登记`);
+    }
+    return 'circle';
+  }
+  return shape;
 }
 
 const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
@@ -61,16 +72,27 @@ export function resolveHref(href: string) {
   return /^[a-z][a-z0-9+.-]*:/i.test(href) ? href : u(href);
 }
 
+// frontmatter 的 date-only 会被 z.coerce.date() 解析为 UTC 零点，
+// 必须用 UTC getter 渲染，否则构建机时区为负时日期会整体少一天
 export function formatDay(date: Date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(date.getUTCDate()).padStart(2, '0');
   return `${y}.${m}.${d}`;
 }
 
+/** 发布日期倒序；同日文章按 id 定序，避免顺序随 getCollection 插入序漂移 */
+export function byNewest(
+  a: { id: string; data: { pubDate: Date } },
+  b: { id: string; data: { pubDate: Date } },
+) {
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.id.localeCompare(a.id);
+}
+
 /** 中文按 ~400 字/分钟、英文按 ~220 词/分钟估算 */
-export function readingTime(body: string) {
-  const cjk = (body.match(/[\u4e00-\u9fff]/g) || []).length;
-  const words = (body.replace(/[\u4e00-\u9fff]/g, '').match(/[A-Za-z0-9]+/g) || []).length;
+export function readingTime(body?: string) {
+  const text = body ?? '';
+  const cjk = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const words = (text.replace(/[\u4e00-\u9fff]/g, '').match(/[A-Za-z0-9]+/g) || []).length;
   return Math.max(1, Math.round(cjk / 400 + words / 220));
 }

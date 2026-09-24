@@ -11,6 +11,7 @@ interface Props {
   active?: string;
   /** full = 首页的大字页头；compact = 内页的窄页头 */
   size?: 'full' | 'compact';
+  ogType?: 'website' | 'article';
 }
 
 const {
@@ -18,10 +19,18 @@ const {
   description = SITE.description,
   active = '',
   size = 'full',
+  ogType = 'website',
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// trailingSlash: always 下 /404/ 不可达（Astro 固定输出扁平 404.html），
+// 因此 404 页不写指向死地址的 canonical/og:url，并声明 noindex
+const relPath = Astro.url.pathname.slice(
+  (import.meta.env.BASE_URL || '/').replace(/\/$/, '').length,
+);
+const is404 = /^\/404\/?$/.test(relPath);
+const ogImage = new URL(u('/og.png'), Astro.site);
 ---
 
 <!doctype html>
@@ -32,13 +41,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
-    <link rel="canonical" href={canonical} />
+    {
+      is404 ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <link rel="canonical" href={canonical} />
+      )
+    }
     <meta name="generator" content={Astro.generator} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {is404 ? null : <meta property="og:url" content={canonical} />}
     <meta property="og:site_name" content={SITE.title} />
+    {
+      !is404 && (
+        <>
+          <meta property="og:image" content={ogImage} />
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )
+    }
     <meta name="theme-color" content="#ffffff" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href={u('/rss.xml')} />
     <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
