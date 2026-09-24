@@ -1,12 +1,8 @@
 ---
-import { shapeFor, type Shape } from '../const';
+import { shapeFor } from '../const';
 
-interface Props {
-  tag?: string;
-  shape?: Shape;
-}
-
-const { tag, shape = shapeFor(tag) } = Astro.props;
+const { tag } = Astro.props as { tag?: string };
+const shape = shapeFor(tag);
 ---
 
 <span class="badge" aria-hidden="true">
