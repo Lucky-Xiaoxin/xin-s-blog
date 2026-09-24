@@ -5,7 +5,7 @@
 ## 本地开发
 
 ```bash
-node -v            # 需要 18.20.8+ / 20.3+ / 22+，见 package.json 的 engines
+node -v            # 需要 20.3+ / 22+，见 package.json 的 engines
 npm install
 npm run dev        # http://localhost:4321/
 npm run build      # 产出到 dist/
@@ -55,7 +55,7 @@ draft: true               # 可选，不发布
 - **子路径**：workflow 把仓库名注入为 `BASE_PATH`（本站是 `/xin-s-blog/`），站内链接与资源前缀由 `src/const.ts` 的 `u()` 统一处理；本地不带前缀也能直接跑（默认 `/`）。以后若改用 `<用户名>.github.io` 仓库，把 `deploy.yml` 里的 `BASE_PATH` 改成 `/`。
 - **域名**：RSS、sitemap 与 canonical 的绝对地址由 `SITE_URL` 生成，`deploy.yml` 的 Build 步骤会无条件注入 `https://<仓库所属用户名>.github.io`；`astro.config.mjs` 里 `site` 的默认值只影响本地构建。`BASE_PATH` 取自仓库名，GitHub 上改名（**Settings → General → Repository name**）后自动跟随，不用动代码。
 
-用自定义域名的话，在 `deploy.yml` 里把 `SITE_URL` 改成 `https://你的域名`、`BASE_PATH` 改成 `/`，再加 `public/CNAME` 和对应的 DNS 记录。
+用自定义域名的话，在 `deploy.yml` 里把 `SITE_URL` 改成 `https://你的域名`、`BASE_PATH` 改成 `/`，再加 `public/CNAME` 和对应的 DNS 记录，并同步 `public/robots.txt` 里的 Sitemap 地址。
 
 ### 首次上线记录（2026-09-24 完成，留作历史参考）
 
