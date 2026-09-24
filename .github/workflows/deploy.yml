@@ -5,10 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# 只有 deploy job 需要发布权限；build job 跑 npm ci，只给读权限，
+# 避免依赖 install 脚本被投毒时能铸 OIDC 令牌直接改线上 Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -18,26 +18,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Type check
+        run: npm run check
       - name: Build
         run: npm run build
         env:
+          TZ: Etc/UTC
           # 仓库改名为 <用户名>.github.io 时，把 BASE_PATH 改成 '/'
           SITE_URL: https://${{ github.repository_owner }}.github.io
           BASE_PATH: /${{ github.event.repository.name }}
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # workflow_dispatch 可在任意分支触发；不加这行守卫会把那个分支的内容直接发上线
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -46,4 +51,4 @@ jobs:
       id-token: write
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
