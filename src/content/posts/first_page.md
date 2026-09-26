@@ -2,6 +2,7 @@
 title: '第一篇文章'
 description: '我也不知道写来干嘛，反正，这就是第一篇了'
 pubDate: 2026-09-19
+pubTime: '00:00'
 tags: ['其它']
 draft: false 	# 可选，不发布
 ---
