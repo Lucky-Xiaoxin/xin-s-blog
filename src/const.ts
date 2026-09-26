@@ -81,12 +81,16 @@ export function formatDay(date: Date) {
   return `${y}.${m}.${d}`;
 }
 
-/** 发布日期倒序；同日文章按 id 定序，避免顺序随 getCollection 插入序漂移 */
+/** 发布日期倒序；同日按 pubTime（零填充 HH:MM 可字典序比较）倒序，再按 id 定序 */
 export function byNewest(
-  a: { id: string; data: { pubDate: Date } },
-  b: { id: string; data: { pubDate: Date } },
+  a: { id: string; data: { pubDate: Date; pubTime?: string } },
+  b: { id: string; data: { pubDate: Date; pubTime?: string } },
 ) {
-  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.id.localeCompare(a.id);
+  return (
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf() ||
+    (b.data.pubTime ?? '').localeCompare(a.data.pubTime ?? '') ||
+    b.id.localeCompare(a.id)
+  );
 }
 
 /** 中文按 ~400 字/分钟、英文按 ~220 词/分钟估算 */

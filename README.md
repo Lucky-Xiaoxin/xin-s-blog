@@ -16,7 +16,7 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 
 ### 写一篇博客（直推 main）
 
-1. 在 `src/content/posts/` 新建 `.md`（文件名即 URL），按下方「文章格式」写 frontmatter。
+1. 一键建稿：`npm run new -- <文件名>`，或双击仓库根目录的「新建文章.bat」按提示输入。脚本会在 `src/content/posts/` 生成带注释的 frontmatter 模板，自动填好当天日期和本机时间（`pubTime` 纯显示用，删掉整行即不显示）。文件名即 URL，只用小写字母、数字、连字符。
 2. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
 3. 没写完设 `draft: true`——草稿不进目录页、不进 RSS、不生成页面。`npm run dev` 本地看效果。
 4. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
@@ -36,7 +36,7 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 | 要改什么 | 位置 |
 | --- | --- |
 | 站名、作者、简介、导航、社交链接 | `src/const.ts` |
-| 写文章 | 在 `src/content/posts/` 新建 `.md`，文件名即 URL |
+| 写文章 | `npm run new -- <文件名>` 或双击「新建文章.bat」（也可手动在 `src/content/posts/` 建 `.md`，文件名即 URL） |
 | 配色、字体、排版 | `src/styles/global.css` 顶部的令牌 |
 | 页面结构 | `src/layouts/Base.astro`、`src/pages/` |
 | 分享预览图 | 替换 `public/og.png`（1200×630） |
@@ -50,6 +50,7 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 title: '文章标题'
 description: '摘要，会出现在目录页、SEO 描述和 RSS 里'
 pubDate: 2026-09-19
+pubTime: '21:30'          # 可选，24h 制零填充，仅显示用；排序/RSS 只认 pubDate
 updatedDate: 2026-09-25   # 可选
 tags: ['算法', '题解']
 draft: true               # 可选，不发布
@@ -57,6 +58,8 @@ draft: true               # 可选，不发布
 ```
 
 文章正文引用图片等资源：放在 `src/content/posts/` 里与文章同目录（或子目录）并用相对路径引用（如 `![图](./diagram.png)`），构建时会自动处理并带上子路径前缀。不要用 `/` 开头的根绝对路径——构建不会为它补前缀，部署后会 404。
+
+数学公式：行内用 `$f(x)≤81d$`，独立成行用 `$$…$$`，由 KaTeX 在构建期排版成静态 HTML（浏览器端依旧零 JS，字体随产物本地打包）。KaTeX 原生支持 Unicode：中文、`→`、`≤`、`≥`、`<` 直接写就行；只有 undefined 命令（如 `\foo`）这类真语法错才会标红显示，不阻塞发布。
 
 ## 视觉规范
 

@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vitesseLight from '@shikijs/themes/vitesse-light';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // GitHub Pages 的项目站部署在 https://<user>.github.io/<repo>/ 下，
 // 因此构建时需要把仓库名作为 base 路径注入（见 .github/workflows/deploy.yml）。
@@ -12,6 +14,10 @@ export default defineConfig({
   output: 'static',
   integrations: [sitemap()],
   markdown: {
+    // 数学公式构建期排版（浏览器零 JS）；throwOnError/strict 关闭：
+    // 坏公式在页面上标红，而不是炸掉构建挡住发布
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [[rehypeKatex, { throwOnError: false, strict: false, output: 'html' }]],
     shikiConfig: {
       // vitesse-light 原 token 色在 --surface 代码背景上多处不达 WCAG AA，
       // 以下替色为保色相压暗至 >=4.6:1（global.css 的 .astro-code 覆写了背景色）

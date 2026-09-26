@@ -30,7 +30,7 @@ const newer = index > 0 ? posts[index - 1] : undefined;
       <h1 class="article__title">{post.data.title}</h1>
       <p class="article__desc">{post.data.description}</p>
       <div class="article__meta">
-        <span class="meta">{formatDay(post.data.pubDate)} 发布</span>
+        <span class="meta">{formatDay(post.data.pubDate)}{post.data.pubTime ? ` ${post.data.pubTime}` : ''} 发布</span>
         {
           post.data.updatedDate && (
             <span class="meta">更新于 {formatDay(post.data.updatedDate)}</span>
