@@ -1,5 +1,7 @@
 # 个人博客原型（Astro + GitHub Pages）
 
+**线上地址：https://lucky-xiaoxin.github.io/xin-s-blog/**
+
 计算机专业学生的技术笔记本站。构建产物是纯静态文件，直接由 GitHub Pages 托管。
 
 ## 本地开发
