@@ -23,7 +23,7 @@ const { posts } = Astro.props;
           </h2>
           <p class="index__desc">{post.data.description}</p>
           <div class="index__foot">
-            <span class="meta">{formatDay(post.data.pubDate)}</span>
+            <span class="meta">{formatDay(post.data.pubDate)}{post.data.pubTime ? ` ${post.data.pubTime}` : ''}</span>
             <span class="meta">{readingTime(post.body)} 分钟</span>
             {post.data.tags.map((tag) => (
               <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>

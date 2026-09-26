@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "new": "node scripts/new-post.mjs",
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview"
