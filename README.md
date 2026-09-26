@@ -12,6 +12,25 @@ npm run build      # 产出到 dist/
 npm run preview    # 预览 dist/，实际端口看命令输出
 ```
 
+## 日常流程
+
+### 写一篇博客（直推 main）
+
+1. 在 `src/content/posts/` 新建 `.md`（文件名即 URL），按下方「文章格式」写 frontmatter。
+2. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
+3. 没写完设 `draft: true`——草稿不进目录页、不进 RSS、不生成页面。`npm run dev` 本地看效果。
+4. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
+5. 安全网：CI 任何一步失败都不会发布，线上继续服务上一次成功的产物——所以写博客不必开分支，推坏了补一版再推即可。
+
+### 改框架（分支 + PR）
+
+主题、组件、配置的改动影响整站，走这条路：
+
+1. `git switch -c feat/xxx` 开分支，本地 `npm run dev` 验证。
+2. 提交前跑 `npm run check && npm run build`——和 CI 门禁同款，本地过了线上基本就过。
+3. push 分支，在 GitHub 上开 PR、自查改动说明后合并到 `main`，合并即触发发布。
+4. 改坏了要回滚：revert 那个 merge commit 再推 `main`，Pages 会重新发布旧版内容。
+
 ## 改成你自己的
 
 | 要改什么 | 位置 |
