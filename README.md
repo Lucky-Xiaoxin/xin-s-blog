@@ -16,6 +16,8 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 
 ## 日常流程
 
+构建红了、线上表现不对，先查 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)：每种真实遇到过的报错都有「报错原文 → 人话 → 修法」对照表。
+
 ### 写一篇博客（直推 main）
 
 1. 一键建稿：`npm run new -- <文件名>`，或双击仓库根目录的「新建文章.bat」按提示输入。脚本会在 `src/content/posts/` 生成带注释的 frontmatter 模板，自动填好当天日期和本机时间（`pubTime` 纯显示用，删掉整行即不显示）。文件名即 URL，只用小写字母、数字、连字符。
