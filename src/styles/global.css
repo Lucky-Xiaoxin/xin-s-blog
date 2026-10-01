@@ -25,6 +25,10 @@
   color-scheme: light;
   --paper: #ffffff;
   --surface: #f7f7f5;
+  /* 题记的立体处理（全站唯一允许的阴影用例）：亮色＝内陷，硬边刻线 + 浅灰底 */
+  --tiji-bg: #ededeb;
+  --tiji-shadow: inset 0 1px 0 rgba(17, 18, 20, 0.2), inset 0 3px 6px -2px rgba(17, 18, 20, 0.16),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.95);
   --ink: #111214;
   --ink-2: #4b4f55;
   --ink-3: #686d73;
@@ -47,6 +51,9 @@
   color-scheme: dark;
   --paper: #111214;
   --surface: #1b1d20;
+  /* 深色＝凸出（与亮色相反）：底比纸面浅一档，顶边接光（灰亮线）、底边投影（暗线） */
+  --tiji-bg: #202327;
+  --tiji-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.85);
   --ink: #f2f2f0;
   --ink-2: #c7c9cc;
   --ink-3: #979ba0;
@@ -521,15 +528,20 @@ a.tag:hover {
   font-size: clamp(2.1rem, 7vw, 3.2rem);
   margin: 0 0 1.1rem;
 }
-/* 中文衬线没有真斜体，合成倾斜会失真：摘要与引用块都保持正体 */
+/* 题记：左侧 2px 红规线 + 硬边"雕刻"（全站唯一允许的阴影用例；亮色内陷、深色凸出）；
+   中文衬线没有真斜体，摘要与引用块都保持正体 */
 .article__desc {
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 2.6vw, 1.3rem);
   font-weight: 400;
   color: var(--ink-2);
-  line-height: 1.55;
+  line-height: 1.65;
   margin: 0 0 1.75rem;
-  max-width: 32rem;
+  max-width: 34rem;
+  padding: 1rem 1.25rem;
+  background: var(--tiji-bg);
+  border-left: 2px solid var(--red);
+  box-shadow: var(--tiji-shadow);
 }
 .article__meta {
   display: flex;
