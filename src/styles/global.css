@@ -1,9 +1,25 @@
 /* ============================================================
    设计系统：白底 · 单一正红 · 几何描边
-   标题 = Bodoni Moda（几何高对比衬线，仓库内自托管）
+   标题 = Bodoni Moda（拉丁）+ 思源宋体子集（中文），仓库内自托管
    正文 = 系统无衬线（中文可读性优先）
-   等宽只用于代码
+   等宽用于代码与元信息（日期/计数）
    ============================================================ */
+
+/* 中文衬线子集：由 scripts/subset-fonts.mjs 在 dev/build 前生成，只含站内标题用字 */
+@font-face {
+  font-family: 'Noto Serif SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/noto-serif-sc-subset-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Serif SC';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/noto-serif-sc-subset-500.woff2') format('woff2');
+}
 
 :root {
   color-scheme: light;
@@ -15,8 +31,8 @@
   --rule: #e4e4e1;
   --red: #d81e1e;
 
-  --font-display: 'Bodoni Moda', 'Source Han Serif SC', '思源宋体', 'Songti SC',
-    SimSun, Georgia, serif;
+  --font-display: 'Bodoni Moda', 'Noto Serif SC', 'Source Han Serif SC', '思源宋体',
+    'Songti SC', SimSun, Georgia, serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'JetBrains Mono', Menlo,
@@ -71,8 +87,8 @@ h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 500;
-  line-height: 1.16;
-  letter-spacing: -0.012em;
+  line-height: 1.22; /* 中文标题行距比拉丁更松一点 */
+  letter-spacing: 0; /* 中文不做负字距 */
   text-wrap: balance;
 }
 
@@ -132,7 +148,7 @@ h3 {
   font-family: var(--font-display);
   font-size: clamp(2.1rem, 6vw, 2.75rem);
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   color: var(--ink);
   line-height: 1;
 }
@@ -350,9 +366,11 @@ main {
 }
 
 .meta {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
 }
 
 .section-title {
@@ -503,10 +521,10 @@ a.tag:hover {
   font-size: clamp(2.1rem, 7vw, 3.2rem);
   margin: 0 0 1.1rem;
 }
+/* 中文衬线没有真斜体，合成倾斜会失真：摘要与引用块都保持正体 */
 .article__desc {
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 2.6vw, 1.3rem);
-  font-style: italic;
   font-weight: 400;
   color: var(--ink-2);
   line-height: 1.55;
@@ -578,7 +596,6 @@ a.tag:hover {
   margin: 2.4em 0;
   padding: 0;
   font-family: var(--font-display);
-  font-style: italic;
   font-size: 1.2rem;
   line-height: 1.6;
   color: var(--ink);
@@ -716,6 +733,7 @@ a.tag:hover {
   color: var(--red);
 }
 .tagcloud__count {
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.1em;

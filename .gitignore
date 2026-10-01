@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .astro/
+# 构建期生成的字体子集（scripts/subset-fonts.mjs）
+src/assets/fonts/
 .env
 .env.*
 !.env.example
