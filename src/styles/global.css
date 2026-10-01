@@ -26,6 +26,18 @@
   --gutter: clamp(1.5rem, 7vw, 6rem);
 }
 
+/* 深色模式令牌：纸墨对调（纸 = 原墨色），正红提亮一档保住暗底对比度 */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #111214;
+  --surface: #1b1d20;
+  --ink: #f2f2f0;
+  --ink-2: #c7c9cc;
+  --ink-3: #979ba0;
+  --rule: #2a2c2f;
+  --red: #ef3b3b;
+}
+
 /* ============ 基础 ============ */
 *,
 *::before,
@@ -81,7 +93,7 @@ h3 {
   z-index: 10;
   padding: 0.6rem 1rem;
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
 }
 .skip:focus {
   left: 0.5rem;
@@ -140,12 +152,19 @@ h3 {
   line-height: 1.75;
 }
 
-.nav {
+.nav-bar {
   display: flex;
-  gap: 2.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   margin-top: clamp(2rem, 5vw, 3.25rem);
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--ink);
+}
+
+.nav {
+  display: flex;
+  gap: 2.25rem;
 }
 
 .nav a {
@@ -178,6 +197,74 @@ h3 {
   outline-color: var(--red);
 }
 
+/* ============ 明暗切换开关 ============ */
+/* 胶囊造型：浅色态 = 墨黑轨道 + 白钮在左；深色态 = 正红轨道 + 白钮在右 */
+.theme-toggle {
+  position: relative;
+  flex: none;
+  width: 2.75rem;
+  height: 1.5rem;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+/* 扩大触控热区，视觉尺寸不变 */
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  inset: -0.5rem -0.35rem;
+}
+.theme-toggle::after {
+  content: '';
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+.theme-toggle:hover {
+  background: var(--red);
+}
+:root[data-theme='dark'] .theme-toggle {
+  background: var(--red);
+}
+:root[data-theme='dark'] .theme-toggle::after {
+  transform: translateX(1.25rem);
+}
+
+/* 轨道内图案：月亮在左（暗紫）、太阳在右（白）；可见侧 = 当前模式。
+   隐藏侧缩小到 0.82 并垫在滑块下，与滑块共用同一段 0.2s 过渡，滑过时自然交接 */
+.theme-toggle__moon,
+.theme-toggle__sun {
+  position: absolute;
+  top: 0.3125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform 0.2s ease;
+}
+.theme-toggle__moon {
+  left: 0.375rem;
+  color: #2e1065; /* 暗紫：在正红轨道上轮廓仍清晰（对比 ≈3.9:1） */
+  transform: scale(0.82);
+}
+.theme-toggle__sun {
+  right: 0.375rem;
+  color: #fff;
+}
+:root[data-theme='dark'] .theme-toggle__moon {
+  transform: scale(1);
+}
+:root[data-theme='dark'] .theme-toggle__sun {
+  transform: scale(0.82);
+}
+
 main {
   padding: clamp(2.5rem, 6vw, 4.5rem) 0 5rem;
 }
@@ -203,10 +290,13 @@ main {
 .masthead--compact .masthead__handle {
   display: none;
 }
-.masthead--compact .nav {
+.masthead--compact .nav-bar {
   margin: 0 0 0 auto;
   padding: 0;
   border: 0;
+  gap: 1.4rem;
+}
+.masthead--compact .nav {
   gap: 1.6rem;
 }
 
@@ -572,6 +662,16 @@ a.tag:hover {
 }
 .astro-code {
   background-color: var(--surface) !important;
+}
+
+/* 深色模式下 Shiki token 色切到双主题的暗色变量（见 astro.config.mjs）；
+   背景不在这里切换，继续由上面的规则统一为 --surface */
+:root[data-theme='dark'] .astro-code,
+:root[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
 /* ============ 标签索引 ============ */

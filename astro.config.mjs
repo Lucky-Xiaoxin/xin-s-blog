@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vitesseLight from '@shikijs/themes/vitesse-light';
+import vitesseDark from '@shikijs/themes/vitesse-dark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
@@ -19,26 +20,41 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [[rehypeKatex, { throwOnError: false, strict: false, output: 'html' }]],
     shikiConfig: {
-      // vitesse-light 原 token 色在 --surface 代码背景上多处不达 WCAG AA，
-      // 以下替色为保色相压暗至 >=4.6:1（global.css 的 .astro-code 覆写了背景色）
-      theme: {
-        ...vitesseLight,
-        colorReplacements: {
-          '#a0ada0': '#627162',
-          '#999999': '#707070',
-          '#59873a': '#507934',
-          '#998418': '#7f6d14',
-          '#99841877': '#766b36',
-          '#2e8f82': '#27786d',
-          '#2e808f': '#2c7987',
-          '#22863a': '#207e36',
-          '#ab5e3f': '#a45a3c',
-          '#b05a78': '#a6506e',
-          '#b07d48': '#8c6339',
-          '#b56959': '#a65a4a',
-          '#b5695977': '#a05c4b',
-          '#bda437': '#7e6d25',
-          '#e36209': '#b24d07',
+      // 明暗双主题：token 色分别输出为 --shiki-light/--shiki-dark CSS 变量，
+      // 由 global.css 按 data-theme 切换（代码块背景统一覆写为 --surface）
+      themes: {
+        // light：vitesse-light 原 token 色在 --surface 代码背景上多处不达 WCAG AA，
+        // 以下替色为保色相压暗至 >=4.6:1
+        light: {
+          ...vitesseLight,
+          colorReplacements: {
+            '#a0ada0': '#627162',
+            '#999999': '#707070',
+            '#59873a': '#507934',
+            '#998418': '#7f6d14',
+            '#99841877': '#766b36',
+            '#2e8f82': '#27786d',
+            '#2e808f': '#2c7987',
+            '#22863a': '#207e36',
+            '#ab5e3f': '#a45a3c',
+            '#b05a78': '#a6506e',
+            '#b07d48': '#8c6339',
+            '#b56959': '#a65a4a',
+            '#b5695977': '#a05c4b',
+            '#bda437': '#7e6d25',
+            '#e36209': '#b24d07',
+          },
+        },
+        // dark：vitesse-dark 上同样的修补——暗底不达 4.6:1 的几个 token 做保色相提亮
+        dark: {
+          ...vitesseDark,
+          colorReplacements: {
+            '#758575dd': '#8a9a8a', // 注释
+            '#666666': '#8a8a8a', // 标点
+            '#6872ab': '#7c86bd', // 类型名
+            '#b8a96577': '#a3924f', // 属性名标点
+            '#c98a7d77': '#c98a7d', // 字符串标点（去掉半透明）
+          },
         },
       },
       wrap: false,
