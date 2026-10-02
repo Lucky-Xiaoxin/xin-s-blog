@@ -70,7 +70,7 @@ draft: true               # 可选，不发布
 
 - 默认纯白底 + 单一正红 `#D81E1E`（深色下提亮为 `#EF3B3B` 保证对比度），其余只有黑、灰两级——例外是开关上的月亮描边用暗紫 `#2E1065`；不用阴影、渐变（唯一例外：文章题记的硬边"雕刻"——亮色内陷、深色凸出，配左侧 2px 红规线）。明暗模式：页头右侧胶囊开关切换，轨道两端嵌几何描边的月亮（左·暗紫）与太阳（右·白），可见侧即当前模式；首次访问跟随系统 `prefers-color-scheme`，手动选择后写入 `localStorage` 跨页记忆；深色令牌在 `global.css` 的 `:root[data-theme='dark']`，全站唯一运行时的 JS 就是主题这一小段。
 - 标题：拉丁用 Bodoni Moda、中文用思源宋体（Noto Serif SC），都打进仓库、不走 Google CDN；中文衬线在 `dev`/`build` 前由 `scripts/subset-fonts.mjs` 按站内标题用字子集化（每字重几十 KB，新增文章自动纳入）。正文用系统无衬线，等宽留给代码与元信息（日期/计数）。
-- 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，形状本身在 `src/components/Badge.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
+- 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签云徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
 - 代码高亮由 Shiki 在构建期完成，明暗两套 token 色随 HTML 一起产出（`--shiki-light/--shiki-dark` 变量），浏览器切换只改属性、不重跑高亮。
 
 ## 部署到 GitHub Pages

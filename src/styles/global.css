@@ -414,6 +414,24 @@ main {
   fill: var(--red);
 }
 
+/* ============ 文章印记 ============ */
+/* 外框 = 分类形状、内芯 = 文章哈希、红点 = 内芯特征点；渲染在 Seal.astro，
+   两级尺寸：列表 48px / 文章页 104px。细线硬边，过渡不依赖任何阴影 */
+.seal {
+  display: block;
+  flex: none;
+  color: var(--ink);
+}
+.seal [data-frame],
+.seal [data-core] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+.seal .seal__dot {
+  fill: var(--red);
+}
+
 /* 标签：直角描边方块 */
 .tag {
   display: inline-flex;
@@ -460,7 +478,7 @@ a.tag:hover {
 
 .index__item {
   display: grid;
-  grid-template-columns: 26px 1fr;
+  grid-template-columns: 48px 1fr;
   gap: 0 1.6rem;
   padding: 2.1rem 0;
   border-bottom: 1px solid var(--rule);
@@ -471,7 +489,7 @@ a.tag:hover {
 }
 
 .index__badge {
-  padding-top: 0.4rem;
+  padding-top: 0.2rem;
 }
 
 .index__title {
@@ -501,7 +519,7 @@ a.tag:hover {
   flex-wrap: wrap;
 }
 
-.index__item:hover .badge {
+.index__item:hover .seal {
   color: var(--red);
 }
 
@@ -523,6 +541,9 @@ a.tag:hover {
 /* ============ 文章 ============ */
 .article__head {
   margin-bottom: 3.5rem;
+}
+.article__seal {
+  margin: 0 0 1.25rem;
 }
 .article__title {
   font-size: clamp(2.1rem, 7vw, 3.2rem);

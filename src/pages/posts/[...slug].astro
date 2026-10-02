@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Seal from '../../components/Seal.astro';
 import { byNewest, formatDay, readingTime, u } from '../../const';
 
 export async function getStaticPaths() {
@@ -27,6 +28,7 @@ const newer = index > 0 ? posts[index - 1] : undefined;
         /
         <a href={u('/tags/')}>标签</a>
       </p>
+      <Seal id={post.id} tag={post.data.tags[0]} size={104} class="article__seal" />
       <h1 class="article__title">{post.data.title}</h1>
       <p class="article__desc">{post.data.description}</p>
       <div class="article__meta">

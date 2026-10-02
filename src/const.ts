@@ -102,3 +102,32 @@ export function readingTime(body?: string) {
   const words = (text.replace(/[\u4e00-\u9fff]/g, '').match(/[A-Za-z0-9]+/g) || []).length;
   return Math.max(1, Math.round(cjk / 400 + words / 220));
 }
+
+/** 印记内芯：由文章 id 哈希决定，红点落在内芯的特征点上（渲染在 Seal.astro） */
+export type SealCore = 'ring' | 'tri' | 'diamond' | 'cross' | 'diag' | 'axis' | 'hline' | 'orb';
+
+// 每种外框可用的内芯（按几何相容性取子集：半圆进深最小，装不下大内芯）。
+// 名单顺序是"确定性映射"的一部分：现有三篇文章对应的是定稿预览里的那几枚。
+// 重排/增删会换掉已发布文章的印记——除非有意为之，不要动。
+const SEAL_CORES: Record<Shape, SealCore[]> = {
+  circle: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
+  square: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
+  hexagon: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
+  rhombus: ['ring', 'diamond', 'cross', 'axis', 'hline', 'orb'],
+  triangle: ['ring', 'tri', 'diamond', 'cross', 'axis', 'hline', 'orb'],
+  semicircle: ['orb', 'tri', 'hline', 'axis'],
+};
+
+/** 由文章 id 算稳定哈希（同一篇永远同一枚印记） */
+function sealHash(id: string) {
+  let h = 0;
+  for (const ch of id) h = (h * 31 + (ch.codePointAt(0) ?? 0)) >>> 0;
+  return h;
+}
+
+/** 文章印记：外框 = 分类形状，内芯 = 文章哈希选一枚 */
+export function sealFor(id: string, tag?: string) {
+  const shape = shapeFor(tag);
+  const cores = SEAL_CORES[shape];
+  return { shape, core: cores[sealHash(id) % cores.length] };
+}
