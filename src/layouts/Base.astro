@@ -69,7 +69,7 @@ const ogImage = new URL(u('/og.png'), Astro.site);
       (function () {
         var stored = null;
         try {
-          stored = localStorage.getItem('theme');
+          stored = localStorage.getItem('xin-s-blog-theme');
         } catch (e) {}
         var dark = stored
           ? stored === 'dark'
@@ -181,7 +181,7 @@ const ogImage = new URL(u('/og.png'), Astro.site);
             root.removeAttribute('data-theme');
           }
           try {
-            localStorage.setItem('theme', next);
+            localStorage.setItem('xin-s-blog-theme', next);
           } catch {}
           sync();
         });
