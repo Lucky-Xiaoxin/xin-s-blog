@@ -20,7 +20,8 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [[rehypeKatex, { throwOnError: false, strict: false, output: 'html' }]],
     shikiConfig: {
-      // 明暗双主题：token 色分别输出为 --shiki-light/--shiki-dark CSS 变量，
+      // 明暗双主题：亮色色值内联、暗色色值走 --shiki-dark，字体风格两侧都走 --shiki-*-font-* 变量
+      // （global.css 必须同时消费 light/dark 两侧，缺 light 侧会丢代码粗体/斜体）
       // 由 global.css 按 data-theme 切换（代码块背景统一覆写为 --surface）
       themes: {
         // light：vitesse-light 原 token 色在 --surface 代码背景上多处不达 WCAG AA，
