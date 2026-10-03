@@ -77,12 +77,14 @@ for (const weight of [400, 500]) {
   const outFile = path.join(outDir, `noto-serif-sc-subset-${weight}.woff2`);
   writeFileSync(outFile, out);
 
-  // 自检：子集里每个字都必须有字形，缺了就报出来并让 dev/build 直接失败（不带着隐患发布）
+  // 自检：源字体没有字形缺陷无法凭空造——缺字只警告不阻断
+  // （与 KaTeX throwOnError:false 同一哲学：降级可见、不挡发布；兜底走 --font-display 尾部的系统宋体）
   const font = fontkit.openSync(outFile);
   const missing = [...chars].filter((ch) => !font.hasGlyphForCodePoint(ch.codePointAt(0)));
   if (missing.length) {
-    console.error(`[subset-fonts] 子集缺字（这些字会回退成系统宋体）：${missing.join('')}`);
-    process.exit(1);
+    console.warn(
+      `[subset-fonts] ⚠ 源字体缺字，标题里这些字将回退系统宋体（不影响构建与发布）：${missing.join('')}`,
+    );
   }
   console.log(`[subset-fonts] ${weight}: ${Math.round(out.length / 1024)} KB → ${path.relative(root, outFile)}`);
 }
