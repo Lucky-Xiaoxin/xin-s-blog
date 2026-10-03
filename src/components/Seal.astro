@@ -10,6 +10,28 @@ interface Props {
 
 const { id, tag, size = 48, class: className } = Astro.props;
 const { shape, core } = sealFor(id, tag);
+
+// 红点：内芯的特征点（环→圆顶、三角→顶尖上方、菱形→右顶点、十字→交点……）
+const DOTS: Record<string, { x: number; y: number; r: number }> = {
+  ring: { x: 12, y: 7, r: 1.2 },
+  tri: { x: 12, y: 6.2, r: 1.2 },
+  diamond: { x: 17, y: 12, r: 1.2 },
+  cross: { x: 12, y: 12, r: 1.3 },
+  diag: { x: 17.5, y: 6.5, r: 1.2 },
+  axis: { x: 12, y: 8, r: 1.2 },
+  hline: { x: 6.5, y: 15.5, r: 1.2 },
+  orb: { x: 12, y: 11, r: 1.2 },
+};
+
+// 半圆框顶缘在 y=8，默认高位红点会越弧，按框压到框内
+const FRAME_DOTS: Record<string, Record<string, { x: number; y: number; r: number }>> = {
+  semicircle: {
+    tri: { x: 12, y: 9.6, r: 1.2 },
+    axis: { x: 12, y: 9.4, r: 1.2 },
+  },
+};
+const dot = FRAME_DOTS[shape]?.[core] ?? DOTS[core];
+---
 ---
 
 <svg
@@ -85,13 +107,5 @@ const { shape, core } = sealFor(id, tag);
   {core === 'hline' && <path data-core vector-effect="non-scaling-stroke" d="M6.5 15.5H17.5" />}
   {core === 'orb' && <circle data-core vector-effect="non-scaling-stroke" cx="12" cy="14" r="3" />}
 
-  {/* 红点：内芯的特征点（环→圆顶、三角→顶尖上方、菱形→右顶点、十字→交点……） */}
-  {core === 'ring' && <circle class="seal__dot" cx="12" cy="7" r="1.2" />}
-  {core === 'tri' && <circle class="seal__dot" cx="12" cy="6.2" r="1.2" />}
-  {core === 'diamond' && <circle class="seal__dot" cx="17" cy="12" r="1.2" />}
-  {core === 'cross' && <circle class="seal__dot" cx="12" cy="12" r="1.3" />}
-  {core === 'diag' && <circle class="seal__dot" cx="17.5" cy="6.5" r="1.2" />}
-  {core === 'axis' && <circle class="seal__dot" cx="12" cy="8" r="1.2" />}
-  {core === 'hline' && <circle class="seal__dot" cx="6.5" cy="15.5" r="1.2" />}
-  {core === 'orb' && <circle class="seal__dot" cx="12" cy="11" r="1.2" />}
+  <circle class="seal__dot" cx={dot.x} cy={dot.y} r={dot.r} />
 </svg>

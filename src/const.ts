@@ -106,15 +106,16 @@ export function readingTime(body?: string) {
 /** 印记内芯：由文章 id 哈希决定，红点落在内芯的特征点上（渲染在 Seal.astro） */
 export type SealCore = 'ring' | 'tri' | 'diamond' | 'cross' | 'diag' | 'axis' | 'hline' | 'orb';
 
-// 每种外框可用的内芯（按几何相容性取子集：半圆进深最小，装不下大内芯）。
-// 名单顺序是"确定性映射"的一部分：现有三篇文章对应的是定稿预览里的那几枚。
-// 重排/增删会换掉已发布文章的印记——除非有意为之，不要动。
+// 每种外框可用的内芯（按几何相容性取子集：红点/内芯完整落在框内才入选——
+// triangle 剔除了 ring/diamond（穿框/红点越框），rhombus 剔除 hline，hexagon 剔除 diag；
+// semicircle 进深最小，装不下大内芯，其 tri/axis 的红点由 Seal.astro 按框覆写到低位）。
+// 名单顺序是"确定性映射"的一部分：重排/增删会换掉既有文章的印记——本分支上线前是最后的免费调整窗口。
 const SEAL_CORES: Record<Shape, SealCore[]> = {
   circle: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
   square: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
-  hexagon: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
-  rhombus: ['ring', 'diamond', 'cross', 'axis', 'hline', 'orb'],
-  triangle: ['ring', 'tri', 'diamond', 'cross', 'axis', 'hline', 'orb'],
+  hexagon: ['tri', 'diamond', 'cross', 'ring', 'hline', 'axis', 'orb'],
+  rhombus: ['ring', 'diamond', 'cross', 'axis', 'orb'],
+  triangle: ['tri', 'axis', 'cross', 'hline', 'orb'],
   semicircle: ['orb', 'tri', 'hline', 'axis'],
 };
 
