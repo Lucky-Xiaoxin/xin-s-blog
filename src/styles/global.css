@@ -714,6 +714,14 @@ a.tag:hover {
   background-color: var(--surface) !important;
 }
 
+/* Shiki 双主题下 fontStyle（粗体/斜体/下划线）不内联、全部走变量：
+   亮色侧必须消费 --shiki-light-*，否则浅色模式的代码样式会丢字体风格 */
+.astro-code span {
+  font-style: var(--shiki-light-font-style, inherit);
+  font-weight: var(--shiki-light-font-weight, inherit);
+  text-decoration: var(--shiki-light-text-decoration, inherit);
+}
+
 /* 深色模式下 Shiki token 色切到双主题的暗色变量（见 astro.config.mjs）；
    背景不在这里切换，继续由上面的规则统一为 --surface */
 :root[data-theme='dark'] .astro-code,
@@ -722,6 +730,26 @@ a.tag:hover {
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* 打印/存 PDF：无论当前主题一律强制亮色令牌（省墨且可读），隐藏主题开关 */
+@media print {
+  :root,
+  :root[data-theme='dark'] {
+    color-scheme: light;
+    --paper: #ffffff;
+    --surface: #f7f7f5;
+    --tiji-bg: #ededeb;
+    --tiji-shadow: none;
+    --ink: #111214;
+    --ink-2: #4b4f55;
+    --ink-3: #686d73;
+    --rule: #e4e4e1;
+    --red: #d81e1e;
+  }
+  .theme-toggle {
+    display: none;
+  }
 }
 
 /* ============ 标签索引 ============ */
