@@ -2,7 +2,7 @@
 
 This file provides guidance to the AI agent when working with code in this repository.
 
-Astro 5 静态博客，部署为 GitHub Pages **项目站**（子路径 `/xin-s-blog/`）。维护者是大三学生，单人使用，全程中文交流（文档、注释、commit message 均中文）。
+Astro 5 静态博客，部署为 GitHub Pages **项目站**（子路径 `/xin-s-blog/`）。维护者是大二学生，单人使用，全程中文交流（文档、注释、commit message 均中文）。
 
 ## 交付双轨（用户明确要求，不可混用）
 
