@@ -30,6 +30,6 @@
     "@shikijs/themes": "^4.4.3",
     "fontkit": "^2.0.4",
     "subset-font": "^2.9.0",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }
