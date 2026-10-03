@@ -19,7 +19,7 @@ draft: false          # 草稿箱：true 时不进目录页/RSS；定稿改成 f
 
 ## Watt Toolkit代理
 
-> 也是写给自己看别老去翻 Deepseek 记录
+> *也是写给自己看别老去翻 Deepseek 记录*
 
 先检查**有没有**代理
 
