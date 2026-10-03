@@ -102,3 +102,33 @@ export function readingTime(body?: string) {
   const words = (text.replace(/[\u4e00-\u9fff]/g, '').match(/[A-Za-z0-9]+/g) || []).length;
   return Math.max(1, Math.round(cjk / 400 + words / 220));
 }
+
+/** 印记内芯：由文章 id 哈希决定，红点落在内芯的特征点上（渲染在 Seal.astro） */
+export type SealCore = 'ring' | 'tri' | 'diamond' | 'cross' | 'diag' | 'axis' | 'hline' | 'orb';
+
+// 每种外框可用的内芯（按几何相容性取子集：红点/内芯完整落在框内才入选——
+// triangle 剔除了 ring/diamond（穿框/红点越框），rhombus 剔除 hline，hexagon 剔除 diag；
+// semicircle 进深最小，装不下大内芯，其 tri/axis 的红点由 Seal.astro 按框覆写到低位）。
+// 名单顺序是"确定性映射"的一部分：重排/增删会换掉既有文章的印记——本分支上线前是最后的免费调整窗口。
+const SEAL_CORES: Record<Shape, SealCore[]> = {
+  circle: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
+  square: ['tri', 'diamond', 'cross', 'diag', 'axis', 'hline', 'ring', 'orb'],
+  hexagon: ['tri', 'diamond', 'cross', 'ring', 'hline', 'axis', 'orb'],
+  rhombus: ['ring', 'diamond', 'cross', 'axis', 'orb'],
+  triangle: ['tri', 'axis', 'cross', 'hline', 'orb'],
+  semicircle: ['orb', 'tri', 'hline', 'axis'],
+};
+
+/** 由文章 id 算稳定哈希（同一篇永远同一枚印记） */
+function sealHash(id: string) {
+  let h = 0;
+  for (const ch of id) h = (h * 31 + (ch.codePointAt(0) ?? 0)) >>> 0;
+  return h;
+}
+
+/** 文章印记：外框 = 分类形状，内芯 = 文章哈希选一枚 */
+export function sealFor(id: string, tag?: string) {
+  const shape = shapeFor(tag);
+  const cores = SEAL_CORES[shape];
+  return { shape, core: cores[sealHash(id) % cores.length] };
+}

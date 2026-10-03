@@ -38,6 +38,8 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | `could not read Username` / GCM 弹窗 | git 推送凭据过期 | 跟着弹窗登录一次 GitHub 即可 |
 | Actions 页面里 run 红了 | 构建门禁拦下了一次有问题的发布 | 点进 run 看是哪一步：check 红=类型错，build 红=多半是 frontmatter。线上没坏，修好再推 |
 | 文章页 404 | 文件名改了（旧 URL 消失）或 draft 还是 true | Pages 没有重定向机制，改文件名=换 URL，别改已发布文章的文件名 |
+| 标题里个别字显示成系统宋体 | 两种成因：① 这个字没进子集扫描范围（子集只收 .astro/.ts/.js 全文与 md 的 frontmatter/标题/引用行，且 dev 会话中途新写的字要等下次重启才纳入）② 源字体本来就没有这个字的字形（生僻字/韩文等） | ①重启 `npm run dev` 或重跑 `npm run build` 自动重建子集；②构建日志会打 `[subset-fonts] ⚠ 源字体缺字…`，无解、只回退，不挡发布，介意就换措辞 |
+| 构建日志出现 `[vite] WARN ... ../assets/fonts/noto-serif-sc-subset-*.woff2 ... didn't resolve` | 字体子集没生成：直接跑了 `astro build`/`astro dev` 绕过了 npm 脚本（注意是 WARN 不是 error，产物会带病生成） | 用 `npm run build` / `npm run dev`（会自动先跑子集），或先手动 `node scripts/subset-fonts.mjs` |
 
 ## 这个仓库的地图（一共就这几个地方）
 

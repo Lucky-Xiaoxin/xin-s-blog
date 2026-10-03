@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Badge from './Badge.astro';
+import Seal from './Seal.astro';
 import { formatDay, readingTime, u } from '../const';
 
 interface Props {
@@ -15,7 +15,7 @@ const { posts } = Astro.props;
     posts.map((post) => (
       <li class="index__item">
         <div class="index__badge">
-          <Badge tag={post.data.tags[0]} />
+          <Seal id={post.id} tag={post.data.tags[0]} size={48} />
         </div>
         <div>
           <h2 class="index__title">

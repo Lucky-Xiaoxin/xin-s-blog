@@ -18,6 +18,9 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - `SITE_URL`/`BASE_PATH` 由 `.github/workflows/deploy.yml` 构建期注入，`astro.config.mjs` 的默认值**只影响本地**——改域名/改路径要改 deploy.yml。
 - 构建时出现 `Duplicate id "xxx"` 警告多半是**假警报**：其他文件 YAML 错误中断同步所致，先修真正的 `bad indentation`，它会自己消失（详见 TROUBLESHOOTING.md）。
 - KaTeX 配了 `throwOnError: false`：坏公式页面标红但不挡发布，这是有意的。
+- 明暗主题三处联动：`Base.astro` 里 `<head>` 内联脚本负责首屏防闪色（别挪位置、别改成打包脚本）→ `data-theme='dark'` 属性驱动 `global.css` 的深色令牌 → Shiki 双主题：亮色色值内联、暗色色值与两侧字体风格走 `--shiki-dark`/`--shiki-light-*` 变量（global.css 的 `.astro-code span` 必须消费 light 侧字体变量，删掉它就丢代码粗体/斜体）；改代码高亮配色要同改 `astro.config.mjs` 的 `themes`。
+- 中文字体是构建期子集：`scripts/subset-fonts.mjs`（predev/prebuild 自动跑）扫描 src 下 .astro/.ts/.js 全文 + md 的 frontmatter/标题行/引用行，裁出思源宋体子集写进 `src/assets/fonts/`（已 gitignore）。正文刻意不收（走系统无衬线）；新增「非 h1~h3/brand/摘要/引用」的衬线用例时，必须让它的文案落进上述扫描来源，否则那个字会静默回退系统宋体。
+- 文章印记是确定性映射：`const.ts` 的 `sealHash` + `SEAL_CORES`——名单按几何相容性筛选（红点/内芯必须完整落在外框内，triangle/rhombus/hexagon 各有剔除项，semicircle 的 tri/axis 红点由 `Seal.astro` 的 `FRAME_DOTS` 按框覆写）；重排名单、改哈希或换 `TAG_SHAPE` 都会换掉既有文章的印记（有意为之才能动）；新增内芯必须先过一遍框内几何验证再加。
 - deploy job 有 `if: github.ref == 'refs/heads/main'` 守卫、`pages: write` 只给 deploy job——不要"简化"回顶层权限。
 - README 与 TROUBLESHOOTING.md 是维护者的主要参照，**行为变更后必须同步更新**（历史审计曾发现多处文档失真；改完核对每条可验证断言）。
 
