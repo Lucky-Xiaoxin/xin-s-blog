@@ -96,5 +96,8 @@ draft: true               # 可选，不发布
 
 - 中文标签会生成百分号编码的 URL（`/tags/%E7%AE%97%E6%B3%95/`），访问正常；但 Pages 没有重定向机制，改文章文件名或标签名会让旧链接 404。
 - 正文按相对路径引用的图片会在构建期被 Astro 自动优化（转 webp），但不做尺寸缩放；`public/` 只放站点级文件。
-- 部署链路已跑通一次：Actions run #1 的 build 与 deploy 全绿，线上 `https://lucky-xiaoxin.github.io/xin-s-blog/` 的页面、CSS、24 个字体文件（12 组 woff2 + woff 兜底）、中文标签页、RSS 绝对地址均验证为 200，不存在的返回自定义 404 页。
+- 字体产物共 **77 个文件 / 1.36 MB**（整个 `dist` 1.8 MB）：woff2 29 个 486 KB、woff 28 个 404 KB、ttf 20 个 502 KB。构成是 Noto 子集 2（思源宋体 400/500，构建期生成）+ Bodoni Moda 16（latin / latin-ext / math / symbols 四子集 × 两字重 × woff2+woff）+ KaTeX 59（20 个字符族 × 最多三档）。
+- 其中 **ttf 502 KB 加 woff 里约 393 KB 是死重**——现代浏览器只请求 woff2，只有 `KaTeX_Size3-Regular` 没有 woff2（上游就没给），它的 woff 是唯一真会被下载的 woff。原因是 `katex.min.css` 每条 `src` 都写了 woff2→woff→ttf 三档，Vite 为 CSS 里引用到的每个 `url()` 都落一份产物，于是三档全进 `dist`。这是上游 CSS 的行为、不是本项目配错；要瘦产物只能构建后按清单删文件，属于新增构建步骤，未做。另外 KaTeX 的字体只在页面真有公式时才懒加载，无公式的页面一份都不下载。
+- 配图链路从未被真实使用过：4 篇文章零图片，上一条「相对路径图片自动转 webp」是按 Astro 的行为写的、不是实测结论。第一次真放配图时留意产物里的 URL 前缀对不对。
+- 部署链路已跑通一次：Actions run #1 的 build 与 deploy 全绿，线上页面、CSS、字体、中文标签页、RSS 绝对地址、自定义 404 均验证为 200。
 - 未覆盖的是浏览器里的视觉走查和真机移动适配，这两项需要人眼看。
