@@ -10,7 +10,6 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const POSTS_DIR = path.join(ROOT, 'src/content/posts');
-const CONST_FILE = path.join(ROOT, 'src/const.ts');
 
 const NAME_RE = /^[a-z0-9][a-z0-9-]*$/;
 const HINT = '规范：只用小写字母、数字、连字符 -（如 redis-cache-notes），文件名就是文章 URL。';
@@ -27,54 +26,18 @@ function nameProblem(name) {
   return null;
 }
 
-const SHAPE_LABEL = {
-  triangle: '△ 三角',
-  hexagon: '⬡ 六边',
-  square: '□ 方形',
-  rhombus: '◇ 菱',
-  semicircle: '◠ 半圆',
-  circle: '○ 圆形',
-};
-
-/** 从 src/const.ts 提取 TAG_SHAPE 的「形状 -> 标签列表」，失败返回 null（模板降级） */
-function readTagGroups() {
-  try {
-    const src = fs.readFileSync(CONST_FILE, 'utf8');
-    const block = src.match(/const TAG_SHAPE[^=]*=\s*\{([\s\S]*?)\};/);
-    if (!block) return null;
-    const groups = new Map();
-    for (const line of block[1].split('\n')) {
-      const m = line.match(
-        /^\s*(?:'([^']+)'|"([^"]+)"|([\p{L}\p{N}_$][\p{L}\p{N}_$ -]*?))\s*:\s*'([a-z]+)'\s*,?\s*$/u,
-      );
-      if (!m) continue;
-      const tag = m[1] ?? m[2] ?? m[3].trim();
-      const shape = m[4];
-      if (!SHAPE_LABEL[shape]) continue;
-      if (!groups.has(shape)) groups.set(shape, []);
-      groups.get(shape).push(tag);
-    }
-    return groups.size ? groups : null;
-  } catch {
-    return null;
-  }
-}
-
+/**
+ * 标签提示只给「去哪儿看」，不给清单快照。
+ * 这里曾经是正则解析 src/const.ts 的 TAG_SHAPE、按形状把全量标签写进每篇新文章
+ * 的 frontmatter 注释——那是个必然过期的快照：TAG_SHAPE 后来加过 Git/GitHub、又把
+ * Github 改名成 GitHub，已有文章里的清单就永远停在创建那一刻（实测三篇文章三个版本，
+ * 其中一份还带着改名前的 Github）。指向单一事实来源，注释就不会再腐烂。
+ */
 function tagComments() {
-  const groups = readTagGroups();
-  if (!groups) {
-    return [
-      '# 可用标签清单：见 src/const.ts 的 TAG_SHAPE；新标签要先在那里登记形状，',
-      '# 否则构建时告警、徽章回退为圆形。',
-    ];
-  }
-  const lines = ['# ── 可用标签（按徽章形状分组）────────────────────────'];
-  for (const [shape, label] of Object.entries(SHAPE_LABEL)) {
-    const tags = groups.get(shape);
-    if (tags) lines.push(`#  ${label}: ${tags.join(' / ')}`);
-  }
-  lines.push('# 未登记的标签会回退成 ○ 圆形并在构建时告警');
-  return lines;
+  return [
+    '# 可用标签清单与徽章形状：见 src/const.ts 的 TAG_SHAPE（那里是唯一事实来源）',
+    '# 未登记的标签会回退成 ○ 圆形并在构建时告警；新标签要先去那里登记形状',
+  ];
 }
 
 function localStamp() {
@@ -94,12 +57,13 @@ function template(name) {
     "description: ''      # 必填：一句话摘要（目录页卡片、RSS、分享预览用）",
     `pubDate: ${pubDate}  # 发布日期，脚本已自动填，发布前可手改`,
     `pubTime: '${pubTime}'     # 发布时间 24h 制，仅显示用；不要显示就删整行`,
-    "tags: ['其它']       # 从下面清单挑，可多个；新标签须先去 src/const.ts 的 TAG_SHAPE 登记形状",
+    "tags: ['其它']       # 可多个；清单见 src/const.ts 的 TAG_SHAPE，新标签须先去那里登记形状",
     ...tagComments(),
     'draft: true          # 草稿箱：true 时不进目录页/RSS；定稿改成 false 或删整行',
     '---',
     '',
     `<!-- ${name}：正文从这里开始…… -->`,
+    '<!-- 下面这行是写法提示，开写后整行删掉（它会随 HTML 发布，且字数统计算得到它） -->',
     '<!-- 公式：$行内$ 或 $$独立成行$$，KaTeX 语法——中文、→、≤、≥ 可直接写；真语法错（如 \\foo）页面标红，不挡发布 -->',
     '',
   ].join('\n');
