@@ -3,6 +3,10 @@ name: 构建并发布到 GitHub Pages
 on:
   push:
     branches: [main]
+  # PR 门禁：把 check + build 提前到合并前跑。workflow 文件取自主分支，
+  # 所以这条要合进 main 之后的下一个 PR 才开始生效（本 PR 自己看不到 check）
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 # 只有 deploy job 需要发布权限；build job 跑 npm ci，只给读权限，
@@ -11,12 +15,17 @@ permissions:
   contents: read
 
 concurrency:
-  group: pages
+  # 按 ref 分组：main 的构建+发布仍严格串行（不会出现取件与部署交叉），
+  # PR 上的构建各走各的，也不会再挡住 main 的发布
+  group: pages-${{ github.ref }}
+  # false：正在跑的构建不半途中断，避免同一个 PR 连续推两次时留半成品
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 卡死的构建不该占着 runner 队列（默认上限 6 小时）
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -33,14 +42,19 @@ jobs:
           # 仓库改名为 <用户名>.github.io 时，把 BASE_PATH 改成 '/'
           SITE_URL: https://${{ github.repository_owner }}.github.io
           BASE_PATH: /${{ github.event.repository.name }}
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      # 取件与配置 Pages 只在真要发布时做：PR 跑没有 deploy job 接盘，
+      # 传 artifact 纯属白传，而 configure-pages 还要多查一次 Pages 设置
+      - if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v6
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # workflow_dispatch 可在任意分支触发；不加这行守卫会把那个分支的内容直接发上线
     if: github.ref == 'refs/heads/main'
     environment:
