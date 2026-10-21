@@ -40,11 +40,15 @@ const newer = index > 0 ? posts[index - 1] : undefined;
         }
         <span class="meta">{readingTime(post.body)} 分钟读完</span>
         {
-          post.data.tags.map((tag) => (
-            <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
-              {tag}
-            </a>
-          ))
+          post.data.tags.length > 0 && (
+            <span class="tag-list">
+              {post.data.tags.map((tag) => (
+                <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+                  {tag}
+                </a>
+              ))}
+            </span>
+          )
         }
       </div>
     </header>

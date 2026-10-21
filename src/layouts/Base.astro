@@ -165,7 +165,9 @@ const ogImage = new URL(u('/og.png'), Astro.site);
             }
           </span>
         </div>
-        <p class="colophon__note meta">Astro 构建 · GitHub Pages 托管 · 订阅 RSS</p>
+        <p class="colophon__note meta">
+          Astro 构建 · GitHub Pages 托管 · <a href={u('/rss.xml')}>订阅 RSS</a>
+        </p>
       </div>
     </footer>
 
