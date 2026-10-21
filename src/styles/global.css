@@ -69,7 +69,9 @@
 }
 
 html {
-  font-size: 16px;
+  /* 100% = 用户在浏览器/系统里设的默认字号，不覆盖它（16px 会把想调大字号的用户锁死）；
+     下面的 rem 全部跟着这个基准走 */
+  font-size: 100%;
   -webkit-text-size-adjust: 100%;
 }
 
