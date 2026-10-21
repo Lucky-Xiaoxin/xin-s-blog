@@ -64,7 +64,7 @@ draft: true               # 可选，不发布
 
 文章正文引用图片等资源：放在 `src/content/posts/` 里与文章同目录（或子目录）并用相对路径引用（如 `![图](./diagram.png)`），构建时会自动处理并带上子路径前缀。不要用 `/` 开头的根绝对路径——构建不会为它补前缀，部署后会 404。
 
-数学公式：行内用 `$f(x)≤81d$`，独立成行用 `$$…$$`，由 KaTeX 在构建期排版成静态 HTML（字体随产物本地打包，浏览器端不执行 KaTeX）。KaTeX 原生支持 Unicode：中文、`→`、`≤`、`≥`、`<` 直接写就行；只有 undefined 命令（如 `\foo`）这类真语法错才会标红显示，不阻塞发布。
+数学公式：行内用 `$f(x)≤81d$`，独立成行用 `$$…$$`，由 KaTeX 在构建期排版成静态 HTML + MathML（字体随产物本地打包，浏览器端不执行 KaTeX；MathML 让读屏能读到公式）。KaTeX 原生支持 Unicode：中文、`→`、`≤`、`≥`、`<` 直接写就行；只有 undefined 命令（如 `\foo`）这类真语法错才会标红显示，不阻塞发布。长公式、代码块和表格会在构建期包一层可聚焦的横向滚动容器：各屏都比正文两侧略宽（`--bleed`），内容超出时在容器内横向滚动，不会把整页撑宽。写特别长的独立公式时，优先拆成多个 `$$` 块，阅读体验最好。
 
 ## 视觉规范
 
@@ -72,6 +72,7 @@ draft: true               # 可选，不发布
 - 标题：拉丁用 Bodoni Moda、中文用思源宋体（Noto Serif SC），不走 Google CDN；中文衬线是**构建产物**——`dev`/`build` 启动前由 `scripts/subset-fonts.mjs` 从 npm 依赖里的源字体按站内标题用字现生成（每字重几十 KB，产物 gitignore 不入库），所以**dev 会话中途新写的标题用字要等下次重启 dev 或下一次构建才进子集**，期间那几个字回退系统宋体。正文用系统无衬线，等宽留给代码与元信息（日期/计数）。
 - 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签云徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
 - 代码高亮由 Shiki 在构建期完成，明暗两套 token 色随 HTML 一起产出：亮色色值内联在 `style` 里，暗色色值与两侧的字体风格（粗体/斜体/下划线）走 `--shiki-dark` / `--shiki-light-*` CSS 变量，浏览器切换只改属性、不重跑高亮。
+- 代码块、独立公式、表格由 `astro.config.mjs` 的 `rehypeScrollable` 在构建期包一层 `.scroll-x`（`tabindex=0`、`role=region`、带 `aria-label`）；各屏用 `--bleed` 向两侧小幅突破正文，内容超出时在容器内横向滚动。全部是构建期 HTML，不增加客户端 JS。
 
 ## 部署到 GitHub Pages
 
@@ -100,4 +101,4 @@ draft: true               # 可选，不发布
 - 其中 **ttf 502 KB 加 woff 里约 393 KB 是死重**——现代浏览器只请求 woff2，只有 `KaTeX_Size3-Regular` 没有 woff2（上游就没给），它的 woff 是唯一真会被下载的 woff。原因是 `katex.min.css` 每条 `src` 都写了 woff2→woff→ttf 三档，Vite 为 CSS 里引用到的每个 `url()` 都落一份产物，于是三档全进 `dist`。这是上游 CSS 的行为、不是本项目配错；要瘦产物只能构建后按清单删文件，属于新增构建步骤，未做。另外 KaTeX 的字体只在页面真有公式时才懒加载，无公式的页面一份都不下载。
 - 配图链路从未被真实使用过：4 篇文章零图片，上一条「相对路径图片自动转 webp」是按 Astro 的行为写的、不是实测结论。第一次真放配图时留意产物里的 URL 前缀对不对。
 - 部署链路已跑通一次：Actions run #1 的 build 与 deploy 全绿，线上页面、CSS、字体、中文标签页、RSS 绝对地址、自定义 404 均验证为 200。
-- 未覆盖的是浏览器里的视觉走查和真机移动适配，这两项需要人眼看。
+- 桌面/移动视口已用无头 Chrome 做过亮暗走查（含公式、代码块、短页页脚）；真机（iOS Safari / Android Chrome）和读屏实测仍未覆盖。
