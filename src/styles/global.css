@@ -266,6 +266,12 @@ h3 {
   outline: 1px solid var(--ink-3);
   outline-offset: -1px;
 }
+/* 文字保持原尺寸，触控热区扩到约 44px 高；不改变导航行高 */
+.nav a::after {
+  content: '';
+  position: absolute;
+  inset: -0.7rem -0.4rem;
+}
 .nav a:hover {
   color: var(--red);
 }
@@ -401,7 +407,7 @@ main {
 }
 .colophon .sep {
   color: var(--ink-3);
-  padding: 0 0.35rem;
+  padding: 0 0.6rem;
 }
 
 /* ============ 通用块 ============ */
@@ -507,6 +513,13 @@ a.tag:hover {
   color: var(--red);
   border-color: var(--red);
 }
+/* 标签作为一整组换行，避免窄屏只剩一个标签孤零零留在下一行 */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
 
 /* ============ Hero：抽象几何构图 ============ */
 .hero {
@@ -603,10 +616,21 @@ a.tag:hover {
   border-bottom-color: var(--red);
 }
 .colophon a {
+  position: relative;
   border-bottom: 1px solid transparent;
+}
+/* 页脚链接同样只扩热区，不把行高撑大；分隔符留出足够间距避免热区重叠 */
+.colophon a::after {
+  content: '';
+  position: absolute;
+  inset: -0.875rem -0.5rem;
 }
 .colophon a:hover {
   border-bottom-color: var(--red);
+}
+.colophon__note a {
+  border-bottom-color: var(--ink-3);
+  white-space: nowrap;
 }
 
 /* ============ 文章 ============ */
