@@ -30,10 +30,12 @@ draft: false          # 草稿箱：true 时不进目录页/RSS；定稿改成 f
 $T\le10^5,n\le10^6$
 
 很明显数学解法，用到重要前缀异或和性质：
+
 $$
-前缀异或：
 S(k)=1\oplus 2\oplus \cdots \oplus k
-,
+$$
+
+$$
 S(k)=
 \begin{cases}
 k, & k\bmod 4=0,\\

@@ -1,6 +1,6 @@
 export const SITE = {
   title: '二进制与诗',
-  tagline: '一个佛大计算机专业学生的笔记本站',
+  tagline: '一个佛大计算机学生的笔记站',
   author: '小鑫',
   handle: '@Xiaoxin',
   description:
