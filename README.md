@@ -42,7 +42,7 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 | 站名、作者、简介、导航、社交链接 | `src/const.ts` |
 | 写文章 | `npm run new -- <文件名>` 或双击「新建文章.bat」（也可手动在 `src/content/posts/` 建 `.md`，文件名即 URL） |
 | 配色、字体、排版 | `src/styles/global.css` 顶部的令牌 |
-| 明暗模式（配色/开关/记忆） | 深色令牌在 `global.css` 的 `:root[data-theme='dark']`；开关与脚本在 `src/layouts/Base.astro` |
+| 明暗模式（配色/开关/记忆） | 深色令牌在 `global.css`，有两个必须逐字一致的入口：`:root[data-theme='dark']`（脚本/手动）与 `@media (prefers-color-scheme: dark)` 里的 `:root:not([data-theme='light'])`（无 JS 兜底），改一处要改两处；开关与脚本在 `src/layouts/Base.astro` |
 | 页面结构 | `src/layouts/Base.astro`、`src/pages/` |
 | 分享预览图 | 替换 `public/og.png`（1200×630） |
 | frontmatter 字段 | `src/content.config.ts`（写错字段构建会报错） |
@@ -68,7 +68,7 @@ draft: true               # 可选，不发布
 
 ## 视觉规范
 
-- 默认纯白底 + 单一正红 `#D81E1E`（深色下提亮为 `#EF3B3B` 保证对比度），其余只有黑、灰两级——例外是开关上的月亮描边用暗紫 `#2E1065`；不用阴影、渐变（唯一例外：文章题记的硬边"雕刻"——亮色内陷、深色凸出，配左侧 2px 红规线）。明暗模式：页头右侧胶囊开关切换，轨道两端嵌几何描边的月亮（左·暗紫）与太阳（右·白），可见侧即当前模式；首次访问跟随系统 `prefers-color-scheme`，手动选择后写入 `localStorage` 跨页记忆；深色令牌在 `global.css` 的 `:root[data-theme='dark']`，全站唯一运行时的 JS 就是主题这一小段。
+- 默认纯白底 + 单一正红 `#D81E1E`（深色下提亮为 `#EF3B3B` 保证对比度），其余只有黑、灰两级——例外是开关上的月亮描边用暗紫 `#2E1065`；不用阴影、渐变（唯一例外：文章题记的硬边"雕刻"——亮色内陷、深色凸出，配左侧 2px 红规线）。明暗模式：页头右侧胶囊开关切换，轨道两端嵌几何描边的月亮（左·暗紫）与太阳（右·白），可见侧即当前模式；首次访问跟随系统 `prefers-color-scheme`，手动选择后写入 `localStorage` 跨页记忆；禁用 JS 时由 `@media (prefers-color-scheme: dark)` 兜底继续跟随系统。深色令牌在 `global.css` 里有两个必须逐字一致的入口（`:root[data-theme='dark']` 与 `@media` 下的 `:root:not([data-theme='light'])`），全站唯一运行时的 JS 就是主题这一小段。
 - 标题：拉丁用 Bodoni Moda、中文用思源宋体（Noto Serif SC），不走 Google CDN；中文衬线是**构建产物**——`dev`/`build` 启动前由 `scripts/subset-fonts.mjs` 从 npm 依赖里的源字体按站内标题用字现生成（每字重几十 KB，产物 gitignore 不入库），所以**dev 会话中途新写的标题用字要等下次重启 dev 或下一次构建才进子集**，期间那几个字回退系统宋体。正文用系统无衬线，等宽留给代码与元信息（日期/计数）。
 - 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签云徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
 - 代码高亮由 Shiki 在构建期完成，明暗两套 token 色随 HTML 一起产出：亮色色值内联在 `style` 里，暗色色值与两侧的字体风格（粗体/斜体/下划线）走 `--shiki-dark` / `--shiki-light-*` CSS 变量，浏览器切换只改属性、不重跑高亮。

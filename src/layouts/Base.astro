@@ -65,7 +65,9 @@ const ogImage = new URL(u('/og.png'), Astro.site);
     <meta name="theme-color" content="#ffffff" />
     <script is:inline>
       // 首屏应用明暗主题（必须留在 <head> 内联执行，否则刷新会先闪一下浅色）；
-      // 无存储时跟随系统偏好，手动切换后由 localStorage 记忆
+      // 无存储时跟随系统偏好，手动切换后由 localStorage 记忆。
+      // 这里**永远显式写 light 或 dark**：属性一旦缺失，global.css 的「深色入口②」
+      // （@media 无 JS 兜底）就会接管，系统暗色下用户选的亮色会被翻盘成暗色。
       (function () {
         var stored = null;
         try {
@@ -74,8 +76,8 @@ const ogImage = new URL(u('/og.png'), Astro.site);
         var dark = stored
           ? stored === 'dark'
           : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         if (dark) {
-          document.documentElement.setAttribute('data-theme', 'dark');
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', '#111214');
         }
@@ -175,11 +177,8 @@ const ogImage = new URL(u('/og.png'), Astro.site);
 
         toggle.addEventListener('click', () => {
           const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-          if (next === 'dark') {
-            root.setAttribute('data-theme', 'dark');
-          } else {
-            root.removeAttribute('data-theme');
-          }
+          // 不能 removeAttribute：属性缺失等于「没有 JS」，会被深色入口②接管
+          root.setAttribute('data-theme', next);
           try {
             localStorage.setItem('xin-s-blog-theme', next);
           } catch {}
