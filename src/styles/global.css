@@ -46,7 +46,10 @@
   --gutter: clamp(1.5rem, 7vw, 6rem);
 }
 
-/* 深色模式令牌：纸墨对调（纸 = 原墨色），正红提亮一档保住暗底对比度 */
+/* 深色模式令牌：纸墨对调（纸 = 原墨色），正红提亮一档保住暗底对比度。
+   深色有**两个入口**，两份声明必须逐字一致，改这里就要改下面那块：
+     入口① data-theme='dark' —— 有 JS 时由 Base.astro 首屏脚本写入（用户显式选暗也算）
+     入口② 属性缺失 + 系统偏好暗 —— JS 被禁用时的兜底，见下方 @media */
 :root[data-theme='dark'] {
   color-scheme: dark;
   --paper: #111214;
@@ -59,6 +62,50 @@
   --ink-3: #979ba0;
   --rule: #2a2c2f;
   --red: #ef3b3b;
+}
+
+/* ============ 深色入口②：无 JS 兜底 ============ */
+/* 只有「系统偏好暗」且「用户没显式选过亮」时才生效。选择器特异性与入口①相同
+   （:root 0,1,0 + 属性/否定位 0,1,0 = 0,2,0），谁在后面谁赢，所以 @media print 里
+   也必须带上同一个 :not() 形式，否则无 JS + 系统暗色时打印会出墨底。
+   每一段都标了它对应的入口①原规则位置，两处要一起改。 */
+@media (prefers-color-scheme: dark) {
+  /* 对应上方 :root[data-theme='dark'] 令牌块（逐字一致） */
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --paper: #111214;
+    --surface: #1b1d20;
+    --tiji-bg: #202327;
+    --tiji-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.85);
+    --ink: #f2f2f0;
+    --ink-2: #c7c9cc;
+    --ink-3: #979ba0;
+    --rule: #2a2c2f;
+    --red: #ef3b3b;
+  }
+
+  /* 对应「明暗切换开关」小节的 4 条 :root[data-theme='dark'] 规则 */
+  :root:not([data-theme='light']) .theme-toggle {
+    background: var(--red);
+  }
+  :root:not([data-theme='light']) .theme-toggle::after {
+    transform: translateX(1.25rem);
+  }
+  :root:not([data-theme='light']) .theme-toggle__moon {
+    transform: scale(1);
+  }
+  :root:not([data-theme='light']) .theme-toggle__sun {
+    transform: scale(0.82);
+  }
+
+  /* 对应「正文」小节末尾的 Shiki 暗色覆写 */
+  :root:not([data-theme='light']) .astro-code,
+  :root:not([data-theme='light']) .astro-code span {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
 }
 
 /* ============ 基础 ============ */
@@ -746,7 +793,8 @@ a.tag:hover {
 /* 打印/存 PDF：无论当前主题一律强制亮色令牌（省墨且可读），隐藏主题开关 */
 @media print {
   :root,
-  :root[data-theme='dark'] {
+  :root[data-theme='dark'],
+  :root:not([data-theme='light']) {
     color-scheme: light;
     --paper: #ffffff;
     --surface: #f7f7f5;
