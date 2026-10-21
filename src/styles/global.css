@@ -44,6 +44,8 @@
 
   --measure: 42rem;
   --gutter: clamp(1.5rem, 7vw, 6rem);
+  /* 技术块（代码/公式/表格）相对正文两侧的突破量；始终小于 --gutter，不会溢出 shell */
+  --bleed: clamp(0.75rem, 4.5vw, 3rem);
 }
 
 /* 深色模式令牌：纸墨对调（纸 = 原墨色），正红提亮一档保住暗底对比度。
@@ -124,7 +126,11 @@ html {
 
 body {
   margin: 0;
+  /* 短页（标签/404）也要把页脚压到视口底部，避免页脚下方出现大块空白 */
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
   color: var(--ink);
   background: var(--paper);
   font-family: var(--font-body);
@@ -201,6 +207,8 @@ h3 {
 }
 
 .brand {
+  /* 首页品牌是 h1（语义大纲），内页是 a；两边共用这一套字面 */
+  margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2.1rem, 6vw, 2.75rem);
   font-weight: 500;
@@ -338,6 +346,7 @@ h3 {
 }
 
 main {
+  flex: 1 0 auto;
   padding: clamp(2.5rem, 6vw, 4.5rem) 0 5rem;
 }
 
@@ -526,6 +535,7 @@ a.tag:hover {
 }
 
 .index__item {
+  position: relative;
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 0 1.6rem;
@@ -549,7 +559,19 @@ a.tag:hover {
 .index__title a {
   color: var(--ink);
 }
-.index__title a:hover {
+/* 目录整行可点：标题链接的伪元素铺满条目；标签单独抬高，保持独立可点 */
+.index__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.index__foot .tag {
+  position: relative;
+  z-index: 2;
+}
+.index__title a:hover,
+.index__item:hover .index__title a {
   color: var(--red);
 }
 
@@ -637,7 +659,8 @@ a.tag:hover {
   font-size: clamp(1.5rem, 4vw, 1.85rem);
   margin: 3em 0 0.7em;
   display: flex;
-  align-items: center;
+  /* 多行标题时红方块只跟第一行对齐；单行时靠下面的 margin-top 保持在视觉中线 */
+  align-items: flex-start;
   gap: 0.7rem;
   scroll-margin-top: 2rem;
 }
@@ -645,6 +668,7 @@ a.tag:hover {
   content: '';
   width: 7px;
   height: 7px;
+  margin-top: 0.5em;
   background: var(--red);
   flex: none;
 }
@@ -731,9 +755,49 @@ a.tag:hover {
   border-top: 0;
 }
 
-/* 独立公式横向溢出：KaTeX 的 .katex-display>.katex 是 white-space:nowrap，
-   长公式（多行 cases 会被合成一整条不换行的式子）在窄屏会撑破整页横向滚动。
-   与 .prose pre 同一处理：溢出在公式自己那行横向滚，不外溢到页面。 */
+/* 技术内容：正文保持 480，代码/独立公式/表格在两侧突破 --bleed；
+   构建期由 rehypeScrollable 包一层 .scroll-x（可聚焦、role=region）。
+   溢出在容器内横向滚动，既不让页面变宽，也不再“看不见地藏起来”。 */
+.prose > .scroll-x {
+  margin: 2.2em calc(-1 * var(--bleed));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-3) var(--rule);
+}
+.prose > .scroll-x[data-kind='math'] {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+.prose > .scroll-x:first-child {
+  margin-top: 0;
+}
+.prose > .scroll-x > pre,
+.prose > .scroll-x > .katex-display,
+.prose > .scroll-x > table {
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+}
+.prose > .scroll-x > pre {
+  overflow-x: visible;
+}
+.prose > .scroll-x > .katex-display {
+  overflow: visible;
+  padding: 0.35rem 0;
+}
+.prose > .scroll-x::-webkit-scrollbar {
+  height: 8px;
+}
+.prose > .scroll-x::-webkit-scrollbar-track {
+  background: var(--rule);
+}
+.prose > .scroll-x::-webkit-scrollbar-thumb {
+  background: var(--ink-3);
+}
+
+/* 没经过包装的独立公式（例如嵌套在列表/引用里）保底：
+   仍由公式自己横向滚，不外溢到页面 */
 .prose .katex-display {
   overflow-x: auto;
   overflow-y: hidden;

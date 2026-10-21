@@ -92,9 +92,17 @@ const ogImage = new URL(u('/og.png'), Astro.site);
     <header class:list={['masthead', size === 'compact' && 'masthead--compact']}>
       <div class="shell">
         <div class="masthead__row">
-          <a class="brand" href={u('/')}>
-            {SITE.title}<span class="dot">.</span>
-          </a>
+          {
+            size === 'full' ? (
+              <h1 class="brand">
+                <a href={u('/')}>{SITE.title}<span class="dot">.</span></a>
+              </h1>
+            ) : (
+              <a class="brand" href={u('/')}>
+                {SITE.title}<span class="dot">.</span>
+              </a>
+            )
+          }
           <span class="masthead__handle label">{SITE.handle}</span>
         </div>
         {
