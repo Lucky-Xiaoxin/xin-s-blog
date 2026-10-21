@@ -17,7 +17,9 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 站内链接必须走 `src/const.ts` 的 `u()`/`resolveHref()` 补子路径前缀；文章正文资源用相对路径（`/` 开头构建不补前缀，线上必 404）。
 - `SITE_URL`/`BASE_PATH` 由 `.github/workflows/deploy.yml` 构建期注入，`astro.config.mjs` 的默认值**只影响本地**——改域名/改路径要改 deploy.yml。
 - 构建时出现 `Duplicate id "xxx"` 警告多半是**假警报**：其他文件 YAML 错误中断同步所致，先修真正的 `bad indentation`，它会自己消失（详见 TROUBLESHOOTING.md）。
-- KaTeX 配了 `throwOnError: false`：坏公式页面标红但不挡发布，这是有意的。
+- KaTeX 配了 `throwOnError: false`：坏公式页面标红但不挡发布，这是有意的。**必须保留 `output: 'htmlAndMathml'`**——改回 `html` 会把 `.katex-html` 标成 `aria-hidden` 且不产出 MathML，读屏读不到任何公式。
+- 技术内容（代码块/独立公式/表格）由 `astro.config.mjs` 的 `rehypeScrollable` 在构建期包一层 `.scroll-x`；CSS 只对 `.prose > .scroll-x` 生效。它给宽内容两侧 `--bleed` 的突破和可聚焦横向滚动容器；不要删掉 wrapper 或把 `.prose pre`/`.katex-display` 的 overflow 改回去。
+- 首页品牌在 `size='full'` 时是 `h1`，内页是 `a`（每页只留一个 h1）；短页页脚贴底依赖 `body` 的 flex column + `main { flex:1 }`。改页头/页脚骨架时保留这两点。
 - 明暗主题**两个入口**（改配色前先读这条）：`Base.astro` 的 `<head>` 内联脚本负责首屏防闪色（别挪位置、别改成打包脚本），并且**永远显式写 `data-theme='light'` 或 `'dark'`**——属性一缺失就等于"没有 JS"，会被兜底入口接管，用户选的亮色会被系统暗色翻盘。`global.css` 里深色声明有两份，必须逐字一致：入口① `:root[data-theme='dark']`（脚本/手动），入口② `@media (prefers-color-scheme: dark)` 下的 `:root:not([data-theme='light'])`（JS 被禁用时跟随系统）。入口②还各自拷贝了深色态的依赖规则（开关 4 条 + Shiki 覆写），**改这些原规则时必须同步改入口②那份**；`@media print` 的选择器要带上 `:root:not([data-theme='light'])` 形式，否则特异性压不过入口②、无 JS+系统暗色时会打出墨底。Shiki 双主题：亮色色值内联、暗色色值与两侧字体风格走 `--shiki-dark`/`--shiki-light-*` 变量（global.css 的 `.astro-code span` 必须消费 light 侧字体变量，删掉它就丢代码粗体/斜体）；改代码高亮配色要同改 `astro.config.mjs` 的 `themes`。
 - 中文字体是构建期子集：`scripts/subset-fonts.mjs`（predev/prebuild 自动跑）扫描 src 下 .astro/.ts/.js 全文 + md 的 frontmatter/标题行/引用行，裁出思源宋体子集写进 `src/assets/fonts/`（已 gitignore）。正文刻意不收（走系统无衬线）；新增「非 h1~h3/brand/摘要/引用」的衬线用例时，必须让它的文案落进上述扫描来源，否则那个字会静默回退系统宋体。
 - 文章印记是确定性映射：`const.ts` 的 `sealHash` + `SEAL_CORES`——名单按几何相容性筛选（红点/内芯必须完整落在外框内，triangle/rhombus/hexagon 各有剔除项，semicircle 的 tri/axis 红点由 `Seal.astro` 的 `FRAME_DOTS` 按框覆写）；重排名单、改哈希或换 `TAG_SHAPE` 都会换掉既有文章的印记（有意为之才能动）；新增内芯必须先过一遍框内几何验证再加。

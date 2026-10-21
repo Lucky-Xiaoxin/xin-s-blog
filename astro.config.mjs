@@ -5,6 +5,55 @@ import vitesseDark from '@shikijs/themes/vitesse-dark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+/**
+ * 给宽内容套一个可聚焦的横向滚动容器（代码块、独立公式、表格）。
+ * Markdown 产物里这些元素是平级的；在构建期包一层，浏览器端仍然零 JS。
+ * 外层尺寸与滚动交给 global.css 的 .prose > .scroll-x 处理。
+ */
+function rehypeScrollable() {
+  const wrappers = {
+    pre: { kind: 'code', label: '可横向滚动的代码块' },
+    table: { kind: 'table', label: '可横向滚动的表格' },
+  };
+
+  return (tree) => {
+    const visit = (node) => {
+      if (!Array.isArray(node.children)) return;
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
+        if (child.type === 'element') {
+          let meta = wrappers[child.tagName];
+          if (!meta && child.tagName === 'span') {
+            const classes = Array.isArray(child.properties?.className)
+              ? child.properties.className
+              : String(child.properties?.className ?? '').split(/\s+/);
+            if (classes.includes('katex-display')) {
+              meta = { kind: 'math', label: '可横向滚动的公式' };
+            }
+          }
+          if (meta) {
+            node.children[i] = {
+              type: 'element',
+              tagName: 'div',
+              properties: {
+                className: ['scroll-x'],
+                'data-kind': meta.kind,
+                tabIndex: 0,
+                role: 'region',
+                'aria-label': meta.label,
+              },
+              children: [child],
+            };
+            continue;
+          }
+        }
+        visit(child);
+      }
+    };
+    visit(tree);
+  };
+}
+
 // GitHub Pages 的项目站部署在 https://<user>.github.io/<repo>/ 下，
 // 因此构建时需要把仓库名作为 base 路径注入（见 .github/workflows/deploy.yml）。
 export default defineConfig({
@@ -16,9 +65,13 @@ export default defineConfig({
   integrations: [sitemap()],
   markdown: {
     // 数学公式构建期排版（浏览器零 JS）；throwOnError/strict 关闭：
-    // 坏公式在页面上标红，而不是炸掉构建挡住发布
+    // 坏公式在页面上标红，而不是炸掉构建挡住发布。
+    // output 必须保留 MathML：只输出 HTML 时 KaTeX 会把 .katex-html 标成 aria-hidden，读屏读不到公式。
     remarkPlugins: [remarkMath],
-    rehypePlugins: [[rehypeKatex, { throwOnError: false, strict: false, output: 'html' }]],
+    rehypePlugins: [
+      [rehypeKatex, { throwOnError: false, strict: false, output: 'htmlAndMathml' }],
+      rehypeScrollable,
+    ],
     shikiConfig: {
       // 明暗双主题：亮色色值内联、暗色色值走 --shiki-dark，字体风格两侧都走 --shiki-*-font-* 变量
       // （global.css 必须同时消费 light/dark 两侧，缺 light 侧会丢代码粗体/斜体）
