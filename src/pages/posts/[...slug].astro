@@ -1,23 +1,23 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Seal from '../../components/Seal.astro';
-import { byNewest, formatDay, readingTime, u } from '../../const';
+import { formatDay, readingTime, u } from '../../const';
+import { getAdjacentPosts, getPostBySlug, getPostsForStaticPaths } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const posts = await getPostsForStaticPaths();
   return posts.map((post) => ({ params: { slug: post.id } }));
 }
 
-const { slug } = Astro.params;
+const { slug = '' } = Astro.params;
+const includeDrafts = import.meta.env.DEV;
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(byNewest);
-const index = posts.findIndex((p) => p.id === slug);
-const post = posts[index];
+const post = await getPostBySlug(slug, { includeDrafts });
+if (!post) return new Response('Not found', { status: 404 });
 
 const { Content } = await render(post);
-const older = posts[index + 1];
-const newer = index > 0 ? posts[index - 1] : undefined;
+const { older, newer } = await getAdjacentPosts(post.id, { includeDrafts });
 ---
 
 <Base size="compact" ogType="article" title={post.data.title} description={post.data.description}>
@@ -27,6 +27,14 @@ const newer = index > 0 ? posts[index - 1] : undefined;
         <a href={u('/')}>目录</a>
         /
         <a href={u('/tags/')}>标签</a>
+        {
+          post.data.draft && includeDrafts && (
+            <>
+              <span aria-hidden="true">/</span>
+              <span class="label" style="color:var(--red)">草稿预览</span>
+            </>
+          )
+        }
       </p>
       <Seal id={post.id} tag={post.data.tags[0]} size={104} class="article__seal" />
       <h1 class="article__title">{post.data.title}</h1>

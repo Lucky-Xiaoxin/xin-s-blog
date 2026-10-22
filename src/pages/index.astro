@@ -1,12 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import PostList from '../components/PostList.astro';
-import { byNewest, formatDay } from '../const';
+import { formatDay } from '../const';
+import { getPublishedPosts } from '../lib/posts';
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(byNewest);
-
+const posts = await getPublishedPosts();
 const latest = posts[0];
 ---
 
