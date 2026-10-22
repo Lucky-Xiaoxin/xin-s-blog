@@ -22,7 +22,7 @@ npm run preview    # 预览 dist/，实际端口看命令输出
 
 1. 一键建稿：`npm run new -- <文件名>`，或双击仓库根目录的「新建文章.bat」按提示输入。脚本会在 `src/content/posts/` 生成带注释的 frontmatter 模板，自动填好当天日期和本机时间（`pubTime` 纯显示用，删掉整行即不显示）。文件名即 URL，只用小写字母、数字、连字符。
 2. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
-3. 没写完设 `draft: true`——草稿不进目录页、不进 RSS、不生成页面。`npm run dev` 本地看效果。
+3. 没写完设 `draft: true`——草稿不进目录页、不进标签、不进 RSS、不生成线上页面；`npm run dev` 可直接打开 `/posts/<文件名>/` 预览，页面会显示“草稿预览”。
 4. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
 5. 安全网：CI 任何一步失败都不会发布，线上继续服务上一次成功的产物——所以写博客不必开分支，推坏了补一版再推即可。
 
@@ -58,7 +58,7 @@ pubDate: 2026-09-19
 pubTime: '21:30'          # 可选，24h 制零填充，仅显示用；排序/RSS 只认 pubDate
 updatedDate: 2026-09-25   # 可选
 tags: ['算法', '题解']
-draft: true               # 可选，不发布
+draft: true               # 可选，草稿：dev 可预览、不发布
 ---
 ```
 
