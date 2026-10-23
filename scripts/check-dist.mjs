@@ -57,17 +57,21 @@ function attrsOf(tag) {
 }
 
 /**
- * 只从实际开始标签里提取 href/src，避免把代码块/正文中的属性文本当成链接。
+ * 只返回实际开始标签，避免把代码块/正文中的属性文本当成链接或 id。
  * script/style 的内容先剥掉；标签内的引号允许出现 >。
  */
-function linkAttrs(html) {
+function startTags(html) {
   const cleaned = html
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/(<script\b[^>]*>)[\s\S]*?(<\/script\s*>)/gi, '$1$2')
     .replace(/(<style\b[^>]*>)[\s\S]*?(<\/style\s*>)/gi, '$1$2');
+  return [...cleaned.matchAll(/<[a-zA-Z](?:[^>"']|"[^"]*"|'[^']*')*>/g)].map((m) => m[0]);
+}
+
+function linkAttrs(html) {
   const out = [];
-  for (const tag of cleaned.matchAll(/<[a-zA-Z](?:[^>"']|"[^"]*"|'[^']*')*>/g)) {
-    const attrs = attrsOf(tag[0]);
+  for (const tag of startTags(html)) {
+    const attrs = attrsOf(tag);
     for (const name of ['href', 'src']) {
       if (Object.hasOwn(attrs, name)) out.push(attrs[name].trim());
     }
@@ -110,8 +114,10 @@ const idCache = new Map();
 function idsIn(file) {
   if (!idCache.has(file)) {
     const ids = new Set();
-    for (const m of read(file).matchAll(/\bid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/g)) {
-      ids.add(decodeHtml(m[1] ?? m[2] ?? m[3] ?? ''));
+    // 只认属性名严格等于 id：data-id / aria-id 不是页面锚点
+    for (const tag of startTags(read(file))) {
+      const attrs = attrsOf(tag);
+      if (Object.hasOwn(attrs, 'id')) ids.add(decodeHtml(attrs.id.trim()));
     }
     idCache.set(file, ids);
   }
@@ -254,20 +260,39 @@ for (const draft of drafts) {
 }
 
 // ---------- 3.5 canonical / OG ----------
-const postPages = htmlFiles.filter(
-  (p) => relDist(p).startsWith('posts/') && relDist(p).endsWith('/index.html'),
+const postPages = new Set(
+  htmlFiles.filter((p) => relDist(p).startsWith('posts/') && relDist(p).endsWith('/index.html')),
 );
-for (const file of postPages) {
+
+/** 目录式输出 index.html 对应的绝对 URL；扁平 404.html 不参与 canonical 校验 */
+function expectedCanonical(file) {
+  const rel = relDist(file);
+  if (rel === '404.html' || rel === '404/index.html') return null;
+  if (!rel.endsWith('/index.html')) return null;
+  const dir = rel.slice(0, -'index.html'.length);
+  return `${SITE_ROOT}${encodeURI(dir)}`;
+}
+
+for (const file of htmlFiles) {
+  const expected = expectedCanonical(file);
+  if (expected === null) continue;
+  const rel = relDist(file);
   const html = read(file);
   const links = [...html.matchAll(/<link\b[^>]*>/gi)].map((m) => attrsOf(m[0]));
-  const metas = [...html.matchAll(/<meta\b[^>]*>/gi)].map((m) => attrsOf(m[0]));
-  const rel = relDist(file);
 
   const canonical = links.find((l) => l.rel?.toLowerCase() === 'canonical')?.href;
-  if (!canonical) fail('seo', rel, '缺少 canonical');
-  else if (!canonical.startsWith(SITE_ROOT)) {
+  if (!canonical) {
+    fail('seo', rel, '缺少 canonical');
+  } else if (!canonical.startsWith(SITE_ROOT)) {
     fail('seo', rel, `canonical 不是 ${SITE_ROOT} 下的绝对地址：${canonical}`);
+  } else if (/[?#]/.test(canonical)) {
+    fail('seo', rel, `canonical 不应包含 query/hash：${canonical}`);
+  } else if (canonical !== expected) {
+    fail('seo', rel, `canonical 与页面地址不一致：期望 ${expected}，实际 ${canonical}`);
   }
+
+  if (!postPages.has(file)) continue;
+  const metas = [...html.matchAll(/<meta\b[^>]*>/gi)].map((m) => attrsOf(m[0]));
   if (!metas.some((m) => m.property === 'og:title' && m.content)) fail('seo', rel, '缺少 og:title');
   if (!metas.some((m) => m.property === 'og:description' && m.content)) fail('seo', rel, '缺少 og:description');
   if (!metas.some((m) => m.property === 'og:image' && m.content)) fail('seo', rel, '缺少 og:image');
@@ -308,7 +333,12 @@ if (isFile(rssPath)) {
 if (isFile(sitemapPath)) {
   const sitemap = read(sitemapPath);
   if (!sitemap.includes(SITE_ROOT)) fail('sitemap', 'sitemap-0.xml', `缺少站点根：${SITE_ROOT}`);
-  const expected = new Set([SITE_ROOT, `${SITE_ROOT}about/`, `${SITE_ROOT}tags/`]);
+  const expected = new Set([
+    SITE_ROOT,
+    `${SITE_ROOT}about/`,
+    `${SITE_ROOT}archive/`,
+    `${SITE_ROOT}tags/`,
+  ]);
   for (const post of published) expected.add(postUrl(post));
   for (const file of htmlFiles) {
     const rel = relDist(file);
@@ -373,7 +403,7 @@ console.log(`[check-dist] base=${BASE || '/'} files=${files.length}`);
 console.log(`  artifacts  ${missingArtifacts.length > 0 ? `FAIL (missing: ${missingArtifacts.join(', ')})` : 'OK (5/5)'}`);
 console.log(`  links      ${status('links')} (internal=${internalCount}, anchors=${anchorCount})`);
 console.log(`  drafts     ${status('drafts')} (published=${published.length})`);
-console.log(`  seo        ${status('seo')} (posts=${postPages.length})`);
+console.log(`  seo        ${status('seo')} (posts=${postPages.size})`);
 console.log(`  rss/sitemap ${failCount('rss') + failCount('sitemap') > 0 ? 'FAIL' : 'OK'}`);
 console.log(`  size       ${status('size') === 'FAIL' ? 'FAIL · ' : ''}${sizeLine}`);
 console.log(`  inline JS  ${(inlineJs / KB).toFixed(1)} KB (theme script, not budgeted)`);
