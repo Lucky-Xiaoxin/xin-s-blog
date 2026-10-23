@@ -1,6 +1,7 @@
 # 设计契约：方向一「卷首」（D1）
 
 > 状态：2026-10-22 **已批准**。实现按本契约执行；不再补设计稿。
+> 2026-10-23 宽度澄清：`--measure/--mid/--wide` 是**内容列宽**，不是 `.shell` 盒宽；用户选择 **A**：P1a 把旧实现的 30rem 正文修正回 42rem，并已在本地验收通过。
 > 来源：`docs/next-phase/design/d1/`（HTML/CSS 原型）、`docs/next-phase/design/screens/`（截图与自检）。
 > 已选定：设计稿 **A 方案 = 方向一「卷首」**。方向二/三保留作对照，不进入实现。
 > 设计稿未覆盖的标签详情页、404、移动端 notes/now 截图：**不补稿**，按本文默认在实现中完成。
@@ -80,7 +81,7 @@
 
 | Token | 值 | 说明 |
 | --- | --- | --- |
-| `--measure` | `42rem` | 正文，保持不变 |
+| `--measure` | `42rem` | 正文内容列宽；token 值不变，但旧实现误把它当盒宽 |
 | `--mid` | `46rem` | 归档/标签/碎碎念/now/关于 |
 | `--wide` | `58rem` | 首页外壳/文章页外壳 |
 | `--gutter` | `clamp(1.25rem, 6vw, 4.5rem)` | 比现在的 7vw/6rem 更窄；需全站回归 |
@@ -88,6 +89,7 @@
 | `--ease` | `cubic-bezier(0.2, 0.6, 0.2, 1)` | 新过渡统一用；不新增动画 |
 
 - `body` 行高保持现状 1.8；`.prose` 保持 1.95。设计原型 base.css 的 `body 1.9` 不作为硬指标，避免无意义的全站重排。
+- **宽度语义**：`--measure/--mid/--wide` 是内容列宽；`.shell` 的 `max-width` 必须是 `内容宽 + 2 × --gutter`。旧实现把 `--measure: 42rem` 当盒宽，1440 下正文只有 30rem；P1a 按本契约修正会让首页/文章 measure 页正文回到 42rem。用户已选择 **A：接受这个视觉变化**；P1a 已按此实现并验收（2026-10-23）。
 - 标题：Bodoni Moda 500 + 思源宋体子集；正文系统无衬线 17px；meta 12px 等宽；目录编号 10–11px 等宽。
 - 文章标题 `clamp(2.2rem, 5.6vw, 3.35rem)`；页面 h1 `clamp(2.2rem, 6vw, 3rem)`；归档年份 `clamp(3rem, 8vw, 4.6rem)`；碎碎念日期 `1.3rem`（衬线）。
 - 所有新组件必须使用现有 token；不得在组件里写死亮色/暗色以外的颜色（Shiki token 除外）。
@@ -95,7 +97,7 @@
 ## 4. 布局与 Base
 
 - `Base.astro` 增加 `width?: 'measure' | 'mid' | 'wide'`，默认 `measure`；页头、`main`、页脚使用同一个 shell 宽度。
-- 首页/文章页用 `wide`；归档/标签/碎碎念/now/关于/404 用 `mid`；标签详情用 `mid`。
+- 首页/文章页最终用 `wide`；P1a 只定义 `wide`，不提前启用，P1c/P1d 再切。归档/标签/碎碎念/now/关于/404 用 `mid`；标签详情用 `mid`。
 - 页头：首页 `masthead--full`（品牌 h1 + tagline + 4 项导航）；内页 `masthead--compact`（品牌 a + 4 项导航，隐藏 tagline/handle）。
 - 导航从 3 项变 4 项：目录 / 归档 / 标签 / 关于。320px 必须不换行、不溢出；如过挤，优先缩小间距而不是删“归档”。
 - 页脚：保留版权/社交；增加“碎碎念 / 现在”两个链接；RSS 仍指向 `/rss.xml`；所有站内链接走 `u()`。
@@ -148,9 +150,9 @@
 
 ### 5.4 碎碎念 / now
 
-- 碎碎念：`note-month` 分组；`note` 网格 6.5rem + 正文；日期用衬线，时间/N° 用等宽；`#` 锚点有 aria-label；`:target` 红规线；锚点 id 用 `n-YYYY-MM-DD`（同日多条加 slug）。独立 `/notes/rss.xml`。
+- 碎碎念：`note-month` 分组；`note` 网格 6.5rem + 正文；日期用衬线，时间/N° 用等宽；`#` 锚点有 aria-label；`:target` 红规线；锚点 id 统一为 `n-<文件 id>`（即 `n-YYYY-MM-DD-slug`，永远带 slug，避免同日冲突；见 `p1b/content-model.md`）。独立 `/notes/rss.xml`，**首版不放可见订阅入口**（用户 2026-10-23 定）。
 - N°：原型按时间顺序编号。建议**首版去掉 N°**，只留日期/时间/锚点，避免插入旧 note 导致编号漂移；若保留，需定义“按发布时间升序，回填旧 note 会重排”。
-- now：`now-head` + `now-grid` 两列四节；`updatedDate` 显示“最后更新于”；移动端单列；内容来自 `pages` collection 的 `now.md`。
+- now：`now-head` + 可选 `now-grid` 两列四节；**首版用户定为单行状态 `emo中……`，正文为空，只渲染页头 + 最后更新**；有小节时才启用两列；`updatedDate` 显示“最后更新于”；移动端单列；内容来自 `pages` collection 的 `now.md`。
 - 首页的“现在”一行使用 `now.md` 的 `description` 或单独 `summary`；不要从正文截断。
 
 ### 5.5 关于 / 404
@@ -300,6 +302,7 @@
 | C10 | “本文完”/三红点保留为可选装饰，不强制每篇 |
 | C11 | 设计稿未覆盖的标签详情/404/notes 390/now 390：不补稿，按本契约在实现中完成 |
 | C12 | 字体、动效不变；配色/字体族不新增 |
+| C13 | 宽度语义：`--measure/--mid/--wide` 是内容列宽；用户已选择 A，P1a 把 measure 页从旧 30rem 修正到 42rem，并已验收 |
 
 ## 11. 验收清单
 

@@ -1,6 +1,6 @@
 # 实施计划（设计契约已批准）
 
-> 状态：实施中 · 2026-10-23（P0 已验收；P1a 实现与本地验证完成，待用户试用确认；P1b 未开始）。本文保留 P0→P1e 的拆解、测试与完成定义。
+> 状态：实施中 · 2026-10-23（P0、P1a 已验收；P1b 已批准、待实施，文档见 `p1b/`）。本文保留 P0→P1e 的拆解、测试与完成定义。
 > 依赖：`design-contract.md`（已批准）、`notes-contract.md`、`now-contract.md`、`runtime-contract.md`。
 > 规则：每个阶段单独分支/PR；用户本地试完才 push；文章/碎碎念/now 的个人内容不代写。
 
@@ -62,7 +62,7 @@
 
 ### P1a · `feat/design-foundation`
 
-> 实现状态：完成（2026-10-23），证据见 `p1a/review.md`；待用户本地试用确认后 push/开 PR。
+> 实现状态：已验收（2026-10-23），证据见 `p1a/review.md`；**宽度 A 已确认**；分支提交/推送按用户安排执行。
 
 **目标**：统一新壳、tokens、导航/页脚、归档/标签/404；先不动首页和文章正文。
 
@@ -79,7 +79,7 @@
 
 **任务**
 
-1. Tokens：`--mid 46rem`、`--wide 58rem`、`--gutter: clamp(1.25rem, 6vw, 4.5rem)`、`--ease`；保留 `--measure 42rem`、`--bleed`/颜色/字体。
+1. Tokens：`--mid 46rem`、`--wide 58rem`、`--gutter: clamp(1.25rem, 6vw, 4.5rem)`、`--ease`；保留 `--measure 42rem`（内容列宽；旧实现误当盒宽）、`--bleed`/颜色/字体。
 2. `Base.astro` 增加 `width: 'measure' | 'mid' | 'wide'`；页头/main/页脚同壳。**P1a 只给归档/标签/关于/404 启用 mid；首页/文章保持 measure，P1c/P1d 再切 wide**，避免半成品宽布局。
 3. 导航 4 项（加归档）；页脚结构先调整，**notes/now 链接随 P1b 路由一起加**，不提前放死链；全部 `u()`。
 4. 归档页：年月分组、连续编号、动态计数；移动端隐藏阅读时长列。
@@ -91,7 +91,7 @@
 
 - 320/390/768/1024/1440 无横向滚动；导航 320 不换行；亮/暗；禁用 JS。
 - 归档/标签数据正确；标签详情过滤正确；404 仍是 noindex。
-- 现有文章页/首页暂不改，但壳变化要在各页回归。
+- 现有文章页/首页结构与文案暂不改；但按契约把 measure 页内容列宽从旧 30rem 修正到 42rem，**用户已选择 A**，壳变化要在各页回归。
 
 **风险**
 
@@ -102,6 +102,8 @@
 ---
 
 ### P1b · `feat/notes-now`
+
+> 实现状态：已批准、待实施（2026-10-23）；详细文档见 `docs/next-phase/p1b/`（README、content-model、pages-and-feed、check-dist-guards、test-plan）。notes 首版 0 条，now 首版单行 `emo中……`。
 
 **目标**：notes/pages collection、`/notes/`、`/now/`、notes RSS、字体子集；为首页提供数据。
 
@@ -116,17 +118,17 @@
 
 **任务**
 
-1. Notes schema：`date`、可选 `time`、`draft`；无 title/description/tags；文件名 `YYYY-MM-DD-slug.md`；锚点 `n-YYYY-MM-DD`（同日加 slug）。
+1. Notes schema：`date`、可选 `time`、`draft`；无 title/description/tags；文件名 `YYYY-MM-DD-slug.md`；锚点 `n-<文件 id>`（即 `n-YYYY-MM-DD-slug`，永远带 slug）。
 2. `/notes/`：月份分组、时间倒序、`:target` 红规线；不做 N°；空状态“还没有碎碎念”。
-3. `/notes/rss.xml`：独立 feed；主 RSS 保持文章。
-4. Pages schema：`title`、`description`、`updatedDate`、`draft`；`/now/` 渲染 `now.md`，显示“最后更新于”。
+3. `/notes/rss.xml`：独立 feed；主 RSS 保持文章；**首版不放可见订阅按钮/链接**，页脚 RSS 仍指主 feed。
+4. Pages schema：`title`、`description`、`updatedDate`、`draft`；`/now/` 渲染 `now.md`，显示“最后更新于”。**首版内容已定：单行 `emo中……`，正文可空；有小节时才启用两列。**
 5. 字体子集扫描 `src/content/notes` 与 `src/content/pages` 的 frontmatter/标题/引用；否则 now/notes 的衬线会回退。
-6. 内容不代写：提供模板/空状态；个人内容由用户填。
+6. 内容不代写：notes 首版 0 条真实内容（用户已确认，空状态），测试用临时中性夹具；now 首版内容已由用户定为 `emo中……`。
 
 **验收**
 
 - 锚点可跳、月份分组正确、notes RSS 可用；now 最后更新正确。
-- dev 草稿可预览、build 不出现；字体子集包含 now/notes 标题用字。
+- dev 草稿可预览、build 不出现；字体子集包含 notes/未来 now 小节的衬线用字（首版单行 now 走无衬线）。
 - 390/320 无溢出；空状态不出现空框。
 - 不造假个人内容；用户确认后再发布。
 
@@ -135,7 +137,7 @@
 - 同日多 note 的锚点冲突；用 slug 区分。
 - `updatedDate` 时区（沿用 UTC getter）。
 - 字体子集扫描 Markdown 的规则要与 posts 一致。
-- now 没有内容时链接是否可达；先放“内容待补”并标 draft，或隐藏链接。
+- now 首版内容已定为单行 `emo中……`；正文为空时只渲染页头，不留空框。若以后改回草稿，路由仍存在并显示空状态。
 
 ---
 
@@ -311,5 +313,6 @@ P0 ──> P1a ──> P1b ──> P1c
 
 - 设计契约：已批准（`design-contract.md`）。
 - P0：已验收（`p0/review.md`）；数据层、草稿预览、verify/check-dist 均已落地。
-- P1a：实现与本地验证完成（`p1a/review.md`）；tokens/shell/页头页脚/导航/归档/标签/关于/404 已落地，F1/F2 已修；待用户本地试用确认后 push/开 PR。
-- 下一步：P1b notes/now；P1c 首页；P1d 文章页。P1b 与 P1c/P1d 均会改 `global.css`/`Base` 时，按 `p1a/review.md` 的宽度分期与文档约定协调，不要同时开两个改 `global.css` 的 PR。
+- P1a：已验收（`p1a/review.md`）；tokens/shell/页头页脚/导航/归档/标签/关于/404 已落地，F1/F2 已修；**宽度 A 已确认**；分支提交/推送按用户安排执行。
+- P1b：已批准、待实施（`p1b/`）；notes/pages 数据层、`/notes/`、`/notes/rss.xml`、`/now/`、字体子集与门禁。notes 首版 0 条；now 首版单行 `emo中……`。
+- 下一步：P1b 实施；P1c 首页；P1d 文章页。P1b 与 P1c/P1d 均会改 `global.css`/`Base` 时，按 `p1a/review.md` 的宽度分期与文档约定协调，不要同时开两个改 `global.css` 的 PR。

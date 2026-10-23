@@ -1,6 +1,6 @@
 # 下一阶段总体设计
 
-> 状态：2026-10-23 P0 已验收；P1a 实现与本地验证完成，待用户试用确认。
+> 状态：2026-10-23 P0、P1a 已验收；P1b 已批准、待实施（`p1b/`）。
 > 本目录写目标、边界、契约与验收，**不包含实现代码**。
 > 按小 PR 拆分，遵守“先交用户本地试用，确认后才 push / 开 PR”的规则。
 > **运行基线/命令以根目录 README、AGENTS、TROUBLESHOOTING 为准**；本目录的“当前值”是设计阶段快照，避免重复维护。
@@ -23,7 +23,7 @@
 | 作者生活层 | 做 **碎碎念 + now**；其它（友链、评论、统计、Newsletter、点赞、Webmention）**暂不做** |
 | 移动端验收 | 用户可以在 iPhone / Android 真机上验收，不再只写“桌面模拟、未真机验证” |
 | 第三方能力 | 当前不引入；未来若要评论/统计等，必须按 `runtime-contract.md` 的准入门槛单独评审，不自动进入路线图 |
-| 当前动作 | P0 已完成；P1 实施前先讨论设计/契约，用户本地确认后再动代码 |
+| 当前动作 | P0、P1a 已完成；P1b 契约为 `p1b/`；框架改动先本地验收，用户确认后再 push/开 PR |
 
 ## 3. 目标与非目标
 
@@ -52,8 +52,8 @@
 | `/` | 保留 | 目录页；只增加“归档/碎碎念”入口，不改列表主体 |
 | `/archive/` | P1a | 按年/月分组，零 JS |
 | `/tags/`、`/tags/[tag]/` | 保留 | 标签是横切分类，URL 不变 |
-| `/notes/` | P1 | 碎碎念流：按时间倒序的短笔记，首页显示最新 3 条；契约见 `notes-contract.md` |
-| `/now/` | P1 | “最近在做什么”的静态页；契约见 `now-contract.md` |
+| `/notes/` | P1b | 碎碎念流：按时间倒序的短笔记，首页显示最新 3 条；契约见 `notes-contract.md` 与 `p1b/` |
+| `/now/` | P1b | “最近在做什么”的静态页；契约见 `now-contract.md` 与 `p1b/` |
 | `/series/`、`/series/[key]/` | 暂缓 | 有序连载；**2026-10-22 决定暂缓**，契约保留在 `series-contract.md` |
 | `/posts/[slug]/` | 保留 | 文章页；加 TOC、相关文章、反馈入口 |
 | `/search/` | P2（需验证） | 搜索页；不在文章页加载搜索代码 |
@@ -126,7 +126,7 @@
 - `notes-contract.md`：碎碎念的语义、内容模型、展示、RSS、发布方式；也解释其它作者生活层选项。
 - `now-contract.md`：now 页的语义、内容模型、导航、更新流程与设计契约。
 - `design-contract.md`：选定方向一「卷首」的 tokens、组件规格、响应式/暗色/打印、内容映射、实现顺序与验收；**已批准**。
-- `implementation-plan.md`：P0→P1e 的 PR 拆分、文件范围、依赖、测试与完成定义；P0 已完成，P1 实施前先读。
+- `implementation-plan.md`：P0→P1e 的 PR 拆分、文件范围、依赖、测试与完成定义；P0/P1a 已完成，P1b 实施前先读 `p1b/`。
 - `p0/README.md`：P0 的目标、范围、文件地图、依赖、验收与风险。
 - `p0/data-and-draft.md`：`src/lib/posts.ts` API、调用点、草稿预览行为与边界。
 - `p0/verify.md`：`verify`/`check-dist` 的检查项、预算、输出与 CI 接入。
@@ -138,6 +138,11 @@
 - `p1a/test-plan.md`：P1a 测试矩阵、证据清单、退出标准。
 - `p1a/review.md`：P1a 实现结果、注入/浏览器矩阵证据、允许差异与未覆盖风险。
 - `p1a/screens/`：P1a 改前/改后与特殊状态截图（生产子路径预览）。
+- `p1b/README.md`：P1b 目标、范围、依赖、文件地图、验收与风险。
+- `p1b/content-model.md`：notes/pages schema、文件命名、锚点、排序、校验、草稿与字体子集来源。
+- `p1b/pages-and-feed.md`：`/notes/`、`/notes/rss.xml`、`/now/`、页脚/关于链接、空状态与样式规格。
+- `p1b/check-dist-guards.md`：P1b 新增的产物/草稿/锚点/RSS/sitemap/重复 id 门禁与故障注入。
+- `p1b/test-plan.md`：P1b 测试矩阵、证据清单、退出标准（实施前为计划，不填假结果）。
 - `_template.md`：新阶段/契约文档模板；先复制再写，别自创结构。
 - `series-contract.md`：系列的语义、数据契约、URL/UI、校验规则（**当前暂缓**）。
 - `runtime-contract.md`：JS/第三方准入、性能预算、可访问性、测试与验证。

@@ -1,6 +1,6 @@
 # P1a UI 契约：tokens、外壳、归档/标签/404
 
-> 状态：实施中 · 2026-10-23（实现完成，待用户试用确认）
+> 状态：已验收 · 2026-10-23（实现完成；**宽度 A 已确认**；用户本地验收通过）
 > 上游：`design-contract.md`、`p0/review.md`
 > 下游：P1b notes/now、P1c 首页、P1d 文章页
 > Owner：实现规划师
@@ -24,6 +24,7 @@
 | `--ease` | `cubic-bezier(0.2, 0.6, 0.2, 1)` | 新过渡统一用；不新增动画 |
 
 - 颜色/字体族/字号基线不变；`body` 行高保持 1.8，`.prose` 保持 1.95（不采用设计稿 base.css 的 body 1.9）。
+- `--measure` 是**内容列宽**：旧 `.shell` 把 `max-width: 42rem` 当盒宽，1440 下正文实际只有 30rem；P1a 改为 `max-width: calc(内容宽 + 2 × gutter)` 后正文回到 42rem（**用户 2026-10-23 选择 A 并在本地验收通过**）。
 - 暗色 token 不变；新增组件只能消费 token。
 - 所有新 CSS 加在 `global.css` 现有结构内，不复制第二套 `:root`。
 
@@ -57,6 +58,7 @@ interface Props {
   kicker: string;          // 例如“归档 / ARCHIVE”
   title: string;           // h1
   description?: string;
+  meta?: boolean;          // 是否渲染底部 meta 行；默认跟随 default slot
   // meta 用 slot 传入计数/说明；避免把具体页面文案写进组件
 }
 ```
@@ -65,7 +67,7 @@ interface Props {
 
 - `<header class="page-head">`：kicker（红方块 + 大写）、h1、可选描述、`page-head__meta`（顶部 1px 墨线）。
 - h1 必须唯一；页面内不再有第二个 h1。
-- `page-head__meta` 放计数/最近更新/按钮；按钮用 `.btn`。
+- `page-head__meta` 放计数/最近更新/按钮；按钮用 `.btn`。**只有真有 meta 内容时传 `meta={true}`**；空数据页（0 文章/0 标签）传 `false`，否则只会留下一条空横线。
 - 320/390 单列；描述 `max-width: 38rem`。
 
 ## 5. 基础组件
@@ -204,8 +206,9 @@ export async function getPostsByTag(tag: string): Promise<Post[]>;
 - [ ] `/archive/` 分组/编号/计数/链接正确。
 - [ ] `/tags/` 索引/计数/最近一篇正确；移动端隐藏最近列。
 - [ ] `/tags/[tag]/` 过滤/标题/canonical 正确；无空标签页。
+- [ ] 0 文章/0 标签时 PageHead 不渲染空 meta 行（显式 `meta={false}`）。
 - [ ] `/about/` 内容不变，只换壳。
 - [ ] 404 noindex、无 canonical/OG。
 - [ ] 暗色/打印基础/reduced-motion 正常。
 - [ ] 无新增 JS/字体/色相；体积预算内。
-- [ ] 文档同步；用户本地试用确认。
+- [x] 文档同步；用户本地验收通过（2026-10-23）。

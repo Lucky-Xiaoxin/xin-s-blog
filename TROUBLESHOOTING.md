@@ -44,9 +44,9 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | Actions 页面里 run 红了 | 构建门禁拦下了一次有问题的发布 | 点进 run 看是哪一步：check 红=类型错，build 红=多半是 frontmatter，check:dist 红=按 FAIL 后的类别找对应行。线上没坏，修好再推 |
 | `npm run preview` 后访问 `/xin-s-blog/` 404 | preview 默认按 base=/ 启动，而 dist 是 verify 的生产子路径产物 | 改用 `npm run preview:prod`；普通 `npm run build` 的产物才用 `npm run preview` |
 | `FAIL links ... 根绝对链接缺少 /xin-s-blog 前缀` | 站内链接写成了 `/posts/...` 这类根绝对路径 | 用 `src/const.ts` 的 `u()`/`resolveHref()` 生成；文章正文资源用相对路径，不要用 `/` 开头 |
-| `FAIL drafts ... 草稿页被生成` / `包含草稿` | `draft: true` 的文章漏进了产物 | 查 frontmatter 的 `draft`；`getStaticPaths` 只能调 `getPostsForStaticPaths()`，列表/RSS 只能调 `getPublishedPosts()` |
+| `FAIL drafts ... 草稿页被生成` / `包含草稿` | `draft: true` 的文章漏进了产物 | 查 frontmatter 的 `draft`；文章/笔记等内容页的 `getStaticPaths` 只能调 `getPostsForStaticPaths()`（标签详情例外，只调 `getPublishedPosts()`），列表/RSS 只能调 `getPublishedPosts()` |
 | `FAIL links ... 锚点 #xxx 在 ... 中找不到 id` | 页内链接指向不存在的标题 id | 检查 TOC/锚点拼写，确认目标页生成了对应 `id`；同页 `#xxx` 也会被查。锚点只认真实 `id` 属性，`data-id` 不算 |
-| `FAIL seo ...` | 文章页缺 canonical/OG/description，或 404 页多了 canonical/og:url | 查 `src/layouts/Base.astro` 的 head；404 只保留 noindex，不要 canonical |
+| `FAIL seo ...` | 文章页缺 canonical/OG/description，或 404 页多了 canonical/OG/Twitter 卡片 | 查 `src/layouts/Base.astro` 的 head；404 只保留 noindex，不要 canonical、`og:*`、`twitter:*` |
 | `FAIL seo ... canonical 与页面地址不一致` | canonical 指错页面、缺尾斜杠，或改页面路径后没同步 | 目录式页面的 canonical 必须精确等于 `SITE_URL + BASE_PATH + 页面路径/`；优先让 `Base.astro` 统一生成，不要在页面里手写。404 例外，不生成 canonical |
 | `FAIL rss ...` / `FAIL sitemap ...` | RSS/sitemap 缺已发布文章，或 sitemap 混入了 `/404/` | 检查 `src/lib/posts.ts` 的 `getPublishedPosts()`、`src/pages/rss.xml.js` 和 `@astrojs/sitemap` 的路由输出 |
 | `FAIL size ... 当前 X 上限 Y，超出 Z` | 产物超预算（CSS/JS/字体/最大 HTML/dist） | 看是哪一项；先确认新增内容是否必要，不要直接抬 `scripts/check-dist.mjs` 里的上限。基线见 README |
