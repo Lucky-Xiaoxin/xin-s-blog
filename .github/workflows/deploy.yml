@@ -42,6 +42,11 @@ jobs:
           # 仓库改名为 <用户名>.github.io 时，把 BASE_PATH 改成 '/'
           SITE_URL: https://${{ github.repository_owner }}.github.io
           BASE_PATH: /${{ github.event.repository.name }}
+      - name: Check dist
+        run: npm run check:dist
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          BASE_PATH: /${{ github.event.repository.name }}
       # 取件与配置 Pages 只在真要发布时做：PR 跑没有 deploy job 接盘，
       # 传 artifact 纯属白传，而 configure-pages 还要多查一次 Pages 设置
       - if: github.event_name != 'pull_request'

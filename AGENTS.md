@@ -23,6 +23,7 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 明暗主题**两个入口**（改配色前先读这条）：`Base.astro` 的 `<head>` 内联脚本负责首屏防闪色（别挪位置、别改成打包脚本），并且**永远显式写 `data-theme='light'` 或 `'dark'`**——属性一缺失就等于"没有 JS"，会被兜底入口接管，用户选的亮色会被系统暗色翻盘。`global.css` 里深色声明有两份，必须逐字一致：入口① `:root[data-theme='dark']`（脚本/手动），入口② `@media (prefers-color-scheme: dark)` 下的 `:root:not([data-theme='light'])`（JS 被禁用时跟随系统）。入口②还各自拷贝了深色态的依赖规则（开关 4 条 + Shiki 覆写），**改这些原规则时必须同步改入口②那份**；`@media print` 的选择器要带上 `:root:not([data-theme='light'])` 形式，否则特异性压不过入口②、无 JS+系统暗色时会打出墨底。Shiki 双主题：亮色色值内联、暗色色值与两侧字体风格走 `--shiki-dark`/`--shiki-light-*` 变量（global.css 的 `.astro-code span` 必须消费 light 侧字体变量，删掉它就丢代码粗体/斜体）；改代码高亮配色要同改 `astro.config.mjs` 的 `themes`。
 - 中文字体是构建期子集：`scripts/subset-fonts.mjs`（predev/prebuild 自动跑）扫描 src 下 .astro/.ts/.js 全文 + md 的 frontmatter/标题行/引用行，裁出思源宋体子集写进 `src/assets/fonts/`（已 gitignore）。正文刻意不收（走系统无衬线）；新增「非 h1~h3/brand/摘要/引用」的衬线用例时，必须让它的文案落进上述扫描来源，否则那个字会静默回退系统宋体。
 - 所有文章读取都走 `src/lib/posts.ts`：列表/RSS 用 `getPublishedPosts()`、标签聚合用 `getAllTags()`。`getStaticPaths` 只能用 `getPostsForStaticPaths()`（dev 含草稿、build 排除）；文章页按 slug 查找与上下篇必须传 `includeDrafts: import.meta.env.DEV`，否则 dev 草稿页 `post` 为 undefined。草稿预览只在 dev，build 不生成；不要为了预览把 `draft` 改成 false 再改回来。
+- 新增路由/资源必须过 `npm run verify`（check + 生产子路径 build + `check:dist`）：站内链接一律用 `u()`/`resolveHref()`，根绝对路径会被 check-dist 拦下；字体放 `src/assets/fonts/`（构建生成），内容图放 `src/content/posts/` 内并用相对路径。体积预算见 README，超限先定位、不要直接抬上限。
 - 文章印记是确定性映射：`const.ts` 的 `sealHash` + `SEAL_CORES`——名单按几何相容性筛选（红点/内芯必须完整落在外框内，triangle/rhombus/hexagon 各有剔除项，semicircle 的 tri/axis 红点由 `Seal.astro` 的 `FRAME_DOTS` 按框覆写）；重排名单、改哈希或换 `TAG_SHAPE` 都会换掉既有文章的印记（有意为之才能动）；新增内芯必须先过一遍框内几何验证再加。
 - deploy job 有 `if: github.ref == 'refs/heads/main'` 守卫、`pages: write` 只给 deploy job——不要"简化"回顶层权限。
 - README 与 TROUBLESHOOTING.md 是维护者的主要参照，**行为变更后必须同步更新**（历史审计曾发现多处文档失真；改完核对每条可验证断言）。
@@ -35,4 +36,4 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - agent shell 里 `git push` 凭据通常已缓存；若报 `/dev/tty` 错误，让用户在输入框用 `! git push` 代跑一次。
 - GitHub Pages HTML 有约 10 分钟浏览器缓存：用户说"推上去没变"先让他 Ctrl+F5 再排查。
 - 不要提议添加 LICENSE（用户已明确拒绝）。
-- CI 门禁 = `astro check` + `astro build`，任一失败不发布、线上保持旧版——不存在"推坏线上"，但也不要跳过 check 直推框架改动。
+- CI 门禁 = `astro check` + `astro build` + `npm run check:dist`，任一失败不发布、线上保持旧版——不存在"推坏线上"，但也不要跳过 check/verify 直推框架改动。

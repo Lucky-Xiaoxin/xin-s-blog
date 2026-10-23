@@ -13,6 +13,8 @@
     "build": "astro build",
     "prebuild": "node scripts/subset-fonts.mjs",
     "check": "astro check",
+    "check:dist": "node scripts/check-dist.mjs",
+    "verify": "node scripts/verify.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
