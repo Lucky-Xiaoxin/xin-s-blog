@@ -47,14 +47,20 @@ walk(path.join(root, 'src'), ['.astro', '.ts', '.js'], (file) => {
 });
 
 // 2) Markdown：frontmatter + 标题行 + 引用行
-walk(path.join(root, 'src', 'content', 'posts'), ['.md'], (file) => {
-  const text = readFileSync(file, 'utf8');
-  const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (frontmatter) collectFrom(frontmatter[1], chars);
-  for (const line of text.split(/\r?\n/)) {
-    if (/^#{1,6}\s/.test(line) || /^>/.test(line)) collectFrom(line, chars);
-  }
-});
+//    posts = 文章；notes = 碎碎念；pages = 静态页（now 等）
+//    扫描规则三处一致，不新造一套
+for (const dir of ['posts', 'notes', 'pages']) {
+  const base = path.join(root, 'src', 'content', dir);
+  if (!existsSync(base)) continue;
+  walk(base, ['.md'], (file) => {
+    const text = readFileSync(file, 'utf8');
+    const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (frontmatter) collectFrom(frontmatter[1], chars);
+    for (const line of text.split(/\r?\n/)) {
+      if (/^#{1,6}\s/.test(line) || /^>/.test(line)) collectFrom(line, chars);
+    }
+  });
+}
 
 const text = [...chars].join('');
 console.log(`[subset-fonts] 标题用字：${chars.size} 个`);
