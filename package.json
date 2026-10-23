@@ -13,7 +13,10 @@
     "build": "astro build",
     "prebuild": "node scripts/subset-fonts.mjs",
     "check": "astro check",
-    "preview": "astro preview"
+    "check:dist": "node scripts/check-dist.mjs",
+    "verify": "node scripts/verify.mjs",
+    "preview": "astro preview",
+    "preview:prod": "node scripts/preview.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",

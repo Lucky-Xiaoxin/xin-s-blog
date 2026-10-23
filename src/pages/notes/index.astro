@@ -1,0 +1,101 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { formatDay, u } from '../../const';
+import {
+  getNotesForPage,
+  getPublishedNotes,
+  groupNotesByMonth,
+  noteAnchor,
+} from '../../lib/notes';
+
+const includeDrafts = import.meta.env.DEV;
+
+const notes = await getNotesForPage();
+const published = await getPublishedNotes();
+const months = groupNotesByMonth(notes);
+
+// 正文渲染放在 frontmatter 里预计算，模板里不再 await
+const items = await Promise.all(
+  notes.map(async (note) => ({ id: note.id, Content: (await render(note)).Content })),
+);
+const contentById = new Map(items.map((item) => [item.id, item.Content]));
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const latest = published[0];
+---
+
+<Base size="compact" width="mid" title="碎碎念" description="短、带时间、随时记。">
+  <PageHead
+    kicker="页边 / NOTES"
+    title="碎碎念"
+    description="短、带时间、随时记。"
+    meta={published.length > 0}
+  >
+    {
+      latest && (
+        <span class="meta">
+          {pad(published.length)} 条 · 最近更新 {formatDay(latest.data.date)}
+        </span>
+      )
+    }
+  </PageHead>
+
+  {
+    notes.length === 0 ? (
+      <p class="empty-state">
+        还没有碎碎念。先去<a href={u('/now/')}>现在</a>看看我最近在做什么。
+      </p>
+    ) : (
+      <div class="note-stream">
+        {months.map((month) => (
+          <section class="note-month" aria-labelledby={`notes-${month.key}`}>
+            <h2 class="note-month__title" id={`notes-${month.key}`}>
+              {month.label}
+            </h2>
+            <ol class="note-list">
+              {month.notes.map((note) => {
+                const NoteContent = contentById.get(note.id);
+                const anchor = noteAnchor(note);
+                const date = note.data.date;
+                const iso = date.toISOString().slice(0, 10);
+                const monthLabel = date.getUTCMonth() + 1;
+                const dayLabel = date.getUTCDate();
+                return (
+                  <li class="note" id={anchor}>
+                    <div class="note__meta">
+                      <time class="note__date" datetime={iso}>{pad(monthLabel)}.{pad(dayLabel)}</time>
+                      {note.data.time && <span class="note__time">{note.data.time}</span>}
+                      {note.data.draft && includeDrafts && (
+                        <span class="label" style="color:var(--red)">草稿预览</span>
+                      )}
+                    </div>
+                    <div class="note__body prose">
+                      {NoteContent && <NoteContent />}
+                      <a
+                        class="note__link"
+                        href={`#${anchor}`}
+                        aria-label={`${monthLabel} 月 ${dayLabel} 日碎碎念的固定链接`}
+                      >
+                        #
+                      </a>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    notes.length > 0 && (
+      <p class="notes-foot">
+        想看我最近在做什么？→ <a href={u('/now/')}>现在</a>
+      </p>
+    )
+  }
+</Base>

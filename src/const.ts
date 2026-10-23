@@ -10,8 +10,15 @@ export const SITE = {
 
 export const NAV = [
   { href: '/', label: '目录', key: 'home' },
+  { href: '/archive', label: '归档', key: 'archive' },
   { href: '/tags', label: '标签', key: 'tags' },
   { href: '/about', label: '关于', key: 'about' },
+];
+
+/** 页脚里的站内页面入口（碎碎念 / 现在）；联系方式另见 SOCIALS */
+export const PAGE_LINKS = [
+  { label: '碎碎念', href: '/notes' },
+  { label: '现在', href: '/now' },
 ];
 
 export const SOCIALS = [

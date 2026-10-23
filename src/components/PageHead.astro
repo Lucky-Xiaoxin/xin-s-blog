@@ -1,0 +1,19 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  description?: string;
+  /** 是否渲染底部 meta 行；默认跟随 default slot 是否存在 */
+  meta?: boolean;
+}
+
+const { kicker, title, description, meta } = Astro.props;
+const hasMeta = meta ?? Astro.slots.has('default');
+---
+
+<header class="page-head">
+  <p class="kicker">{kicker}</p>
+  <h1>{title}</h1>
+  {description && <p class="page-head__desc">{description}</p>}
+  {hasMeta && <div class="page-head__meta"><slot /></div>}
+</header>

@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PostList from '../../components/PostList.astro';
-import { u } from '../../const';
-import { getPublishedPosts } from '../../lib/posts';
+import PageHead from '../../components/PageHead.astro';
+import { formatDay, readingTime, u } from '../../const';
+import { getPostsByTag, getPublishedPosts } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -12,18 +12,68 @@ export async function getStaticPaths() {
 }
 
 const tag = Astro.params.tag!;
-
-const posts = (await getPublishedPosts()).filter((post) => post.data.tags.includes(tag));
+const posts = await getPostsByTag(tag);
+const latest = posts[0];
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<Base size="compact" active="tags" title={`#${tag}`}>
-  <p class="kicker">
-    <a href={u('/tags/')}>标签</a>
-    /
-    {tag}
-  </p>
-  <h1 class="section-title">{tag}</h1>
-  <p class="section-note">{posts.length} 篇文章</p>
+<Base
+  size="compact"
+  width="mid"
+  active="tags"
+  title={`#${tag}`}
+  description={`标签 #${tag} 下的全部文章。`}
+>
+  <PageHead
+    kicker="标签 / TAG"
+    title={`#${tag}`}
+    description={`${posts.length} 篇文章`}
+    meta={Boolean(latest)}
+  >
+    {latest && <span class="meta">最近更新 {formatDay(latest.data.pubDate)}</span>}
+  </PageHead>
 
-  <PostList posts={posts} />
+  {
+    posts.length === 0 ? (
+      <p class="section-note">这个标签下还没有文章。</p>
+    ) : (
+      <section class="contents" aria-labelledby="tag-contents">
+        <header class="section-head">
+          <h2 id="tag-contents">目录</h2>
+          <span class="meta">共 {posts.length} 篇 · 按时间倒序</span>
+        </header>
+        <ol class="toc">
+          {posts.map((post, index) => (
+            <li class="toc__item">
+              <span class="toc__no">{pad(index + 1)}</span>
+              <div>
+                <h3>
+                  <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
+                </h3>
+                <p>{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <div class="toc__foot">
+                    <span class="tag-list">
+                      {post.data.tags.map((item) => (
+                        <a class="tag" href={u(`/tags/${encodeURIComponent(item)}/`)}>
+                          {item}
+                        </a>
+                      ))}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div class="toc__meta">
+                <span class="meta">
+                  {formatDay(post.data.pubDate)}
+                  {post.data.pubTime ? ` ${post.data.pubTime}` : ''}
+                </span>
+                <span class="meta">{readingTime(post.body)} 分钟</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
 </Base>

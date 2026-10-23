@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>设计原型 · 方向一 · 卷首 · 关于</title>
+    <meta name="description" content="二进制与诗的下一阶段设计原型，非线上版本。" />
+    <link rel="stylesheet" href="../assets/base.css" />
+    <link rel="stylesheet" href="../assets/d1.css" />
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var t = q.get('theme');
+        if (t !== 'dark' && t !== 'light') {
+          try { t = localStorage.getItem('xin-blog-proto-theme'); } catch (e) {}
+        }
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body class="direction-d1 page-about d1-about">
+    <a class="skip" href="#main">跳到正文</a>
+<header class="masthead masthead--compact">
+      <div class="shell shell--mid">
+        <a class="brand" href="home.html">二进制与诗<span class="dot">.</span></a>
+        <div class="nav-bar">
+          <nav class="nav" aria-label="主导航">
+              <a href="home.html">目录</a>
+              <a href="archive.html">归档</a>
+              <a href="tags.html">标签</a>
+              <a href="about.html">关于</a>
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="深色模式"
+            title="切换到深色模式"
+          >
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.6" />
+              <path d="M12 1.6v2M12 20.4v2M1.6 12h2M20.4 12h2M4.7 4.7l1.4 1.4M17.9 17.9l1.4 1.4M19.3 4.7l-1.4 1.4M6.1 17.9l-1.4 1.4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <div class="shell shell--mid">
+<header class="page-head">
+  <p class="kicker">关于 / ABOUT</p>
+  <h1>关于我</h1>
+  <p class="about-lead">我是小鑫，一名计算机专业的大二学生。这里是我用来整理课程笔记、题解和工具配置的地方——写给一年后（或者多年后）的自己看。</p>
+</header>
+
+<div class="prose">
+  <h2>这个博客写什么</h2>
+  <ul>
+    <li><strong>计算机系统</strong>：CSAPP、操作系统、网络协议里那些课件讲得不完整的地方。</li>
+    <li><strong>算法题解</strong>：周赛和刷题之后的小结，重点是模板之间的差异。</li>
+    <li><strong>开发工具</strong>：真正省下时间的配置，而不是清单式的推荐。</li>
+  </ul>
+  <p>如果想知道我最近在做什么，可以看 <a href="now.html">现在</a>；零散的小事会写在 <a href="notes.html">碎碎念</a>。</p>
+
+  <h2>这个站点</h2>
+  <p>用 <a href="https://astro.build">Astro</a> 生成纯静态文件，Markdown 写在仓库里，推送到 GitHub 后由 Actions 自动构建并发布到 GitHub Pages。订阅用 <a href="#">RSS</a>。</p>
+
+  <h2>联系我</h2>
+  <p>站内 @Xiaoxin · <a href="https://github.com/Lucky-Xiaoxin">GitHub</a> · <a href="mailto:yggdya@163.com">Email</a></p>
+</div>
+      </div>
+    </main>
+<footer class="colophon">
+      <div class="shell shell--mid">
+        <div class="colophon__row label">
+          <span>© 2026 小鑫</span>
+          <nav class="colophon__nav" aria-label="页脚导航">
+            <a href="notes.html">碎碎念</a><span class="sep">/</span>
+            <a href="now.html">现在</a><span class="sep">/</span>
+            <a href="https://github.com/Lucky-Xiaoxin" rel="noopener">GitHub</a><span class="sep">/</span>
+            <a href="mailto:yggdya@163.com">Email</a><span class="sep">/</span>
+            <a href="#">RSS</a>
+          </nav>
+        </div>
+        <p class="colophon__note meta">Astro 构建 · GitHub Pages 托管 · 订阅 RSS<span class="proto-note">设计原型 方向一 · 卷首 · 非线上版本</span></p>
+      </div>
+    </footer>
+<script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.querySelector('.theme-toggle');
+        if (!toggle) return;
+        function sync() {
+          var dark = root.getAttribute('data-theme') === 'dark';
+          toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+          toggle.setAttribute('title', dark ? '切换到浅色模式' : '切换到深色模式');
+        }
+        toggle.addEventListener('click', function () {
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('xin-blog-proto-theme', next); } catch (e) {}
+          sync();
+        });
+        sync();
+      })();
+    </script>
+  </body>
+</html>

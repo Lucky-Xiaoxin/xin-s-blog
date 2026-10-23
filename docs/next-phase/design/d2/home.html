@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>设计原型 · 方向二 · 测绘 · 首页</title>
+    <meta name="description" content="二进制与诗的下一阶段设计原型，非线上版本。" />
+    <link rel="stylesheet" href="../assets/base.css" />
+    <link rel="stylesheet" href="../assets/d2.css" />
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var t = q.get('theme');
+        if (t !== 'dark' && t !== 'light') {
+          try { t = localStorage.getItem('xin-blog-proto-theme'); } catch (e) {}
+        }
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body class="direction-d2 page-home d2-home">
+    <a class="skip" href="#main">跳到正文</a>
+<header class="masthead masthead--full">
+      <div class="shell shell--wide">
+        <div class="masthead__row">
+          <h1 class="brand"><a href="home.html">二进制与诗<span class="dot">.</span></a></h1>
+          <span class="masthead__handle label">@Xiaoxin</span>
+        </div>
+        <p class="tagline">一个佛大计算机学生的笔记站 · 计算机系统、算法题解与开发工具的个人笔记。</p>
+        <div class="nav-bar">
+          <nav class="nav" aria-label="主导航">
+              <a href="home.html">目录</a>
+              <a href="archive.html">归档</a>
+              <a href="tags.html">标签</a>
+              <a href="about.html">关于</a>
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="深色模式"
+            title="切换到深色模式"
+          >
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.6" />
+              <path d="M12 1.6v2M12 20.4v2M1.6 12h2M20.4 12h2M4.7 4.7l1.4 1.4M17.9 17.9l1.4 1.4M19.3 4.7l-1.4 1.4M6.1 17.9l-1.4 1.4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <div class="shell shell--wide">
+<section class="survey" aria-labelledby="survey-title">
+  <div class="survey__head">
+    <span class="label" id="survey-title">FIG. 00 / 站点测绘</span>
+    <span class="coord">SCALE 1:1 · <b>2026.10</b></span>
+  </div>
+  <svg class="survey__drawing" viewBox="0 0 960 260" role="img" aria-label="站点结构测绘：文章 4 篇、碎碎念 6 条、现在为 CSAPP 第 6 章">
+    <g stroke="var(--rule)" stroke-width="1">
+      <line x1="24" y1="40" x2="936" y2="40" />
+      <line x1="24" y1="240" x2="936" y2="240" />
+      <line x1="120" y1="40" x2="120" y2="240" />
+      <line x1="360" y1="40" x2="360" y2="240" />
+      <line x1="600" y1="40" x2="600" y2="240" />
+      <line x1="840" y1="40" x2="840" y2="240" />
+      <line x1="120" y1="140" x2="840" y2="140" />
+    </g>
+    <g fill="none" stroke="var(--ink)" stroke-width="1.25">
+      <circle cx="240" cy="140" r="70" />
+      <circle cx="240" cy="140" r="35" opacity=".22" stroke-width="1" />
+      <rect x="410" y="70" width="140" height="140" />
+      <polygon points="760,210 880,210 820,70" />
+    </g>
+    <g class="survey__leaders" stroke="var(--ink-3)" stroke-width="1">
+      <line x1="310" y1="140" x2="360" y2="100" />
+      <line x1="360" y1="100" x2="372" y2="100" />
+      <line x1="480" y1="70" x2="480" y2="46" />
+      <line x1="820" y1="70" x2="820" y2="46" />
+    </g>
+    <circle cx="310" cy="140" r="5.5" fill="var(--red)" />
+    <g class="survey__labels" fill="var(--ink-3)" font-family="ui-monospace, Consolas, monospace" font-size="9" letter-spacing="1.2">
+      <text x="380" y="104">LATEST / 10.19</text>
+      <text x="480" y="34" text-anchor="middle">NOTES / 06</text>
+      <text x="820" y="34" text-anchor="middle">NOW / CSAPP 6</text>
+    </g>
+    <g stroke="var(--ink)" stroke-width="1">
+      <path d="M24 32V40H32" fill="none" />
+      <path d="M936 32V40H928" fill="none" />
+      <path d="M24 248V240H32" fill="none" />
+      <path d="M936 248V240H928" fill="none" />
+    </g>
+  </svg>
+  <div class="survey__foot">
+    <span class="coord"><b>01</b> 文章 · 按时间倒序</span>
+    <span class="coord"><b>02</b> 碎碎念 · 按时间倒序</span>
+    <span class="coord"><b>03</b> 现在 · 每月更新</span>
+  </div>
+</section>
+
+<div class="index-grid">
+  <section class="register" aria-labelledby="register-title">
+    <div class="register__head">
+      <h2 class="label" id="register-title">INDEX / 近期条目</h2>
+      <span class="coord">04 ENTRIES / DESC</span>
+    </div>
+    <div class="register__labels coord" aria-hidden="true">
+      <span>NO.</span><span>TITLE</span><span>DATE</span><span>MIN</span>
+    </div>
+    <ol class="register__list">
+      <li class="register__row">
+        <span class="register__no">A-01</span>
+        <div>
+          <h2><a href="post.html">连续四个整数的异或和性质</a></h2>
+          <p>记 VP 2024 武汉邀请赛时一道题的性质</p>
+          <span class="tag-list">
+            <a class="tag" href="tags.html">算法</a>
+            <a class="tag" href="tags.html">题解</a>
+          </span>
+        </div>
+        <span class="meta">10.19</span>
+        <span class="meta">03</span>
+      </li>
+      <li class="register__row">
+        <span class="register__no">A-02</span>
+        <div>
+          <h2><a href="#">GitHub 配置代理</a></h2>
+          <p>解决 GitHub 连接不稳定的问题</p>
+          <span class="tag-list">
+            <a class="tag" href="tags.html">工具</a>
+            <a class="tag" href="tags.html">Git</a>
+            <a class="tag" href="tags.html">GitHub</a>
+          </span>
+        </div>
+        <span class="meta">09.30</span>
+        <span class="meta">04</span>
+      </li>
+      <li class="register__row">
+        <span class="register__no">A-03</span>
+        <div>
+          <h2><a href="#">快乐数</a></h2>
+          <p>庆祝一下切掉了 CF Div2 D</p>
+          <span class="tag-list">
+            <a class="tag" href="tags.html">算法</a>
+          </span>
+        </div>
+        <span class="meta">09.27</span>
+        <span class="meta">03</span>
+      </li>
+      <li class="register__row">
+        <span class="register__no">A-04</span>
+        <div>
+          <h2><a href="#">第一篇文章</a></h2>
+          <p>我也不知道写来干嘛，反正，这就是第一篇了</p>
+          <span class="tag-list">
+            <a class="tag" href="tags.html">其它</a>
+          </span>
+        </div>
+        <span class="meta">09.19</span>
+        <span class="meta">01</span>
+      </li>
+    </ol>
+  </section>
+
+  <aside class="log-rail" aria-label="碎碎念与现在">
+    <section class="rail-block" aria-labelledby="log-title">
+      <div class="rail-block__head">
+        <h2 class="label" id="log-title">LOG / 碎碎念</h2>
+        <a href="notes.html">全部 →</a>
+      </div>
+      <ol class="log-mini">
+        <li>
+          <a href="notes.html#n-2026-10-22">
+            <time datetime="2026-10-22">10.22</time>
+            <p>设计 brief 写完了。先把「素」拆成 A/B/C/D，再谈视觉。</p>
+          </a>
+        </li>
+        <li>
+          <a href="notes.html#n-2026-10-21">
+            <time datetime="2026-10-21">10.21</time>
+            <p>缓存实验改到第三版，终于把 LRU 的命中率算对了。</p>
+          </a>
+        </li>
+        <li>
+          <a href="notes.html#n-2026-10-19">
+            <time datetime="2026-10-19">10.19</time>
+            <p>武汉邀请赛 VP 三题爆罚时。F 题想复杂了整整一页。</p>
+          </a>
+        </li>
+      </ol>
+    </section>
+    <section class="rail-block" aria-labelledby="status-title">
+      <div class="rail-block__head">
+        <h2 class="label" id="status-title">STATUS / 现在</h2>
+        <a href="now.html">展开 →</a>
+      </div>
+      <p class="status-mini"><i aria-hidden="true"></i><span>CSAPP 第 6 章 · 蓝桥杯 · 给博客补归档。<a href="now.html">看全部 →</a></span></p>
+    </section>
+  </aside>
+</div>
+      </div>
+    </main>
+<footer class="colophon">
+      <div class="shell shell--wide">
+        <div class="colophon__row label">
+          <span>© 2026 小鑫</span>
+          <nav class="colophon__nav" aria-label="页脚导航">
+            <a href="notes.html">碎碎念</a><span class="sep">/</span>
+            <a href="now.html">现在</a><span class="sep">/</span>
+            <a href="https://github.com/Lucky-Xiaoxin" rel="noopener">GitHub</a><span class="sep">/</span>
+            <a href="mailto:yggdya@163.com">Email</a><span class="sep">/</span>
+            <a href="#">RSS</a>
+          </nav>
+        </div>
+        <p class="colophon__note meta">Astro 构建 · GitHub Pages 托管 · 订阅 RSS<span class="proto-note">设计原型 方向二 · 测绘 · 非线上版本</span></p>
+      </div>
+    </footer>
+<script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.querySelector('.theme-toggle');
+        if (!toggle) return;
+        function sync() {
+          var dark = root.getAttribute('data-theme') === 'dark';
+          toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+          toggle.setAttribute('title', dark ? '切换到浅色模式' : '切换到深色模式');
+        }
+        toggle.addEventListener('click', function () {
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('xin-blog-proto-theme', next); } catch (e) {}
+          sync();
+        });
+        sync();
+      })();
+    </script>
+  </body>
+</html>

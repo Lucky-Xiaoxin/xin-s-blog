@@ -1,0 +1,783 @@
+[
+  {
+    "label": "notes",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-notes-1440-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "104px 608px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-notes-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "343.219px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 320,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 320,
+        "innerWidth": 320,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "280px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 768,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "104px 547.844px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 1024,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "104px 608px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 1440,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-notes-1440-dark.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "dark",
+        "paper": "#111214",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "104px 608px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes",
+    "width": 390,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "dark",
+        "paper": "#111214",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "343.219px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": null,
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes-target",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-notes-target-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "343.219px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": {
+          "w": "2px",
+          "bg": "rgb(216, 30, 30)",
+          "pos": "absolute"
+        },
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes-target",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": "104px 608px",
+        "noteLinkBox": {
+          "w": 44,
+          "h": 44
+        },
+        "targetRule": {
+          "w": "2px",
+          "bg": "rgb(216, 30, 30)",
+          "pos": "absolute"
+        },
+        "months": [
+          "notes-2026-10",
+          "notes-2026-09"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-now-1440-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-now-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 320,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 320,
+        "innerWidth": 320,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 768,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 1024,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 1440,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-now-1440-dark.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "dark",
+        "paper": "#111214",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 390,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "dark",
+        "paper": "#111214",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": true,
+    "shot": "p1b-now-390-print.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": true,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": true,
+        "nowBody": false,
+        "emptyState": false,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "about",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "about",
+    "width": 320,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-footer-320-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 320,
+        "innerWidth": 320,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "home",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ]
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "404",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ]
+      }
+    },
+    "errors": []
+  }
+]

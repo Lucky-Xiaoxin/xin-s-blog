@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>设计原型 · 方向一 · 卷首 · 碎碎念</title>
+    <meta name="description" content="二进制与诗的下一阶段设计原型，非线上版本。" />
+    <link rel="stylesheet" href="../assets/base.css" />
+    <link rel="stylesheet" href="../assets/d1.css" />
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var t = q.get('theme');
+        if (t !== 'dark' && t !== 'light') {
+          try { t = localStorage.getItem('xin-blog-proto-theme'); } catch (e) {}
+        }
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body class="direction-d1 page-notes d1-notes">
+    <a class="skip" href="#main">跳到正文</a>
+<header class="masthead masthead--compact">
+      <div class="shell shell--mid">
+        <a class="brand" href="home.html">二进制与诗<span class="dot">.</span></a>
+        <div class="nav-bar">
+          <nav class="nav" aria-label="主导航">
+              <a href="home.html">目录</a>
+              <a href="archive.html">归档</a>
+              <a href="tags.html">标签</a>
+              <a href="about.html">关于</a>
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="深色模式"
+            title="切换到深色模式"
+          >
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.6" />
+              <path d="M12 1.6v2M12 20.4v2M1.6 12h2M20.4 12h2M4.7 4.7l1.4 1.4M17.9 17.9l1.4 1.4M19.3 4.7l-1.4 1.4M6.1 17.9l-1.4 1.4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <div class="shell shell--mid">
+<header class="page-head">
+  <p class="kicker">页边 / NOTES</p>
+  <h1>碎碎念</h1>
+  <p class="page-head__desc">短、带时间、随时记。没有标题的小事，按时间倒序；每条都有自己的锚点。</p>
+  <div class="page-head__meta">
+    <span class="meta">06 条 · 最近更新 2026.10.22</span>
+    <a class="btn" href="#">订阅碎碎念 RSS <span class="arrow">→</span></a>
+  </div>
+</header>
+
+<div class="note-stream">
+  <section class="note-month" aria-labelledby="notes-2026-10">
+    <h2 class="note-month__title" id="notes-2026-10">2026 年 10 月</h2>
+    <ol class="note-list">
+      <li class="note" id="n-2026-10-22">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-10-22">10.22</time>
+          <span class="note__time">19:40</span>
+          <span class="note__no">N° 006</span>
+        </div>
+        <div class="note__body">
+          <p>今天把设计 brief 写完了。最大的收获是：先把「素」拆成 A/B/C/D，再谈视觉，不然设计 Agent 只会给一张更花的皮。</p>
+          <a class="note__link" href="#n-2026-10-22" aria-label="10 月 22 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+      <li class="note" id="n-2026-10-21">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-10-21">10.21</time>
+          <span class="note__time">23:10</span>
+          <span class="note__no">N° 005</span>
+        </div>
+        <div class="note__body">
+          <p>下课后在图书馆把 CSAPP 第 6 章的缓存实验改到第三版，终于把 LRU 的命中率算对了。回宿舍才想起来没吃晚饭。</p>
+          <a class="note__link" href="#n-2026-10-21" aria-label="10 月 21 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+      <li class="note" id="n-2026-10-19">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-10-19">10.19</time>
+          <span class="note__time">21:05</span>
+          <span class="note__no">N° 004</span>
+        </div>
+        <div class="note__body">
+          <p>武汉邀请赛 VP，3 题爆罚时，总排 177/228。回来看题解，F 题我想复杂了整整一页。</p>
+          <a class="note__link" href="#n-2026-10-19" aria-label="10 月 19 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+      <li class="note" id="n-2026-10-17">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-10-17">10.17</time>
+          <span class="note__time">00:42</span>
+          <span class="note__no">N° 003</span>
+        </div>
+        <div class="note__body">
+          <p>给博客换了中文字体子集，全站衬线从 1.4MB 压到几十 KB。构建前自动跑，结果忘了删缓存，折腾了一晚上。</p>
+          <a class="note__link" href="#n-2026-10-17" aria-label="10 月 17 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+      <li class="note" id="n-2026-10-12">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-10-12">10.12</time>
+          <span class="note__time">16:20</span>
+          <span class="note__no">N° 002</span>
+        </div>
+        <div class="note__body">
+          <p>概率论作业写完了，顺便推了一遍马尔可夫链的平稳分布。比写代码难。</p>
+          <a class="note__link" href="#n-2026-10-12" aria-label="10 月 12 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="note-month" aria-labelledby="notes-2026-09">
+    <h2 class="note-month__title" id="notes-2026-09">2026 年 9 月</h2>
+    <ol class="note-list">
+      <li class="note" id="n-2026-09-30">
+        <div class="note__meta">
+          <time class="note__date" datetime="2026-09-30">09.30</time>
+          <span class="note__time">20:35</span>
+          <span class="note__no">N° 001</span>
+        </div>
+        <div class="note__body">
+          <p>把 GitHub 代理换成了 Watt Toolkit，计时器一开，clone 终于不转圈了。</p>
+          <a class="note__link" href="#n-2026-09-30" aria-label="9 月 30 日碎碎念的固定链接">#</a>
+        </div>
+      </li>
+    </ol>
+  </section>
+</div>
+      </div>
+    </main>
+<footer class="colophon">
+      <div class="shell shell--mid">
+        <div class="colophon__row label">
+          <span>© 2026 小鑫</span>
+          <nav class="colophon__nav" aria-label="页脚导航">
+            <a href="notes.html">碎碎念</a><span class="sep">/</span>
+            <a href="now.html">现在</a><span class="sep">/</span>
+            <a href="https://github.com/Lucky-Xiaoxin" rel="noopener">GitHub</a><span class="sep">/</span>
+            <a href="mailto:yggdya@163.com">Email</a><span class="sep">/</span>
+            <a href="#">RSS</a>
+          </nav>
+        </div>
+        <p class="colophon__note meta">Astro 构建 · GitHub Pages 托管 · 订阅 RSS<span class="proto-note">设计原型 方向一 · 卷首 · 非线上版本</span></p>
+      </div>
+    </footer>
+<script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.querySelector('.theme-toggle');
+        if (!toggle) return;
+        function sync() {
+          var dark = root.getAttribute('data-theme') === 'dark';
+          toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+          toggle.setAttribute('title', dark ? '切换到浅色模式' : '切换到深色模式');
+        }
+        toggle.addEventListener('click', function () {
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('xin-blog-proto-theme', next); } catch (e) {}
+          sync();
+        });
+        sync();
+      })();
+    </script>
+  </body>
+</html>
