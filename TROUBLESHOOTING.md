@@ -21,7 +21,7 @@ npm run build    → Markdown 编译成 HTML（KaTeX 公式、Shiki 高亮都在
 npm run check:dist → 产物检查（链接/锚点/草稿泄漏/SEO/RSS/体积）
         │           npm run verify = check + 生产子路径 build + check:dist
         ▼
-git push origin main → GitHub Actions 自动跑上面这些 → 全绿才发布
+git push origin main → GitHub Actions 跑 check + build + check:dist → 全绿才发布
         ▼
 https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓存）
 ```
