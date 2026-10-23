@@ -3,7 +3,7 @@ name: 构建并发布到 GitHub Pages
 on:
   push:
     branches: [main]
-  # PR 门禁：把 check + build 提前到合并前跑。workflow 文件取自主分支，
+  # PR 门禁：把 check + build + check:dist 提前到合并前跑。workflow 文件取自主分支，
   # 所以这条要合进 main 之后的下一个 PR 才开始生效（本 PR 自己看不到 check）
   pull_request:
     branches: [main]

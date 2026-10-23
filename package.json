@@ -15,7 +15,8 @@
     "check": "astro check",
     "check:dist": "node scripts/check-dist.mjs",
     "verify": "node scripts/verify.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "preview:prod": "node scripts/preview.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",

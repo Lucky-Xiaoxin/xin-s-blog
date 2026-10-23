@@ -10,12 +10,16 @@
 node -v            # 需要 20.3+ / 22+，见 package.json 的 engines
 npm install
 npm run dev        # http://localhost:4321/
-npm run build      # 产出到 dist/
+npm run build      # 产出到 dist/（默认 base=/）
+npm run check:dist # 只检查已有 dist/（默认与普通 build 一致）
+npm run preview    # 预览普通 dist/（配合上面的 build），端口看输出
 npm run verify     # check + 生产子路径构建 + 产物检查（链接/草稿/SEO/体积）
-npm run preview    # 预览 dist/，实际端口看命令输出
+npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 ```
 
-`npm run verify` 用线上同款参数（`BASE_PATH=/xin-s-blog/`、`SITE_URL=https://lucky-xiaoxin.github.io`、`TZ=Etc/UTC`）重新构建，再跑 `scripts/check-dist.mjs`：检查必需产物、站内链接/锚点、草稿泄漏、canonical/OG、RSS/sitemap 与体积预算。任何一项失败都会返回非零退出码，CI 在 build 后也会跑同款 `npm run check:dist`。（Windows Git Bash 下手动覆盖 `BASE_PATH` 时先 `export MSYS2_ENV_CONV_EXCL=BASE_PATH`，否则 `/xin-s-blog` 会被 shell 改写成 `C:/...`；直接跑 `npm run verify` / `npm run check:dist` 不受影响。）
+`npm run verify` 用线上同款参数（`BASE_PATH=/xin-s-blog/`、`SITE_URL=https://lucky-xiaoxin.github.io`、`TZ=Etc/UTC`）重新构建，再跑 `scripts/check-dist.mjs`：检查必需产物、站内链接/锚点、草稿泄漏、canonical/OG、RSS/sitemap 与体积预算。任何一项失败都会返回非零退出码，CI 在 build 后会以同款线上参数跑 `npm run check:dist`。
+
+`npm run check:dist` 默认按 `BASE_PATH=/` 检查普通 `npm run build` 的产物；要检查生产子路径请用 `npm run verify`（它会自动以 `/xin-s-blog/` 重建），或显式传入 `BASE_PATH`/`SITE_URL`。`npm run preview` 对应普通构建，`npm run preview:prod` 对应 verify 的产物。（Windows Git Bash 下手动覆盖 `BASE_PATH` 时先 `export MSYS2_ENV_CONV_EXCL=BASE_PATH`，否则 `/xin-s-blog` 会被 shell 改写成 `C:/...`；直接跑 `npm run verify` / `npm run check:dist` / `npm run preview:prod` 不受影响。）
 
 ### 体积预算（2026-10-23 基线）
 

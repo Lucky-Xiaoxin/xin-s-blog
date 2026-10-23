@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.resolve(ROOT, process.env.DIST_DIR || 'dist');
-const BASE = (process.env.BASE_PATH || '/xin-s-blog').replace(/\/+$/, '');
+// 默认与 astro.config.mjs 的 base 默认值（/）一致；生产子路径由 verify/CI 显式传。
+const BASE = (process.env.BASE_PATH || '/').replace(/\/+$/, '');
 const BASE_PATH_DECODED = decodeURIComponent(BASE);
 const SITE = (process.env.SITE_URL || 'https://lucky-xiaoxin.github.io').replace(/\/+$/, '');
 const SITE_ROOT = `${SITE}${BASE}/`;
@@ -52,6 +53,25 @@ function attrsOf(tag) {
   const out = {};
   const re = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/g;
   for (const m of tag.matchAll(re)) out[m[1].toLowerCase()] = m[2] ?? m[3] ?? m[4] ?? '';
+  return out;
+}
+
+/**
+ * 只从实际开始标签里提取 href/src，避免把代码块/正文中的属性文本当成链接。
+ * script/style 的内容先剥掉；标签内的引号允许出现 >。
+ */
+function linkAttrs(html) {
+  const cleaned = html
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/(<script\b[^>]*>)[\s\S]*?(<\/script\s*>)/gi, '$1$2')
+    .replace(/(<style\b[^>]*>)[\s\S]*?(<\/style\s*>)/gi, '$1$2');
+  const out = [];
+  for (const tag of cleaned.matchAll(/<[a-zA-Z](?:[^>"']|"[^"]*"|'[^']*')*>/g)) {
+    const attrs = attrsOf(tag[0]);
+    for (const name of ['href', 'src']) {
+      if (Object.hasOwn(attrs, name)) out.push(attrs[name].trim());
+    }
+  }
   return out;
 }
 
@@ -119,8 +139,7 @@ for (const file of htmlFiles) {
   const html = read(file);
   const pageUrl = new URL(`https://check.invalid${BASE}/${relDist(file)}`);
 
-  for (const m of html.matchAll(/\b(href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi)) {
-    const raw = (m[2] ?? m[3] ?? m[4] ?? '').trim();
+  for (const raw of linkAttrs(html)) {
     if (!raw) continue;
     if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('//')) continue;
 
@@ -182,10 +201,8 @@ for (const file of htmlFiles) {
       continue;
     }
     anchorCount += 1;
-    if (!targetFile.endsWith('.html')) {
-      fail('links', relDist(file), `锚点指向非 HTML：${raw}`);
-      continue;
-    }
+    // 文件/SVG/PDF 的 fragment 不是页面锚点，无法用 HTML id 校验；只查文件存在性。
+    if (!targetFile.endsWith('.html')) continue;
     if (!idsIn(targetFile).has(decodeHtml(decodedHash))) {
       fail('links', relDist(file), `锚点 #${decodedHash} 在 ${relDist(targetFile)} 中找不到 id`);
     }
@@ -198,11 +215,6 @@ function frontmatter(text) {
   return m ? m[1] : '';
 }
 
-function titleOf(fm) {
-  const m = fm.match(/^title\s*:\s*(?:"([^"]*)"|'([^']*)'|(.+?))\s*$/m);
-  return m ? (m[1] ?? m[2] ?? m[3] ?? '').trim() : '';
-}
-
 const posts = [];
 if (!fs.existsSync(POSTS_DIR)) {
   fail('drafts', 'src/content/posts', '文章目录不存在');
@@ -211,7 +223,6 @@ if (!fs.existsSync(POSTS_DIR)) {
     const fm = frontmatter(read(file));
     posts.push({
       slug: path.relative(POSTS_DIR, file).split(path.sep).join('/').replace(/\.md$/, ''),
-      title: titleOf(fm),
       draft: /^\s*draft\s*:\s*(['"]?)true\1\s*(?:#.*)?$/im.test(fm),
       source: path.relative(ROOT, file).split(path.sep).join('/'),
     });
@@ -231,10 +242,12 @@ for (const draft of drafts) {
   if (isFile(page)) {
     fail('drafts', relDist(page), `草稿页被生成：${draft.slug}（${draft.source}）`);
   }
+  // 只按 URL 判定：标题子串会命中导航/页脚里的常见词（如“订阅”）造成误报；
+  // 真实泄漏到列表/RSS 时一定伴随文章 URL。
   const needles = [`posts/${draft.slug}/`, `posts/${encodeSlug(draft.slug)}/`];
   for (const target of leakTargets) {
     const hay = read(target);
-    if (needles.some((n) => hay.includes(n)) || (draft.title && hay.includes(draft.title))) {
+    if (needles.some((n) => hay.includes(n))) {
       fail('drafts', relDist(target), `包含草稿 ${draft.slug}（${draft.source}）`);
     }
   }

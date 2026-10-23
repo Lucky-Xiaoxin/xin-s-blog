@@ -26,6 +26,8 @@ git push origin main → GitHub Actions 自动跑上面这些 → 全绿才发�
 https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓存）
 ```
 
+`npm run check:dist` 默认按普通 build（`base=/`）检查；`npm run verify` 会用生产子路径重新构建并检查。verify 之后预览用 `npm run preview:prod`，不是 `npm run preview`。
+
 ## 对号入座表
 
 | 报错原文（关键词） | 人话 | 修法 |
@@ -39,10 +41,13 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | 公式在页面上**标红** | KaTeX 语法错（如 `\foo` 不存在的命令） | 只影响那一个公式，不挡发布。中文、→、≤ 可直接写，不用 \text |
 | 推完 GitHub，线上刷新没变 | 浏览器缓存（约 10 分钟） | 博客页 Ctrl+F5；在 github.com 上刷新、关浏览器重开都没用 |
 | `could not read Username` / GCM 弹窗 | git 推送凭据过期 | 跟着弹窗登录一次 GitHub 即可 |
-| Actions 页面里 run 红了 | 构建门禁拦下了一次有问题的发布 | 点进 run 看是哪一步：check 红=类型错，build 红=多半是 frontmatter，check:dist 红=看下面四行对应项。线上没坏，修好再推 |
+| Actions 页面里 run 红了 | 构建门禁拦下了一次有问题的发布 | 点进 run 看是哪一步：check 红=类型错，build 红=多半是 frontmatter，check:dist 红=按 FAIL 后的类别找对应行。线上没坏，修好再推 |
+| `npm run preview` 后访问 `/xin-s-blog/` 404 | preview 默认按 base=/ 启动，而 dist 是 verify 的生产子路径产物 | 改用 `npm run preview:prod`；普通 `npm run build` 的产物才用 `npm run preview` |
 | `FAIL links ... 根绝对链接缺少 /xin-s-blog 前缀` | 站内链接写成了 `/posts/...` 这类根绝对路径 | 用 `src/const.ts` 的 `u()`/`resolveHref()` 生成；文章正文资源用相对路径，不要用 `/` 开头 |
 | `FAIL drafts ... 草稿页被生成` / `包含草稿` | `draft: true` 的文章漏进了产物 | 查 frontmatter 的 `draft`；`getStaticPaths` 只能调 `getPostsForStaticPaths()`，列表/RSS 只能调 `getPublishedPosts()` |
 | `FAIL links ... 锚点 #xxx 在 ... 中找不到 id` | 页内链接指向不存在的标题 id | 检查 TOC/锚点拼写，确认目标页生成了对应 `id`；同页 `#xxx` 也会被查 |
+| `FAIL seo ...` | 文章页缺 canonical/OG/description，或 404 页多了 canonical/og:url | 查 `src/layouts/Base.astro` 的 head；404 只保留 noindex，不要 canonical |
+| `FAIL rss ...` / `FAIL sitemap ...` | RSS/sitemap 缺已发布文章，或 sitemap 混入了 `/404/` | 检查 `src/lib/posts.ts` 的 `getPublishedPosts()`、`src/pages/rss.xml.js` 和 `@astrojs/sitemap` 的路由输出 |
 | `FAIL size ... 当前 X 上限 Y，超出 Z` | 产物超预算（CSS/JS/字体/最大 HTML/dist） | 看是哪一项；先确认新增内容是否必要，不要直接抬 `scripts/check-dist.mjs` 里的上限。基线见 README |
 | 文章页 404 | 文件名改了（旧 URL 消失）或 draft 还是 true | Pages 没有重定向机制，改文件名=换 URL，别改已发布文章的文件名 |
 | 标题里个别字显示成系统宋体 | 两种成因：① 这个字没进子集扫描范围（子集只收 .astro/.ts/.js 全文与 md 的 frontmatter/标题/引用行，且 dev 会话中途新写的字要等下次重启才纳入）② 源字体本来就没有这个字的字形（生僻字/韩文等） | ①重启 `npm run dev` 或重跑 `npm run build` 自动重建子集；②构建日志会打 `[subset-fonts] ⚠ 源字体缺字…`，无解、只回退，不挡发布，介意就换措辞 |
