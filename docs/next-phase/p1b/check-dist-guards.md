@@ -1,10 +1,10 @@
 # P1b 门禁：`check-dist` 新增检查
 
-> 状态：已批准 · 2026-10-23（P1b 门禁契约，待实施）
+> 状态：实施中 · 2026-10-23（P1b 门禁已按此实现并跑完注入，待用户本地试用确认）
 > 上游：`p0/verify.md`、`p1a/check-dist-guards.md`（F1/F2 已修）、`p1b/content-model.md`、`p1b/pages-and-feed.md`
 > 下游：`npm run verify`、CI build job
 > Owner：实现规划师
-> 复核/证据：未开始（实施后把注入结果写进 `review.md`）
+> 复核/证据：`review.md` §3.3（G1–G11 注入表）
 
 P0/P1a 的 `check-dist` 已覆盖：必需产物、站内链接/锚点、文章草稿泄漏、目录式 canonical 精确匹配、文章 OG、404 noindex/无 OG、RSS/sitemap、体积。P1b 要把 notes/now 纳入同一套门禁，**不引入 XML/HTML 重依赖**，继续用现有 `startTags`/`attrsOf`/正则。
 

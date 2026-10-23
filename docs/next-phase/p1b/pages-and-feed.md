@@ -1,10 +1,10 @@
 # P1b 页面与 feed：`/notes/`、`/notes/rss.xml`、`/now/`
 
-> 状态：已批准 · 2026-10-23（P1b 页面/feed 契约，待实施）
+> 状态：实施中 · 2026-10-23（P1b 页面/feed 已按此实现，待用户本地试用确认）
 > 上游：`design-contract.md` §5.4/§7、`notes-contract.md` §4、`now-contract.md` §4/§6、`content-model.md`
 > 下游：P1c 首页（notes/now 区块）、P1e SEO/a11y
 > Owner：实现规划师
-> 复核/证据：未开始
+> 复核/证据：`review.md` §3（页面/feed 产物）、§4（浏览器矩阵）、§6（允许差异）
 
 ## 1. 总览
 

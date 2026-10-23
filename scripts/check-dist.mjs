@@ -11,6 +11,8 @@ const BASE_PATH_DECODED = decodeURIComponent(BASE);
 const SITE = (process.env.SITE_URL || 'https://lucky-xiaoxin.github.io').replace(/\/+$/, '');
 const SITE_ROOT = `${SITE}${BASE}/`;
 const POSTS_DIR = path.join(ROOT, 'src', 'content', 'posts');
+const NOTES_DIR = path.join(ROOT, 'src', 'content', 'notes');
+const PAGES_DIR = path.join(ROOT, 'src', 'content', 'pages');
 
 const KB = 1024;
 const MB = 1024 * 1024;
@@ -102,7 +104,16 @@ const files = walk(DIST);
 const htmlFiles = files.filter((p) => p.endsWith('.html'));
 
 // ---------- 3.1 必需产物 ----------
-const REQUIRED = ['index.html', '404.html', 'rss.xml', 'sitemap-index.xml', 'sitemap-0.xml'];
+const REQUIRED = [
+  'index.html',
+  '404.html',
+  'rss.xml',
+  'sitemap-index.xml',
+  'sitemap-0.xml',
+  'notes/index.html',
+  'notes/rss.xml',
+  'now/index.html',
+];
 const missingArtifacts = REQUIRED.filter((f) => !isFile(path.join(DIST, f)));
 for (const f of missingArtifacts) fail('artifacts', f, '必需产物缺失');
 
@@ -240,7 +251,11 @@ const encodeSlug = (slug) => slug.split('/').map(encodeURIComponent).join('/');
 const postUrl = (post) => `${SITE_ROOT}posts/${encodeSlug(post.slug)}/`;
 
 const leakTargets = htmlFiles.filter((p) => !p.startsWith(`${DIST}${path.sep}posts${path.sep}`));
-for (const p of [path.join(DIST, 'rss.xml'), path.join(DIST, 'sitemap-0.xml')]) {
+for (const p of [
+  path.join(DIST, 'rss.xml'),
+  path.join(DIST, 'sitemap-0.xml'),
+  path.join(DIST, 'notes', 'rss.xml'),
+]) {
   if (isFile(p)) leakTargets.push(p);
 }
 for (const draft of drafts) {
@@ -259,7 +274,81 @@ for (const draft of drafts) {
   }
 }
 
-// ---------- 3.5 canonical / OG ----------
+// ---------- 3.5 碎碎念 / now：源扫描与草稿泄漏 ----------
+// notes 只收顶层 *.md（与 glob({ pattern: '*.md' }) 一致），`_` 前缀是模板、永远不是 note
+const NOTE_ID_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const notes = [];
+if (!fs.existsSync(NOTES_DIR)) {
+  fail('drafts', 'src/content/notes', '碎碎念目录不存在');
+} else {
+  for (const entry of fs.readdirSync(NOTES_DIR, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    if (entry.name.startsWith('_')) continue;
+    const file = path.join(NOTES_DIR, entry.name);
+    const id = entry.name.replace(/\.md$/, '');
+    const source = path.relative(ROOT, file).split(path.sep).join('/');
+    if (!NOTE_ID_RE.test(id)) {
+      fail('drafts', source, '碎碎念文件名非法（须为 YYYY-MM-DD-slug.md）');
+      continue;
+    }
+    const fm = frontmatter(read(file));
+    notes.push({
+      id,
+      draft: /^\s*draft\s*:\s*(['"]?)true\1\s*(?:#.*)?$/im.test(fm),
+      source,
+    });
+  }
+}
+const publishedNotes = notes.filter((n) => !n.draft);
+const draftNotes = notes.filter((n) => n.draft);
+
+/** 精确取开始标签上的 id 属性值（data-id 之类不算） */
+function hasIdValue(file, value) {
+  for (const tag of startTags(read(file))) {
+    const attrs = attrsOf(tag);
+    if (Object.hasOwn(attrs, 'id') && decodeHtml(attrs.id.trim()) === value) return true;
+  }
+  return false;
+}
+
+// 草稿 note 的锚点不得出现在任何 HTML / feed / sitemap 里
+for (const draft of draftNotes) {
+  const anchor = `n-${draft.id}`;
+  for (const target of leakTargets) {
+    if (hasIdValue(target, anchor)) {
+      fail('drafts', relDist(target), `包含草稿 note ${draft.id} 的锚点`);
+    }
+    if (read(target).includes(`#${anchor}`)) {
+      fail('drafts', relDist(target), `包含草稿 note ${draft.id} 的锚点链接`);
+    }
+  }
+}
+
+// now.md：草稿时 /now/ 只能走空状态，不渲染状态行与正文
+const nowSource = path.join(PAGES_DIR, 'now.md');
+let nowDraft = false;
+if (!isFile(nowSource)) {
+  fail('drafts', 'src/content/pages/now.md', 'now.md 缺失');
+} else {
+  const fm = frontmatter(read(nowSource));
+  nowDraft = /^\s*draft\s*:\s*(['"]?)true\1\s*(?:#.*)?$/im.test(fm);
+}
+
+if (nowDraft) {
+  const nowPage = path.join(DIST, 'now', 'index.html');
+  if (isFile(nowPage)) {
+    for (const tag of startTags(read(nowPage))) {
+      const classes = (attrsOf(tag).class ?? '').split(/\s+/).filter(Boolean);
+      if (classes.includes('now-status') || classes.includes('now-body')) {
+        fail('drafts', relDist(nowPage), '渲染了草稿 now 的状态/正文');
+        break;
+      }
+    }
+  }
+}
+
+// ---------- 3.6 canonical / OG ----------
 const postPages = new Set(
   htmlFiles.filter((p) => relDist(p).startsWith('posts/') && relDist(p).endsWith('/index.html')),
 );
@@ -320,7 +409,7 @@ if (isFile(notFoundPage)) {
   }
 }
 
-// ---------- 3.6 RSS / sitemap ----------
+// ---------- 3.7 RSS / sitemap ----------
 const rssPath = path.join(DIST, 'rss.xml');
 const sitemapPath = path.join(DIST, 'sitemap-0.xml');
 const sitemapIndexPath = path.join(DIST, 'sitemap-index.xml');
@@ -334,6 +423,71 @@ if (isFile(rssPath)) {
     const link = postUrl(post);
     if (!rss.includes(link)) fail('rss', 'rss.xml', `缺少已发布文章链接：${link}`);
   }
+  // 主 feed 只发文章，不得混入碎碎念
+  if (/#n-/.test(rss)) fail('rss', 'rss.xml', '不应包含碎碎念锚点');
+  if (rss.includes(`${SITE_ROOT}notes/`)) fail('rss', 'rss.xml', '不应包含碎碎念页面链接');
+}
+
+// 碎碎念 feed：与 /notes/ 页面交叉校验
+const notesRssPath = path.join(DIST, 'notes', 'rss.xml');
+const notesPagePath = path.join(DIST, 'notes', 'index.html');
+if (isFile(notesRssPath)) {
+  const feed = read(notesRssPath);
+  if (!/<\?xml\b/.test(feed) || !/<rss\b/.test(feed) || !/<channel>/.test(feed)) {
+    fail('rss', 'notes/rss.xml', '缺少 XML 声明 / rss / channel');
+  }
+  const pageIds = isFile(notesPagePath) ? idsIn(notesPagePath) : new Set();
+  // item 链接逐条精确比对：@astrojs/rss 会给相对链接补尾斜杠（#n-xxx → #n-xxx/），
+  // 那样的锚点在页面上并不存在，必须在这里被拦下
+  const itemLinks = [...feed.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
+    const link = m[1].match(/<link>([\s\S]*?)<\/link>/);
+    return link ? link[1] : '';
+  });
+
+  for (const note of publishedNotes) {
+    const expected = `${SITE_ROOT}notes/#n-${note.id}`;
+    if (!itemLinks.includes(expected)) {
+      fail('rss', 'notes/rss.xml', `缺少已发布碎碎念链接：${expected}`);
+    }
+  }
+  for (const draft of draftNotes) {
+    if (feed.includes(`#n-${draft.id}`)) {
+      fail('rss', 'notes/rss.xml', `包含草稿碎碎念锚点：#n-${draft.id}`);
+    }
+  }
+  // 每个 item 链接的锚点都必须能在 /notes/ 页面找到对应 id
+  for (const link of itemLinks) {
+    const hash = link.indexOf('#');
+    if (hash < 0) {
+      fail('rss', 'notes/rss.xml', `item 链接缺少锚点：${link}`);
+      continue;
+    }
+    const anchor = link.slice(hash + 1);
+    if (!pageIds.has(anchor)) {
+      fail('rss', 'notes/rss.xml', `锚点 #${anchor} 在 notes/index.html 中找不到 id`);
+    }
+  }
+  if (itemLinks.length !== publishedNotes.length) {
+    fail(
+      'rss',
+      'notes/rss.xml',
+      `item 数量与已发布碎碎念不一致：期望 ${publishedNotes.length}，实际 ${itemLinks.length}`,
+    );
+  }
+}
+
+// notes 页重复 id：锚点最密集，出问题最先在这里暴露
+if (isFile(notesPagePath)) {
+  const counts = new Map();
+  for (const tag of startTags(read(notesPagePath))) {
+    const attrs = attrsOf(tag);
+    if (!Object.hasOwn(attrs, 'id')) continue;
+    const id = decodeHtml(attrs.id.trim());
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  for (const [id, count] of counts) {
+    if (count > 1) fail('dom', 'notes/index.html', `重复 id: ${id}`);
+  }
 }
 
 if (isFile(sitemapPath)) {
@@ -344,6 +498,8 @@ if (isFile(sitemapPath)) {
     `${SITE_ROOT}about/`,
     `${SITE_ROOT}archive/`,
     `${SITE_ROOT}tags/`,
+    `${SITE_ROOT}notes/`,
+    `${SITE_ROOT}now/`,
   ]);
   for (const post of published) expected.add(postUrl(post));
   for (const file of htmlFiles) {
@@ -357,6 +513,7 @@ if (isFile(sitemapPath)) {
     if (!sitemap.includes(url)) fail('sitemap', 'sitemap-0.xml', `缺少页面：${url}`);
   }
   if (sitemap.includes('/404/')) fail('sitemap', 'sitemap-0.xml', '不应包含 /404/');
+  if (/#n-/.test(sitemap)) fail('sitemap', 'sitemap-0.xml', '不应包含碎碎念锚点');
 }
 
 if (isFile(sitemapIndexPath)) {
@@ -364,7 +521,7 @@ if (isFile(sitemapIndexPath)) {
   if (!index.includes('sitemap-0.xml')) fail('sitemap', 'sitemap-index.xml', '缺少 sitemap-0.xml 引用');
 }
 
-// ---------- 3.7 体积预算 ----------
+// ---------- 3.8 体积预算 ----------
 const rawSum = (arr) => arr.reduce((n, p) => n + fs.statSync(p).size, 0);
 const gzipSum = (arr) => arr.reduce((n, p) => n + zlib.gzipSync(fs.readFileSync(p)).length, 0);
 
@@ -399,18 +556,21 @@ if (isFile(indexHtml)) {
   }
 }
 
-// ---------- 3.8 输出 ----------
+// ---------- 3.9 输出 ----------
 const status = (check) => (failCount(check) > 0 ? 'FAIL' : 'OK');
 const sizeLine = sizeMetrics
   .map((m) => `${m.label} ${m.fmt(m.value)}/${m.fmt(m.limit)} ${m.key === 'fonts' || m.key === 'dist' ? 'MB' : 'KB'}`)
   .join(' · ');
 
 console.log(`[check-dist] base=${BASE || '/'} files=${files.length}`);
-console.log(`  artifacts  ${missingArtifacts.length > 0 ? `FAIL (missing: ${missingArtifacts.join(', ')})` : 'OK (5/5)'}`);
+console.log(
+  `  artifacts  ${missingArtifacts.length > 0 ? `FAIL (missing: ${missingArtifacts.join(', ')})` : `OK (${REQUIRED.length}/${REQUIRED.length})`}`,
+);
 console.log(`  links      ${status('links')} (internal=${internalCount}, anchors=${anchorCount})`);
-console.log(`  drafts     ${status('drafts')} (published=${published.length})`);
+console.log(`  drafts     ${status('drafts')} (published=${published.length}, notes=${publishedNotes.length})`);
 console.log(`  seo        ${status('seo')} (posts=${postPages.size})`);
 console.log(`  rss/sitemap ${failCount('rss') + failCount('sitemap') > 0 ? 'FAIL' : 'OK'}`);
+console.log(`  dom        ${status('dom')} (notes)`);
 console.log(`  size       ${status('size') === 'FAIL' ? 'FAIL · ' : ''}${sizeLine}`);
 console.log(`  inline JS  ${(inlineJs / KB).toFixed(1)} KB (theme script, not budgeted)`);
 

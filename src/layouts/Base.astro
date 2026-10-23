@@ -3,7 +3,7 @@ import '@fontsource/bodoni-moda/400.css';
 import '@fontsource/bodoni-moda/500.css';
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
-import { SITE, NAV, SOCIALS, resolveHref, u } from '../const';
+import { SITE, NAV, PAGE_LINKS, SOCIALS, resolveHref, u } from '../const';
 
 interface Props {
   title?: string;
@@ -159,7 +159,7 @@ const ogImage = new URL(u('/og.png'), Astro.site);
           <span>© {SITE.year} {SITE.author}</span>
           <nav class="colophon__nav" aria-label="页脚导航">
             {
-              SOCIALS.map((s, i) => (
+              [...PAGE_LINKS, ...SOCIALS].map((s, i) => (
                 <>
                   {i > 0 && <span class="sep">/</span>}
                   <a href={resolveHref(s.href)} rel={/^https?:/i.test(s.href) ? 'noopener' : undefined}>

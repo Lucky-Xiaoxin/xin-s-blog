@@ -1,0 +1,140 @@
+[
+  {
+    "label": "notes-empty",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-notes-empty-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": null,
+        "targetRule": null,
+        "months": []
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "notes-empty",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "noteCols": null,
+        "targetRule": null,
+        "months": []
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now-empty",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1b-now-empty-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": false,
+        "nowBody": false,
+        "emptyState": true,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "now-empty",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "overflow": [],
+        "theme": "light",
+        "paper": "#ffffff",
+        "isPrint": false,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "nowStatus": false,
+        "nowBody": false,
+        "emptyState": true,
+        "nowCols": null
+      }
+    },
+    "errors": []
+  }
+]

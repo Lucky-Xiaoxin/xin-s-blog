@@ -15,6 +15,12 @@ export const NAV = [
   { href: '/about', label: '关于', key: 'about' },
 ];
 
+/** 页脚里的站内页面入口（碎碎念 / 现在）；联系方式另见 SOCIALS */
+export const PAGE_LINKS = [
+  { label: '碎碎念', href: '/notes' },
+  { label: '现在', href: '/now' },
+];
+
 export const SOCIALS = [
   { label: 'GitHub', href: 'https://github.com/Lucky-Xiaoxin' },
   { label: 'Email', href: 'mailto:yggdya@163.com' },

@@ -1009,6 +1009,18 @@ a.tag:hover {
   .skip {
     display: none;
   }
+  /* 打印时正文不分栏，隐藏纯屏幕元素 */
+  .now-body.prose {
+    column-count: 1;
+  }
+  .now-foot,
+  .now-status i,
+  .note__link {
+    display: none;
+  }
+  .note {
+    break-inside: avoid;
+  }
 }
 
 /* 系统要求减少动效：只关动画/过渡，不影响主题初始状态 */
@@ -1286,6 +1298,177 @@ a.tag:hover {
   color: var(--red);
 }
 
+/* ============ 碎碎念 ============ */
+.note-stream {
+  margin: 0;
+}
+.note-month {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+.note-month:first-child {
+  margin-top: 0;
+}
+.note-month__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.6rem);
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ink);
+  scroll-margin-top: 2rem;
+}
+.note-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.note {
+  position: relative;
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 2rem;
+}
+.note__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.note__date {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.note__time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+.note__body {
+  min-width: 0;
+}
+.note__body > :first-child {
+  margin-top: 0;
+}
+.note__body > :last-child {
+  margin-bottom: 0;
+}
+/* 锚点热区 ≥44×44px（字符本身可以小），不靠 hover 才出现 */
+.note__body .note__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -1.25rem 0 0 -0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--ink-3);
+  border-bottom: 0;
+  padding-bottom: 0;
+  transition: color 0.18s var(--ease);
+}
+.note__body .note__link:hover {
+  color: var(--red);
+  border-bottom: 0;
+}
+/* 命中锚点时左侧红规线；绝对定位，不改变列宽 */
+.note:target::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--red);
+}
+.notes-foot {
+  margin-top: 2.5rem;
+  color: var(--ink-2);
+}
+.notes-foot a,
+.now-foot a,
+.empty-state a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.notes-foot a:hover,
+.now-foot a:hover,
+.empty-state a:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+/* ============ 现在 ============ */
+.now-head {
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+.now-head h1 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(2.2rem, 6vw, 3rem);
+}
+.now-lead {
+  max-width: 38rem;
+  margin: 0 0 1.2rem;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  text-wrap: pretty;
+}
+.now-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--ink);
+}
+.now-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  flex: none;
+}
+/* 正文有 ## 小节时才分栏；首版正文为空，不触发 */
+.now-body.prose {
+  column-count: 2;
+  column-gap: clamp(2rem, 5vw, 4rem);
+  counter-reset: now-section;
+}
+.now-body.prose h2 {
+  break-after: avoid;
+  counter-increment: now-section;
+}
+/* 编号用伪元素承担（纯装饰，不进读屏）；覆盖 .prose h2 的红方块标记 */
+.now-body.prose h2::before {
+  content: counter(now-section, decimal-leading-zero);
+  width: auto;
+  height: auto;
+  margin-top: 0.42em;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--red);
+}
+.now-body.prose ul,
+.now-body.prose p {
+  break-inside: avoid;
+}
+.now-foot {
+  margin-top: 2.5rem;
+  color: var(--ink-2);
+}
+
+/* ============ 空状态 ============ */
+.empty-state {
+  margin: 2rem 0;
+  color: var(--ink-2);
+}
+
 /* ============ 窄屏 ============ */
 @media (max-width: 40rem) {
   .nav {
@@ -1324,6 +1507,20 @@ a.tag:hover {
     gap: 0.35rem 0.9rem;
     margin-top: 0.45rem;
     text-align: left;
+  }
+  /* 碎碎念：窄屏单列，元信息与日期同一行 */
+  .note {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .note__meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  /* 现在：窄屏正文单列 */
+  .now-body.prose {
+    column-count: 1;
   }
 }
 

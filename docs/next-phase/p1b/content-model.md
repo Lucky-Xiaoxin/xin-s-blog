@@ -1,10 +1,10 @@
 # P1b 内容模型：notes 与 pages
 
-> 状态：已批准 · 2026-10-23（P1b 内容模型，待实施）
+> 状态：实施中 · 2026-10-23（P1b 内容模型已按此实现，待用户本地试用确认）
 > 上游：`notes-contract.md`、`now-contract.md`、`design-contract.md` §5.4/§6.8
 > 下游：`src/content.config.ts`、`src/lib/notes.ts`、`src/lib/now.ts`、`/notes/`、`/now/`
 > Owner：实现规划师
-> 复核/证据：未开始
+> 复核/证据：`review.md` §2（数据层校验用例）、§5（字体子集抽查）
 
 本文把上游契约里容易歧义的地方钉死：锚点、排序、校验、草稿、日期语义、字体子集来源。语义冲突时以本文 + `AGENTS.md` 不变量为准；要改先改本文并征得用户同意。
 

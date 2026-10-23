@@ -1,10 +1,10 @@
 # P1b 测试计划：notes / now / feed
 
-> 状态：已批准 · 2026-10-23（测试计划；实施后把真实结果写进 `review.md`）
+> 状态：实施中 · 2026-10-23（测试已按本计划执行，真实结果见 `review.md`）
 > 上游：`p1b/README.md`、`content-model.md`、`pages-and-feed.md`、`check-dist-guards.md`
-> 下游：`p1b/review.md`（实施后填真实验证结果）
+> 下游：`p1b/review.md`
 > Owner：实现规划师
-> 复核/证据：未开始
+> 复核/证据：`review.md` §2–§5（用例结果、注入表、浏览器矩阵、体积）
 
 ## 1. 测试对象
 
@@ -76,11 +76,15 @@ npm run preview:prod          # 生产子路径预览（截图/浏览器矩阵�
 
 ### 4.1 字体抽查命令（一次性，不提交脚本）
 
+`fontkit` 的 `hasGlyphForCodePoint()` 对这个构建期子集**不可靠**（子集 cmap 保留得比实际字形宽，未收录的字也返回 true，会给出「都在子集里」的假结论）。要判断某个字是否真的在子集里，看**子集字形总数**或字形轮廓：
+
 ```bash
-node --input-type=module -e "import * as fk from 'fontkit'; const f=fk.openSync('src/assets/fonts/noto-serif-sc-subset-500.woff2'); for (const c of '在学在做在读最近') if (!f.hasGlyphForCodePoint(c.codePointAt(0))) throw new Error('缺字 '+c); console.log('font subset OK')"
+node --input-type=module -e "import * as fk from 'fontkit'; const f=fk.openSync('src/assets/fonts/noto-serif-sc-subset-500.woff2'); console.log('子集字形数', f.numGlyphs)"
 ```
 
-- 首版 now 无小节时，把字符集换成 notes 夹具引用行的中文；有 now 小节夹具时再查 `在学在做在读最近`。
+- 判据：加入探针文件前后比较 `numGlyphs`——引用行/`##` 小节标题应各 +1，正文段落应 +0（正文不收）。
+- 首版 now 无小节时，用 notes 夹具引用行的中文；now 有小节夹具时再查 `在学在做在读最近`。
+- 构建日志无 `[subset-fonts] ⚠ 源字体缺字` 警告。
 - 浏览器侧看 computed `font-family` 首个可用字体是否为子集；截图对照设计稿的衬线标题。
 
 ## 5. 浏览器/视觉矩阵
