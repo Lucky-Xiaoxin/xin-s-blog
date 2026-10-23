@@ -1,0 +1,58 @@
+---
+import type { Note } from '../lib/notes';
+import { noteAnchor, noteExcerpt } from '../lib/notes';
+import { formatMonthDay, u } from '../const';
+
+interface Props {
+  /** 最近几条已发布碎碎念 */
+  notes: Note[];
+  /** now 的一行状态（没有 now 时不渲染那一行） */
+  nowDescription?: string;
+}
+
+const { notes, nowDescription } = Astro.props;
+---
+
+<!-- 页边：最近几条碎碎念 + 现在的一行 -->
+<aside class="margin-notes" aria-labelledby="margin-notes-title">
+  <div class="margin-notes__head">
+    <h2 class="label" id="margin-notes-title">页边</h2>
+    <a href={u('/notes/')}>全部碎碎念 →</a>
+  </div>
+
+  {
+    notes.length > 0 && (
+      <ol class="note-mini">
+        {notes.map((note) => {
+          const excerpt = noteExcerpt(note);
+          const iso = note.data.date.toISOString().slice(0, 10);
+          return (
+            <li>
+              <a href={`${u('/notes/')}#${noteAnchor(note)}`}>
+                <time datetime={iso}>{formatMonthDay(note.data.date)}</time>
+                {excerpt && <p>{excerpt}</p>}
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    )
+  }
+
+  {
+    nowDescription && (
+      <div class="now-line">
+        <div class="now-line__top">
+          <i aria-hidden="true"></i>
+          <span class="label">现在</span>
+        </div>
+        <p>
+          {nowDescription}
+          <a href={u('/now/')} aria-label="查看「现在」页">
+            看看 →
+          </a>
+        </p>
+      </div>
+    )
+  }
+</aside>

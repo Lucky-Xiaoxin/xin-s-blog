@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDay, readingTime, u } from '../const';
+
+interface Props {
+  /** 最新一篇已发布文章 */
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const href = u(`/posts/${post.id}/`);
+---
+
+<!-- 开卷：最新一篇文章 -->
+<section class="opening" aria-labelledby="opening-title">
+  <p class="kicker">开卷 <span>/ 最新</span></p>
+  <h2 class="opening__title" id="opening-title">
+    <a href={href}>{post.data.title}</a>
+  </h2>
+  <p class="opening__desc">{post.data.description}</p>
+  <div class="opening__meta">
+    <span class="meta">
+      {formatDay(post.data.pubDate)}{post.data.pubTime ? ` ${post.data.pubTime}` : ''}
+    </span>
+    <span class="meta">{readingTime(post.body)} 分钟读完</span>
+    {
+      post.data.tags.length > 0 && (
+        <span class="tag-list">
+          {post.data.tags.map((tag) => (
+            <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+              {tag}
+            </a>
+          ))}
+        </span>
+      )
+    }
+  </div>
+  <a class="more" href={href}>阅读全文 <span aria-hidden="true">→</span></a>
+</section>

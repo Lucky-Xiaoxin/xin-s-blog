@@ -112,3 +112,26 @@ export function groupNotesByMonth(notes: Note[]): NoteMonth[] {
 export function noteAnchor(note: Note): string {
   return `n-${note.id}`;
 }
+
+/**
+ * 首页页边用的一行摘要：取正文第一个非空行，剥离 Markdown 标记，超长截断。
+ * 规则固定在这里，避免各页面各写一套。
+ */
+export function noteExcerpt(note: Note, limit = 60): string {
+  const firstLine = (note.body ?? '')
+    .split('\n')
+    .map((line) => line.trim())
+    .find((line) => line.length > 0);
+
+  if (!firstLine) return '';
+
+  const text = firstLine
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '') // 图片：整段删掉
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // 链接：保留文字
+    .replace(/[*_`#>]/g, '') // 强调 / 代码 / 标题 / 引用标记
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (text.length <= limit) return text;
+  return `${text.slice(0, limit)}……`;
+}

@@ -630,92 +630,6 @@ a.tag:hover {
   gap: 0.5rem;
 }
 
-/* ============ Hero：抽象几何构图 ============ */
-.hero {
-  margin-bottom: clamp(3rem, 8vw, 5rem);
-}
-.hero svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.hero__caption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--rule);
-}
-
-/* ============ 文章目录 ============ */
-.index {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.index__item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 0 1.6rem;
-  padding: 2.1rem 0;
-  border-bottom: 1px solid var(--rule);
-}
-.index__item:first-child {
-  border-top: 1px solid var(--ink);
-  padding-top: 2.4rem;
-}
-
-.index__badge {
-  padding-top: 0.2rem;
-}
-
-.index__title {
-  font-size: clamp(1.4rem, 3.6vw, 1.75rem);
-  margin: 0 0 0.55rem;
-  line-height: 1.22;
-}
-.index__title a {
-  color: var(--ink);
-}
-/* 目录整行可点：标题链接的伪元素铺满条目；标签单独抬高，保持独立可点 */
-.index__title a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-.index__foot .tag {
-  position: relative;
-  z-index: 2;
-}
-.index__title a:hover,
-.index__item:hover .index__title a {
-  color: var(--red);
-}
-
-.index__desc {
-  margin: 0 0 1.15rem;
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  line-height: 1.8;
-  max-width: 34rem;
-}
-
-.index__foot {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.index__item:hover .seal {
-  color: var(--red);
-}
-
 .section-note a {
   border-bottom: 1px solid var(--ink);
   padding-bottom: 1px;
@@ -1248,6 +1162,184 @@ a.tag:hover {
   color: var(--ink);
 }
 
+/* ============ 首页：卷首 / 开卷 / 页边 ============ */
+/* 卷首：几何构图 + 三格图例。图例只是计数，不是链接 */
+.frontispiece {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--ink);
+}
+.frontispiece__drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.frontispiece__legend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--rule);
+}
+/* now 缺席时图例只剩两格 */
+.frontispiece__legend--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.frontispiece__legend span {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+.frontispiece__legend b {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 开卷 + 页边：桌面两列，只剩一块时退回单列 */
+.frontmatter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(16rem, 0.85fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(2.25rem, 4vw, 3.25rem) 0 clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--rule);
+}
+.frontmatter--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+.opening .kicker {
+  margin-bottom: 1.2rem;
+}
+.opening .kicker span {
+  color: var(--ink-3);
+  letter-spacing: 0.12em;
+}
+.opening__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  line-height: 1.12;
+}
+.opening__title a {
+  transition: color 0.18s var(--ease);
+}
+.opening__title a:hover {
+  color: var(--red);
+}
+.opening__desc {
+  max-width: 32rem;
+  margin: 0 0 1.4rem;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  line-height: 1.85;
+}
+.opening__meta {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+/* 页边：最近几条碎碎念 + 现在的一行 */
+.margin-notes {
+  border-left: 1px solid var(--rule);
+  padding-left: clamp(1.5rem, 3vw, 2.25rem);
+}
+.margin-notes__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+.margin-notes__head a {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+.margin-notes__head a:hover {
+  color: var(--red);
+}
+.note-mini {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.note-mini li {
+  border-bottom: 1px solid var(--rule);
+}
+.note-mini a {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  transition: color 0.18s var(--ease);
+}
+.note-mini time {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  padding-top: 0.15rem;
+}
+.note-mini p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+}
+.note-mini a:hover p {
+  color: var(--ink);
+}
+.now-line {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ink);
+}
+.now-line__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+.now-line__top i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+}
+.now-line p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.now-line p a {
+  display: inline-block;
+  margin-left: 0.35rem;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.now-line p a:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+/* 打印：卷首插图与红点是屏幕元素，隐藏；文字内容保留，页边改单列。
+   这块必须放在首页样式之后——同特异性下后写的规则才赢。 */
+@media print {
+  .frontispiece__drawing,
+  .now-line__top i {
+    display: none;
+  }
+  .frontmatter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* 关于页导语 */
 .about-lead {
   max-width: 36rem;
@@ -1470,6 +1562,30 @@ a.tag:hover {
 }
 
 /* ============ 窄屏 ============ */
+@media (max-width: 52rem) {
+  /* 首页：开卷与页边上下排，页边改用上边框 */
+  .frontmatter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .margin-notes {
+    border-left: 0;
+    border-top: 1px solid var(--ink);
+    padding-left: 0;
+    padding-top: 1.25rem;
+  }
+  .note-mini {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 1.5rem;
+  }
+  .note-mini li {
+    border-bottom: 0;
+  }
+  .now-line {
+    margin-top: 0.75rem;
+  }
+}
+
 @media (max-width: 40rem) {
   .nav {
     gap: 1.25rem;
@@ -1508,6 +1624,21 @@ a.tag:hover {
     margin-top: 0.45rem;
     text-align: left;
   }
+  /* 首页：图例小字换行，页边碎碎念回到单列 */
+  .frontispiece__legend {
+    gap: 0.75rem;
+  }
+  .frontispiece__legend span {
+    flex-wrap: wrap;
+    gap: 0.15rem 0.4rem;
+    font-size: 0.625rem;
+  }
+  .note-mini {
+    grid-template-columns: 1fr;
+  }
+  .note-mini li {
+    border-bottom: 1px solid var(--rule);
+  }
   /* 碎碎念：窄屏单列，元信息与日期同一行 */
   .note {
     grid-template-columns: 1fr;
@@ -1524,19 +1655,17 @@ a.tag:hover {
   }
 }
 
-@media (max-width: 34rem) {
-  .index__item {
-    grid-template-columns: 1fr;
-    gap: 0.9rem;
-  }
-  .index__badge {
-    padding-top: 0;
-  }
-}
-
 @media (max-width: 24rem) {
   :root {
     --gutter: 1.25rem;
+  }
+  /* 首页：图例单列，避免窄屏挤成三小格 */
+  .frontispiece__legend {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  .frontmatter {
+    padding-top: 1.75rem;
   }
   .nav {
     gap: 0.9rem;

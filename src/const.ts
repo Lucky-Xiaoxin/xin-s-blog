@@ -90,6 +90,13 @@ export function formatDay(date: Date) {
   return `${y}.${m}.${d}`;
 }
 
+/** 月日（MM.DD，UTC getter）：首页图例与页边摘要用，不带年份 */
+export function formatMonthDay(date: Date) {
+  const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(date.getUTCDate()).padStart(2, '0');
+  return `${m}.${d}`;
+}
+
 /** 发布日期倒序；同日按 pubTime（零填充 HH:MM 可字典序比较）倒序，再按 id 定序 */
 export function byNewest(
   a: { id: string; data: { pubDate: Date; pubTime?: string } },
