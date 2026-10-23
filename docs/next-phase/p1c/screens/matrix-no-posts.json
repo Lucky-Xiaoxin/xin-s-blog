@@ -1,0 +1,63 @@
+[
+  {
+    "label": "home-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-no-posts-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 00 · 暂无",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:页边"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": "343.219px",
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  }
+]

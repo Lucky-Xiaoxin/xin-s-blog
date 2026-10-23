@@ -1,0 +1,150 @@
+[
+  {
+    "label": "home-1440-light",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 00 · 暂无",
+          "现在 emo中……"
+        ],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "552.828px 303.156px",
+        "noteMiniCols": null,
+        "legendCols": "298.656px 298.672px 298.656px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-no-notes-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 00 · 暂无",
+          "现在 emo中……"
+        ],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": null,
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  }
+]

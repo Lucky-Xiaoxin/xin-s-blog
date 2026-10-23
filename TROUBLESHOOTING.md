@@ -43,6 +43,7 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | `could not read Username` / GCM 弹窗 | git 推送凭据过期 | 跟着弹窗登录一次 GitHub 即可 |
 | Actions 页面里 run 红了 | 构建门禁拦下了一次有问题的发布 | 点进 run 看是哪一步：check 红=类型错，build 红=多半是 frontmatter，check:dist 红=按 FAIL 后的类别找对应行。线上没坏，修好再推 |
 | `npm run preview` 后访问 `/xin-s-blog/` 404 | preview 默认按 base=/ 启动，而 dist 是 verify 的生产子路径产物 | 改用 `npm run preview:prod`；普通 `npm run build` 的产物才用 `npm run preview` |
+| `FAIL seo 404.html 缺少 robots noindex` 与 `FAIL rss ... 缺少已发布文章链接` 同时出现 | shell 里设了 `BASE_URL` 环境变量。Astro 把它当成站点 base，站内链接前缀与 404 判定一起坏掉（`u()` 拼出的是那个变量的值） | 子路径只认 `BASE_PATH`；本地脚本要指预览地址就换个变量名（如 `PREVIEW_URL`）。清掉 `BASE_URL` 后重跑 `npm run verify` 即可恢复 |
 | `FAIL links ... 根绝对链接缺少 /xin-s-blog 前缀` | 站内链接写成了 `/posts/...` 这类根绝对路径 | 用 `src/const.ts` 的 `u()`/`resolveHref()` 生成；文章正文资源用相对路径，不要用 `/` 开头 |
 | `FAIL drafts ... 草稿页被生成` / `包含草稿` | `draft: true` 的文章漏进了产物 | 查 frontmatter 的 `draft`；文章/笔记等内容页的 `getStaticPaths` 只能调 `getPostsForStaticPaths()`（标签详情例外，只调 `getPublishedPosts()`），列表/RSS 只能调 `getPublishedPosts()` |
 | `FAIL links ... 锚点 #xxx 在 ... 中找不到 id` | 页内链接指向不存在的标题 id | 检查 TOC/锚点拼写，确认目标页生成了对应 `id`；同页 `#xxx` 也会被查。锚点只认真实 `id` 属性，`data-id` 不算 |

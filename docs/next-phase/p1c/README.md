@@ -1,10 +1,10 @@
 # P1c 实施文档：首页卷首与顶部入口
 
-> 状态：规划中 · 2026-10-23（P1b 已实现待验收；本文只定契约，未实施）
-> 上游：`design-contract.md` §2/§5.1/§7（已批准）、`implementation-plan.md` P1c、`p1b/review.md`（数据层已落地）
+> 状态：实施中 · 2026-10-24（实现与本地验证完成，待用户本地试用确认）
+> 上游：`design-contract.md` §2/§5.1/§7（已批准）、`implementation-plan.md` P1c、`p1b/review.md`（P1b 已验收）
 > 下游：P1d 文章页、P1e 视觉 QA
 > Owner：实现规划师
-> 复核/证据：未开始（实施后补 `review.md` + `screens/`，不预填结果）
+> 复核/证据：`review.md`（命令输出、空状态组合、浏览器矩阵、允许差异、未覆盖项）
 
 ## 1. 目标
 
@@ -58,6 +58,7 @@ P1b（feat/notes-now，已实现待验收）──> P1c（feat/home-frontispiece
 | `src/components/MarginNotes.astro` | 新增 | 页边碎碎念 + now 行 |
 | `src/components/Contents.astro` | 新增 | 编号目录 |
 | `src/lib/notes.ts` | 改 | 增加 `noteExcerpt(note, limit?)` |
+| `src/const.ts` | 改 | 增加 `formatMonthDay()`（`MM.DD`，UTC getter）；图例与页边共用 |
 | `src/styles/global.css` | 改 | 新增首页组件；删除 `.hero*`/`.index*` |
 | `src/components/Hero.astro` | 删 | 旧首页插图；确认无其它引用 |
 | `src/components/PostList.astro` | 删 | 旧文章列表；确认无其它引用 |

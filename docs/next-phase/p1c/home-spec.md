@@ -1,10 +1,10 @@
 # P1c 首页规格：卷首 / 开卷 / 页边 / 目录
 
-> 状态：规划中 · 2026-10-23
+> 状态：实施中 · 2026-10-24（按本文实现完成，实测结果见 `review.md`）
 > 上游：`design-contract.md` §2/§5.1/§7、`design/d1/home.html`、`design/assets/d1.css`、`p1c/README.md`
 > 下游：`src/pages/index.astro`、首页组件、`global.css`
 > Owner：实现规划师
-> 复核/证据：未开始
+> 复核/证据：`review.md`
 
 ## 1. 页面骨架
 

@@ -1,0 +1,1133 @@
+[
+  {
+    "label": "home-1440-light",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-1440-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "552.828px 303.156px",
+        "noteMiniCols": "none",
+        "legendCols": "298.656px 298.672px 298.656px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-1024-light",
+    "width": 1024,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "548.906px 301.031px",
+        "noteMiniCols": "none",
+        "legendCols": "289.703px 289.703px 289.719px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-768-light",
+    "width": 768,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "675.844px",
+        "noteMiniCols": "209.281px 209.281px 209.281px",
+        "legendCols": "214.609px 214.609px 214.609px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-390-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": "343.219px",
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-320-light",
+    "width": 320,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-320-light.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 320,
+        "innerWidth": 320,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "280px",
+        "noteMiniCols": "280px",
+        "legendCols": "280px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-1440-dark",
+    "width": 1440,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": "p1c-home-1440-dark.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "dark",
+        "paper": "#111214",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "552.828px 303.156px",
+        "noteMiniCols": "none",
+        "legendCols": "298.656px 298.672px 298.656px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-390-dark",
+    "width": 390,
+    "theme": "dark",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "dark",
+        "paper": "#111214",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": "343.219px",
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-390-noscript-dark",
+    "width": 390,
+    "noJs": true,
+    "print": false,
+    "shot": "p1c-home-390-noscript-dark.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": null,
+        "paper": "#111214",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": "343.219px",
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": true,
+        "nowDotVisible": true
+      }
+    }
+  },
+  {
+    "label": "home-390-print",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": true,
+    "shot": "p1c-home-390-print.webp",
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [
+          "文章 04 · 最新 10.19",
+          "碎碎念 03 · 最近 10.22",
+          "现在 emo中……"
+        ],
+        "noteMini": [
+          "/xin-s-blog/notes/#n-2026-10-22-fixture-a",
+          "/xin-s-blog/notes/#n-2026-10-21-fixture-b",
+          "/xin-s-blog/notes/#n-2026-09-30-fixture-c"
+        ],
+        "noteMiniText": [
+          "这是测试条目 A，首行里有 一个链接 和 ，用来验证摘要剥离。",
+          "测试条目 B：验证首页页边的第二条与排序。",
+          "测试条目 C：验证跨月时首页页边仍然只取最近三条。"
+        ],
+        "nowLine": true,
+        "nowText": "emo中…… 看看 →",
+        "tocNos": [
+          "01",
+          "02",
+          "03",
+          "04"
+        ],
+        "tocTitles": [
+          "连续四个整数的异或和性质",
+          "GitHub 配置代理",
+          "快乐数",
+          "第一篇文章"
+        ],
+        "tocMeta": [
+          "2026.10.191 分钟",
+          "2026.09.301 分钟",
+          "2026.09.271 分钟",
+          "2026.09.191 分钟"
+        ],
+        "opening": "连续四个整数的异或和性质",
+        "emptyState": null,
+        "headings": [
+          "H1:二进制与诗.",
+          "H2:连续四个整数的异或和性质",
+          "H2:页边",
+          "H2:目录",
+          "H3:连续四个整数的异或和性质",
+          "H3:GitHub 配置代理",
+          "H3:快乐数",
+          "H3:第一篇文章"
+        ],
+        "frontmatterCols": "343.219px",
+        "noteMiniCols": "343.219px",
+        "legendCols": "106.406px 106.406px 106.406px",
+        "drawingVisible": false,
+        "nowDotVisible": false
+      }
+    }
+  },
+  {
+    "label": "notes-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:碎碎念",
+          "H2:2026 年 10 月",
+          "H2:2026 年 9 月"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "now-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:现在"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "archive-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:归档",
+          "H2:2026",
+          "H3:10 月",
+          "H3:9 月"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "tags-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:标签"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "about-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:关于我",
+          "H2:这个博客写什么",
+          "H2:这个站点",
+          "H2:联系我"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "post-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:连续四个整数的异或和性质",
+          "H2:老大我们这样子下去真能拿牌吗……"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "post-1440-light",
+    "width": 1440,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:连续四个整数的异或和性质",
+          "H2:老大我们这样子下去真能拿牌吗……"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  },
+  {
+    "label": "404-390-light",
+    "width": 390,
+    "theme": "light",
+    "noJs": false,
+    "print": false,
+    "shot": null,
+    "checks": {
+      "failures": [],
+      "info": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "overflow": [],
+        "h1": 1,
+        "dupIds": [],
+        "missingAnchors": [],
+        "navItems": 4,
+        "navRows": 1,
+        "footer": [
+          "碎碎念",
+          "现在",
+          "GitHub",
+          "Email",
+          "RSS"
+        ],
+        "theme": "light",
+        "paper": "#ffffff",
+        "legend": [],
+        "noteMini": [],
+        "noteMiniText": [],
+        "nowLine": false,
+        "nowText": null,
+        "tocNos": [],
+        "tocTitles": [],
+        "tocMeta": [],
+        "opening": null,
+        "emptyState": null,
+        "headings": [
+          "H1:这个路径下没有文件"
+        ],
+        "frontmatterCols": null,
+        "noteMiniCols": null,
+        "legendCols": null,
+        "drawingVisible": null,
+        "nowDotVisible": null
+      }
+    }
+  }
+]
