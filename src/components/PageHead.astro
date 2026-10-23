@@ -1,0 +1,17 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  description?: string;
+}
+
+const { kicker, title, description } = Astro.props;
+const hasMeta = Astro.slots.has('default');
+---
+
+<header class="page-head">
+  <p class="kicker">{kicker}</p>
+  <h1>{title}</h1>
+  {description && <p class="page-head__desc">{description}</p>}
+  {hasMeta && <div class="page-head__meta"><slot /></div>}
+</header>

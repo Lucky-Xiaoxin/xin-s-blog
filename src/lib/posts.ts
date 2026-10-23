@@ -58,3 +58,49 @@ export async function getAllTags(): Promise<TagSummary[]> {
     (a, b) => b.count - a.count || a.tag.localeCompare(b.tag, 'zh'),
   );
 }
+
+export async function getPostsByTag(tag: string): Promise<Post[]> {
+  const posts = await getPublishedPosts();
+  return posts.filter((post) => post.data.tags.includes(tag));
+}
+
+export interface ArchiveMonth {
+  month: number;
+  posts: Post[];
+}
+
+export interface ArchiveYear {
+  year: number;
+  count: number;
+  months: ArchiveMonth[];
+}
+
+/** 归档只含已发布文章；年/月倒序，组内 byNewest（UTC getter，与 formatDay 同源） */
+export async function getArchiveGroups(): Promise<ArchiveYear[]> {
+  const posts = await getPublishedPosts();
+  const years = new Map<number, Map<number, Post[]>>();
+  for (const post of posts) {
+    const year = post.data.pubDate.getUTCFullYear();
+    const month = post.data.pubDate.getUTCMonth() + 1;
+    let months = years.get(year);
+    if (!months) {
+      months = new Map();
+      years.set(year, months);
+    }
+    const list = months.get(month);
+    if (list) list.push(post);
+    else months.set(month, [post]);
+  }
+  return [...years.entries()]
+    .sort(([a], [b]) => b - a)
+    .map(([year, months]) => {
+      const grouped = [...months.entries()]
+        .sort(([a], [b]) => b - a)
+        .map(([month, list]) => ({ month, posts: list.sort(byNewest) }));
+      return {
+        year,
+        count: grouped.reduce((total, group) => total + group.posts.length, 0),
+        months: grouped,
+      };
+    });
+}

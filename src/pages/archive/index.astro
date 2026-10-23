@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { formatDay, readingTime, u } from '../../const';
+import { getArchiveGroups, getPublishedPosts } from '../../lib/posts';
+
+const [posts, years] = await Promise.all([getPublishedPosts(), getArchiveGroups()]);
+const latest = posts[0];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const newestYear = years[0]?.year;
+const oldestYear = years[years.length - 1]?.year;
+const yearRange =
+  newestYear === undefined
+    ? ''
+    : newestYear === oldestYear
+      ? `${newestYear} 年`
+      : `${oldestYear}–${newestYear}`;
+
+const numbers = new Map<string, number>();
+let counter = 0;
+for (const year of years) {
+  for (const month of year.months) {
+    for (const post of month.posts) numbers.set(post.id, ++counter);
+  }
+}
+---
+
+<Base
+  size="compact"
+  width="mid"
+  active="archive"
+  title="归档"
+  description="按年月分组浏览全部文章，含发布日期与阅读时长。"
+>
+  <PageHead
+    kicker="归档 / ARCHIVE"
+    title="归档"
+    description="按年月分组，同一篇文章只出现一次。想按主题找，可以去标签页。"
+  >
+    {
+      latest && (
+        <>
+          <span class="meta">{pad(posts.length)} 篇 · {yearRange}</span>
+          <span class="meta">最近更新 {formatDay(latest.data.pubDate)}</span>
+        </>
+      )
+    }
+  </PageHead>
+
+  {
+    years.length === 0 ? (
+      <p class="section-note">还没有文章。</p>
+    ) : (
+      years.map((year) => (
+        <section class="archive-year" aria-labelledby={`year-${year.year}`}>
+          <div class="archive-year__head">
+            <h2 id={`year-${year.year}`}>{year.year}</h2>
+            <span class="meta">{pad(year.count)} 篇</span>
+          </div>
+
+          {year.months.map((month) => {
+            const monthId = `month-${year.year}-${pad(month.month)}`;
+            return (
+              <section class="archive-month" aria-labelledby={monthId}>
+                <div class="archive-month__head">
+                  <h3 id={monthId}>{month.month} 月</h3>
+                  <span class="meta">{pad(month.posts.length)} 篇</span>
+                </div>
+                <ol class="archive-list">
+                  {month.posts.map((post) => (
+                    <li>
+                      <span class="archive-no">{pad(numbers.get(post.id) ?? 0)}</span>
+                      <div>
+                        <h4>
+                          <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
+                        </h4>
+                        {post.data.tags.length > 0 && (
+                          <span class="tag-list">
+                            {post.data.tags.map((tag) => (
+                              <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+                                {tag}
+                              </a>
+                            ))}
+                          </span>
+                        )}
+                      </div>
+                      <span class="meta">{formatDay(post.data.pubDate)}</span>
+                      <span class="meta archive-list__read">
+                        {readingTime(post.body)} 分钟
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            );
+          })}
+        </section>
+      ))
+    )
+  }
+</Base>

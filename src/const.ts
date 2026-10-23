@@ -10,6 +10,7 @@ export const SITE = {
 
 export const NAV = [
   { href: '/', label: '目录', key: 'home' },
+  { href: '/archive', label: '归档', key: 'archive' },
   { href: '/tags', label: '标签', key: 'tags' },
   { href: '/about', label: '关于', key: 'about' },
 ];

@@ -7,7 +7,7 @@ Astro 5 静态博客，部署为 GitHub Pages **项目站**（子路径 `/xin-s-
 ## 交付双轨（用户明确要求，不可混用）
 
 - **写/改文章**（`src/content/posts/`）：直推 main 即可。但**文章是用户的内容，未经同意不要代写代改**；发现语法错只报告，让他自己修（学习导向）。
-- **框架改动**（其余一切）：`git switch -c xxx` 分支 → 本地 `npm run check && npm run build` → push → 用 GitHub MCP 建 PR（正文含摘要/明细/测试计划）→ 合并 → `git pull` 同步 main。
+- **框架改动**（其余一切）：`git switch -c xxx` 分支 → 本地 `npm run verify`（check + 生产子路径 build + 产物检查）→ 交用户本地试用 → 用户确认 → push → 用 GitHub MCP 建 PR（正文含摘要/明细/测试计划）→ 合并 → `git pull` 同步 main。
 
 Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 
@@ -22,12 +22,76 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 首页品牌在 `size='full'` 时是 `h1`，内页是 `a`（每页只留一个 h1）；短页页脚贴底依赖 `body` 的 flex column + `main { flex:1 }`。改页头/页脚骨架时保留这两点。
 - 明暗主题**两个入口**（改配色前先读这条）：`Base.astro` 的 `<head>` 内联脚本负责首屏防闪色（别挪位置、别改成打包脚本），并且**永远显式写 `data-theme='light'` 或 `'dark'`**——属性一缺失就等于"没有 JS"，会被兜底入口接管，用户选的亮色会被系统暗色翻盘。`global.css` 里深色声明有两份，必须逐字一致：入口① `:root[data-theme='dark']`（脚本/手动），入口② `@media (prefers-color-scheme: dark)` 下的 `:root:not([data-theme='light'])`（JS 被禁用时跟随系统）。入口②还各自拷贝了深色态的依赖规则（开关 4 条 + Shiki 覆写），**改这些原规则时必须同步改入口②那份**；`@media print` 的选择器要带上 `:root:not([data-theme='light'])` 形式，否则特异性压不过入口②、无 JS+系统暗色时会打出墨底。Shiki 双主题：亮色色值内联、暗色色值与两侧字体风格走 `--shiki-dark`/`--shiki-light-*` 变量（global.css 的 `.astro-code span` 必须消费 light 侧字体变量，删掉它就丢代码粗体/斜体）；改代码高亮配色要同改 `astro.config.mjs` 的 `themes`。
 - 中文字体是构建期子集：`scripts/subset-fonts.mjs`（predev/prebuild 自动跑）扫描 src 下 .astro/.ts/.js 全文 + md 的 frontmatter/标题行/引用行，裁出思源宋体子集写进 `src/assets/fonts/`（已 gitignore）。正文刻意不收（走系统无衬线）；新增「非 h1~h3/brand/摘要/引用」的衬线用例时，必须让它的文案落进上述扫描来源，否则那个字会静默回退系统宋体。
-- 所有文章读取都走 `src/lib/posts.ts`：列表/RSS 用 `getPublishedPosts()`、标签聚合用 `getAllTags()`。`getStaticPaths` 只能用 `getPostsForStaticPaths()`（dev 含草稿、build 排除）；文章页按 slug 查找与上下篇必须传 `includeDrafts: import.meta.env.DEV`，否则 dev 草稿页 `post` 为 undefined。草稿预览只在 dev，build 不生成；不要为了预览把 `draft` 改成 false 再改回来。
+- 所有文章读取都走 `src/lib/posts.ts`：列表/RSS 用 `getPublishedPosts()`、标签聚合用 `getAllTags()`、归档用 `getArchiveGroups()`、标签详情用 `getPostsByTag()`。页面里不要再复制 `getCollection` 过滤/排序；归档年月只用 helper 里的 UTC getter；标签索引的“最近一篇”只取 `getAllTags().latest`。`getStaticPaths` 只能用 `getPostsForStaticPaths()`（dev 含草稿、build 排除）；标签详情的 `getStaticPaths` 只生成已发布文章的标签（无空标签页）。文章页按 slug 查找与上下篇必须传 `includeDrafts: import.meta.env.DEV`，否则 dev 草稿页 `post` 为 undefined。草稿预览只在 dev，build 不生成；不要为了预览把 `draft` 改成 false 再改回来。
+- 宽度分三档，**token 是内容列宽，不是盒宽**：`.shell` 用 `max-width: calc(内容宽 + 2 * --gutter)`。P1a 只有归档/标签/关于/404 用 `width='mid'`；首页/文章保持 `measure`，P1c/P1d 再切 `wide`。不要把 `--measure` 当成 `max-width` 的盒宽（那会把 42rem 内容压回旧的 30rem），也不要提前在首页/文章启用 `wide`。
+- 导航固定 4 项：目录 / 归档 / 标签 / 关于（`NAV` 顺序即渲染顺序）；页脚 notes/now 链接必须随 P1b 的真实路由同 PR 加，P1a 及之前不放假链接。`PageHead` 只用于归档/标签/关于/标签详情；每页只能有一个 h1（首页品牌是 h1，内页品牌是 a）。归档列表的 h4 单独走衬线，不要把 h4 并进全局 h1~h3 规则（文章正文 h4 保持现状）。
+- `check-dist` 的锚点只认属性名严格等于 `id` 的值（`data-id` 不算）；canonical 对每个目录式页面做**精确比对**（404 除外）。新增路由若缺 canonical、指错页面或缺尾斜杠都会 FAIL；`tsconfig.json` 排除 `docs/`（设计工具脚本不参与 `astro check`）。
 - 新增路由/资源必须过 `npm run verify`（check + 生产子路径 build + `check:dist`）：站内链接一律用 `u()`/`resolveHref()`，HTML 里的根绝对 `href`/`src` 会被 check-dist 拦下；字体放 `src/assets/fonts/`（构建生成），内容图放 `src/content/posts/` 内并用相对路径。体积预算见 README，超限先定位、不要直接抬上限。
 - 预览分两种：`npm run preview` 对应普通 `npm run build`（`base=/`）；`npm run preview:prod` 对应 `npm run verify` 的生产子路径产物。`npm run check:dist` 默认也按 `base=/` 检查，生产子路径请走 verify 或显式传 `BASE_PATH`。
 - 文章印记是确定性映射：`const.ts` 的 `sealHash` + `SEAL_CORES`——名单按几何相容性筛选（红点/内芯必须完整落在外框内，triangle/rhombus/hexagon 各有剔除项，semicircle 的 tri/axis 红点由 `Seal.astro` 的 `FRAME_DOTS` 按框覆写）；重排名单、改哈希或换 `TAG_SHAPE` 都会换掉既有文章的印记（有意为之才能动）；新增内芯必须先过一遍框内几何验证再加。
 - deploy job 有 `if: github.ref == 'refs/heads/main'` 守卫、`pages: write` 只给 deploy job——不要"简化"回顶层权限。
 - README 与 TROUBLESHOOTING.md 是维护者的主要参照，**行为变更后必须同步更新**（历史审计曾发现多处文档失真；改完核对每条可验证断言）。
+
+## 文档体系与卫生规范（2026-10-23）
+
+### 单一事实源
+
+| 文档 | 只放什么 | 不要放什么 |
+| --- | --- | --- |
+| `README.md` | 用户操作：安装、命令、日常流程、体积预算、已知边界 | agent 内部约定、阶段计划全文 |
+| `AGENTS.md` | agent 约束、不可破坏的约定、文档规范 | 重复命令表/体积数字/文章教程 |
+| `TROUBLESHOOTING.md` | 真实遇到的报错 → 人话 → 修法 | 未验证的猜测 |
+| `docs/next-phase/README.md` | 阶段索引、决策日志、状态 | 单阶段长契约 |
+| `docs/next-phase/pX/README.md` | 阶段目标、范围、依赖、验收、风险 | 大段重复 token/命令/预算 |
+| `docs/next-phase/pX/*.md` | 详细契约、测试计划、复核 | 长期维护的“当前值”副本 |
+| `docs/next-phase/design/` | 设计原型、截图、自检 | 生产 CSS/字体/图片 |
+| `docs/next-phase/_template.md` | 新文档模板 | — |
+
+**当前命令/体积/运行基线的权威来源**：根 README + `scripts/check-dist.mjs` + `npm run verify` 实际输出。阶段文档若引用快照，必须写“快照 YYYY-MM-DD，以 verify 输出为准”，不要写“当前值”然后长期不更新。
+
+### 状态头（新阶段/契约文档必须）
+
+新文档先复制 `_template.md`；已有文档至少保持状态行最新，不强制回填全部元数据。
+
+```md
+> 状态：规划中 · YYYY-MM-DD
+> 上游：<需求/设计/上一阶段>
+> 下游：<会被谁消费>
+> Owner：<角色/人>
+> 复核/证据：<PR/review.md/测试输出；没有写“未开始”>
+```
+
+状态词只用：**规划中 / 已批准 / 实施中 / 已验收 / 暂缓 / 已废弃**。
+
+- 规划中：不可当作实现指令。
+- 已批准：契约生效，实现按它做。
+- 实施中：代码在改，契约仍是基准。
+- 已验收：有 `review.md` 证据；后续改动先改契约。
+- 暂缓/已废弃：写原因 + 替代链接。
+
+### 索引与生命周期
+
+- 每个 docs 文档必须从父级 README 链接；**无孤儿文档**。
+- 每个阶段一个文件夹（`p0/`、`p1a/`…）；阶段完成时更新阶段 README 状态、写 `review.md`（命令输出、失败注入、未覆盖项、结论）。
+- 新阶段先出文档再实现；文档状态为“规划中”时不要写代码。
+- 阶段收尾必须同步：docs 索引 + 根 README（命令/预算若变）+ TROUBLESHOOTING（新错误）+ 相关 AGENTS 约束。
+- 不新建“一次性”文档；能放进现有阶段文档就放。不删除历史；废弃用状态 + 链接，不靠“记得”。
+
+### 写法
+
+- 中文 prose；代码标识符/命令保持英文；不要营销话术。
+- 每个断言可验证：命令、日期、数值、文件路径；不要写“应该可以”。
+- 明确区分：**已实现 / 已验证 / 未验证 / 不做**。
+- “待确认”必须带 Owner + 日期/截止；没有就写“无”，不要留空表。
+- 设计稿/原型只作参考；不要 import 其 CSS/字体/图片，生产仍用 `src/styles/global.css` 与构建期字体子集。
+- 用户不读 README：操作提示写进脚本/模板/生成文件注释；文档是给 agent 和维护者查的。
+
+### 变更流程
+
+- 代码/行为变更：**同一 PR** 更新 README/AGENTS/TROUBLESHOOTING + 对应阶段文档；不能代码合了文档滞后。
+- 纯文档 typo/死链修正：可直推 main；涉及约束/行为说明的文档改走 PR。
+- `review.md` 必须含“跑了什么、结果、失败注入、未覆盖、结论”；不能只写“看起来没问题”。
+- 新增阶段文档先复制 `docs/next-phase/_template.md`，不要自创结构。
 
 ## 工作流杂项
 

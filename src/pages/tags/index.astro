@@ -1,29 +1,50 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
+import PageHead from '../../components/PageHead.astro';
 import { u } from '../../const';
 import { getAllTags, getPublishedPosts } from '../../lib/posts';
 
 const [posts, tags] = await Promise.all([getPublishedPosts(), getAllTags()]);
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<Base size="compact" active="tags" title="标签">
-  <h1 class="section-title">标签</h1>
-  <p class="section-note">
-    {tags.length} 个标签 · 共 {posts.length} 篇文章
-  </p>
+<Base
+  size="compact"
+  width="mid"
+  active="tags"
+  title="标签"
+  description="按标签浏览全部文章。"
+>
+  <PageHead
+    kicker="索引 / TAGS"
+    title="标签"
+    description="标签是横切分类：一篇文章可以同时属于算法和题解。按使用频率排序，最近一篇附在右侧。"
+  >
+    {tags.length > 0 && (
+      <span class="meta">{pad(tags.length)} 个标签 · {pad(posts.length)} 篇文章</span>
+    )}
+  </PageHead>
 
-  <ul class="tagcloud">
-    {
-      tags.map(({ tag, count }) => (
-        <li>
-          <a href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+  {
+    tags.length === 0 ? (
+      <p class="section-note">还没有标签。</p>
+    ) : (
+      <ul class="tag-index">
+        {tags.map(({ tag, count, latest }) => (
+          <li>
             <Badge tag={tag} />
-            <span class="tagcloud__name">{tag}</span>
-            <span class="tagcloud__count">{count}</span>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+            <a class="tag-index__name" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+              {tag}
+            </a>
+            <span class="tag-index__latest">
+              <span>最近</span>
+              <a href={u(`/posts/${latest.id}/`)}>{latest.data.title}</a>
+            </span>
+            <span class="meta tag-index__count">{pad(count)}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
 </Base>

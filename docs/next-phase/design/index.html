@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>设计交付 · 三个方向 · 二进制与诗</title>
+    <meta name="description" content="二进制与诗下一阶段的设计交付：三个可点击的 HTML/CSS 方向。" />
+    <link rel="stylesheet" href="assets/base.css" />
+    <link rel="stylesheet" href="assets/overview.css" />
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var t = q.get('theme');
+        if (t !== 'dark' && t !== 'light') {
+          try { t = localStorage.getItem('xin-blog-proto-theme'); } catch (e) {}
+        }
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到正文</a>
+
+    <header class="ov-header">
+      <div class="shell shell--deck">
+        <div class="ov-top">
+          <span class="label">DESIGN DELIVERY / 2026.10.22</span>
+          <div class="ov-top__meta">
+            <span class="meta">讨论稿 · 未批准 · 不写生产代码</span>
+            <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="深色模式" title="切换到深色模式">
+              <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+              <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.6" />
+                <path d="M12 1.6v2M12 20.4v2M1.6 12h2M20.4 12h2M4.7 4.7l1.4 1.4M17.9 17.9l1.4 1.4M19.3 4.7l-1.4 1.4M6.1 17.9l-1.4 1.4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <h1 class="ov-title">三个方向，<br />把“太素”<em>具体化</em>。</h1>
+        <p class="ov-lead">这不是三套换皮配色，而是三种组织内容的方式。约束全部沿用：白底、单一正红、几何描边、Bodoni + 思源宋体、42rem 正文、零第三方脚本。E（配色/字体）没有动。</p>
+        <div class="ov-actions">
+          <a class="btn btn--red" href="#d1">先看推荐：方向一「卷首」 <span class="arrow">↓</span></a>
+          <a class="btn" href="#compare">看三个方向对比</a>
+          <a class="btn" href="d1/home.html">打开全站原型 <span class="arrow">→</span></a>
+        </div>
+        <p class="ov-preview">预览：<code>node docs/next-phase/design/tools/serve.mjs</code> → <code>http://127.0.0.1:4173/</code>。直接双击 HTML 会被浏览器拦字体，版式会失真。自检报告在 <code>screens/audit.json</code>。</p>
+      </div>
+    </header>
+
+    <main id="main" class="ov-main">
+      <div class="shell shell--deck">
+        <section class="ov-section" aria-labelledby="rec-title">
+          <div class="ov-section__head">
+            <h2 id="rec-title">结论先行</h2>
+            <span class="meta">选一个，不要三个一起上</span>
+          </div>
+          <p class="rec"><strong>建议方向一「卷首」作为 P1 主线。</strong>它最直接地补上首页第一屏、文章节奏和编辑感，改动集中在版式与数据层，不引入新依赖，也最容易在现有 Astro 结构里拆成小 PR。若更看重“作者在场”，选方向三「页边」；若更想强化技术身份，选方向二「测绘」。方向三的“此刻”一行可以单独借到方向一里。</p>
+
+          <div class="table-wrap" id="compare">
+            <table class="compare">
+              <thead>
+                <tr><th>方向</th><th>一句话</th><th>第一屏</th><th>文章</th><th>最适合</th><th>实施量</th><th>主要风险</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>01 卷首</th>
+                  <td><strong>目录册的卷首</strong><br />编辑感、平衡、低风险</td>
+                  <td>开卷 + 页边碎碎念 + 现在</td>
+                  <td>内联目录 + 页边规格 + 编号小节</td>
+                  <td>先解决 A/B/D，同时保留现有气质</td>
+                  <td>中</td>
+                  <td>首页两栏结构；文章头变高</td>
+                </tr>
+                <tr>
+                  <th>02 测绘</th>
+                  <td><strong>一张技术图纸</strong><br />测绘板、索引、量尺</td>
+                  <td>测绘图 + 近期索引 + 日志</td>
+                  <td>标题块 + 目录 + 左侧量尺</td>
+                  <td>更技术化、更“计算机系”的定位</td>
+                  <td>中</td>
+                  <td>信息密度偏高；容易偏冷</td>
+                </tr>
+                <tr>
+                  <th>03 页边</th>
+                  <td><strong>一册带页边的笔记</strong><br />作者在场、留白、批注</td>
+                  <td>此刻 + 最近在写 + 页边</td>
+                  <td>贯通页边 + 页边目录 + 摘录标签</td>
+                  <td>更想要“有人在写”的生活感</td>
+                  <td>中高</td>
+                  <td>中间宽度的页边布局；移动端顺序</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= 方向一 ================= -->
+        <section class="dir" id="d1" aria-labelledby="d1-title">
+          <div class="dir-head">
+            <p class="dir-head__no">01</p>
+            <div class="dir-head__body">
+              <h2 id="d1-title">卷首</h2>
+              <p class="dir-thesis">把首页做成一册目录的卷首：第一屏是本期最新、页边碎碎念和“现在”，而不是一张空白的几何图。</p>
+              <div class="dir-tags">
+                <span class="tag">A 首页第一屏</span>
+                <span class="tag">B 阅读节奏</span>
+                <span class="tag">D 编辑感</span>
+                <span class="tag">C 页面壳</span>
+                <span class="tag">零新增 JS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dir-meta">
+            <div>
+              <h3>它做什么</h3>
+              <ul>
+                <li>首页：几何图缩成“本册索引”（文章/碎碎念/现在），下面开卷 + 页边 + 目录编号。</li>
+                <li>文章：页边放印记与规格，内联目录，小节编号，题记、图注、代码标题栏、延伸阅读。</li>
+                <li>页面壳：归档按年月 + 编号；标签成为“标签索引”；碎碎念按月成流；now 是状态页。</li>
+              </ul>
+            </div>
+            <div>
+              <h3>它牺牲什么</h3>
+              <p>首页从单列变两栏，移动端碎碎念落在开卷之后、目录之前；文章头比现在高一点；目录是内联块，不是 sticky 侧栏（遵守 P0）。</p>
+            </div>
+            <div>
+              <h3>落地要点</h3>
+              <ul>
+                <li>复用现有 prose / code / tag / seal / pager。</li>
+                <li>新增首页 frontmatter、内联目录、归档与 notes/now 路由。</li>
+                <li>JS 0；主题开关沿用现有。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="stage">
+            <figure class="shot">
+              <img src="screens/d1-home-1440-light.webp" alt="方向一卷首：首页桌面亮色" />
+              <figcaption><span>首页 / 1440 / 亮色</span><span>D1 · HOME</span></figcaption>
+            </figure>
+            <figure class="shot shot--mobile">
+              <img src="screens/d1-home-390-light.webp" alt="方向一卷首：首页移动亮色" loading="lazy" />
+              <figcaption><span>首页 / 390</span><span>D1</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d1-post-1440-light.webp" alt="方向一卷首：文章页桌面亮色" loading="lazy" />
+              <figcaption><span>文章 / 亮色</span><span>D1 · POST</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d1-post-1440-dark.webp" alt="方向一卷首：文章页桌面暗色" loading="lazy" />
+              <figcaption><span>文章 / 暗色</span><span>D1 · POST</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="mobile-note">
+            <figure class="shot">
+              <img src="screens/d1-post-390-light.webp" alt="方向1：文章页移动端亮色" loading="lazy" />
+              <figcaption><span>文章 / 390</span><span>D1</span></figcaption>
+            </figure>
+            <div class="mobile-note__body">
+              <h4>MOBILE ARTICLE</h4>
+              <p>头部压缩：页边规格只留“归档 / 印记”，目录前移；正文在窄屏自然回落，仍保持 42rem 的阅读逻辑。</p>
+            </div>
+          </div>
+
+          <div class="thumbs">
+            <figure class="shot">
+              <img src="screens/d1-notes-1440-light.webp" alt="方向一卷首：碎碎念页" loading="lazy" />
+              <figcaption><span>碎碎念</span><span>NOTES</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d1-now-1440-light.webp" alt="方向一卷首：now 页" loading="lazy" />
+              <figcaption><span>现在</span><span>NOW</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d1-archive-1440-light.webp" alt="方向一卷首：归档页" loading="lazy" />
+              <figcaption><span>归档</span><span>ARCHIVE</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d1-post-s2.webp" alt="方向一卷首：公式、图注与代码标题栏" loading="lazy" />
+              <figcaption><span>公式 / 图注 / LISTING</span><span>D1 · DETAIL</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d1-post-s3.webp" alt="方向一卷首：表格、分节与文末" loading="lazy" />
+              <figcaption><span>表格 / 分节 / 文末</span><span>D1 · DETAIL</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="dir-subhead"><h3>组件与令牌</h3><span class="meta">全部沿用现有色板与字体族</span></div>
+          <div class="spec-grid">
+            <div>
+              <h4>COLOR TOKENS</h4>
+              <p>纸 #FFFFFF · 墨 #111214 · 正红 #D81E1E · 规则线 #E4E4E1 · 面 #F7F7F5。暗色：纸 #111214 · 墨 #F2F2F0 · 正红 #EF3B3B · 规则线 #2A2C2F。红色仍是唯一重音。</p>
+              <div class="tokens">
+                <span class="token"><i class="paper"></i>paper</span>
+                <span class="token"><i class="ink"></i>ink</span>
+                <span class="token"><i class="red"></i>red</span>
+                <span class="token"><i class="surface"></i>surface</span>
+                <span class="token"><i class="rule"></i>rule</span>
+              </div>
+            </div>
+            <div>
+              <h4>TYPE &amp; RHYTHM</h4>
+              <p>标题 Bodoni Moda 500 + 思源宋体子集；正文系统无衬线 17px / 1.95；正文 measure 42rem；meta 12px 等宽；目录编号 11px 等宽；页边标签 10–11px 大字距。</p>
+            </div>
+            <div>
+              <h4>COMPONENTS</h4>
+              <p>1px 规则线 · 卷首编号 · 内联目录（带虚线引导）· 页边规格 · 题记（全站唯一硬阴影）· 图注 · 代码标题栏 · 方角按钮 · 标签 · 红色 2px 焦点框。</p>
+            </div>
+          </div>
+
+          <div class="dir-subhead"><h3>落地说明</h3><span class="meta">方向一</span></div>
+          <div class="table-wrap">
+            <table class="impl">
+              <tr><th>现有 CSS 可完成</th><td>令牌、正文、代码块、表格、标签、印记、上下篇、焦点、.scroll-x 技术内容包装；方向一只需要在其上增加版式。</td></tr>
+              <tr><th>需要新结构</th><td>首页 frontmatter 两栏 + 卷首 SVG；文章头页边规格；内联目录（取 render() 的 h2/h3，少于 3 条不显示）；/archive/、/tags/ 新版式；/notes/ 流 + 首页最新 3 条；/now/ 页。数据层先抽 <code>src/lib/posts.ts</code>，再接 notes/pages collection。</td></tr>
+              <tr><th>新增 JS</th><td><strong>0</strong>。主题切换沿用现有内联脚本；复制按钮属于 P1，&lt;2KB，且无 JS 时隐藏。</td></tr>
+              <tr><th>新资源</th><td>卷首 SVG 约 1.5KB；无位图、无新字体族。字体子集脚本需扩展扫描 <code>src/content/notes</code> 与 <code>src/content/pages</code> 的标题/引用，否则新衬线文案会静默回退系统宋体。</td></tr>
+              <tr><th>预算</th><td>方向 CSS 原型约 3.5KB gzip（含少量重复，实际应更少）；当前 12.9KB → 上限约 16.4KB，仍在 18KB 内。JS 0，符合 runtime-contract。</td></tr>
+              <tr><th>风险 / 注意</th><td>首页首屏在 320 的信息密度；文章头在移动端偏高（已压缩规格列）；notes/now 的契约与锚点先落地，再做视觉。验收时用真机看 390 和 320。</td></tr>
+            </table>
+          </div>
+          <div class="links">
+            <a href="d1/home.html">首页</a>
+            <a href="d1/post.html">文章</a>
+            <a href="d1/archive.html">归档</a>
+            <a href="d1/tags.html">标签</a>
+            <a href="d1/notes.html">碎碎念</a>
+            <a href="d1/now.html">现在</a>
+            <a href="d1/about.html">关于</a>
+          </div>
+        </section>
+
+        <!-- ================= 方向二 ================= -->
+        <section class="dir" id="d2" aria-labelledby="d2-title">
+          <div class="dir-head">
+            <p class="dir-head__no">02</p>
+            <div class="dir-head__body">
+              <h2 id="d2-title">测绘</h2>
+              <p class="dir-thesis">把站点做成一张可测量的技术图纸：几何图变成带标注的测绘图，所有内容都有编号、刻度和索引。</p>
+              <div class="dir-tags">
+                <span class="tag">A 首页第一屏</span>
+                <span class="tag">B 阅读节奏</span>
+                <span class="tag">D 内容密度</span>
+                <span class="tag">C 页面壳</span>
+                <span class="tag">零新增 JS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dir-meta">
+            <div>
+              <h3>它做什么</h3>
+              <ul>
+                <li>首页：三形状变成带引线的测绘图；下面接近期索引、日志、状态。</li>
+                <li>文章：ISSUED / READ / CLASS / SEAL 标题块，目录带引导线，正文左侧量尺，NOTE / FIG / LISTING 编号。</li>
+                <li>页面壳：归档寄存器、标签图例、碎碎念日志、now 状态单。</li>
+              </ul>
+            </div>
+            <div>
+              <h3>它牺牲什么</h3>
+              <p>信息密度最高，也最容易偏冷；320px 下测绘图标注会隐藏、日志只留 2 条，标题块和目录会把正文推到第二屏。碎碎念在桌面走右栏、与文章列表并排，移动端才移到上方；这是与默认契约的一处偏差，需确认。</p>
+            </div>
+            <div>
+              <h3>落地要点</h3>
+              <ul>
+                <li>CSS 即可完成，但标题块、量尺和寄存器需要新结构。</li>
+                <li>测绘图 SVG 约 2.5KB；移动端隐藏微缩标注。</li>
+                <li>JS 0；全部编号由构建期生成。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="stage">
+            <figure class="shot">
+              <img src="screens/d2-home-1440-light.webp" alt="方向二测绘：首页桌面亮色" loading="lazy" />
+              <figcaption><span>首页 / 1440 / 亮色</span><span>D2 · HOME</span></figcaption>
+            </figure>
+            <figure class="shot shot--mobile">
+              <img src="screens/d2-home-390-light.webp" alt="方向二测绘：首页移动亮色" loading="lazy" />
+              <figcaption><span>首页 / 390</span><span>D2</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d2-post-1440-light.webp" alt="方向二测绘：文章页桌面亮色" loading="lazy" />
+              <figcaption><span>文章 / 亮色</span><span>D2 · POST</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d2-post-1440-dark.webp" alt="方向二测绘：文章页桌面暗色" loading="lazy" />
+              <figcaption><span>文章 / 暗色</span><span>D2 · POST</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="mobile-note">
+            <figure class="shot">
+              <img src="screens/d2-post-390-light.webp" alt="方向2：文章页移动端亮色" loading="lazy" />
+              <figcaption><span>文章 / 390</span><span>D2</span></figcaption>
+            </figure>
+            <div class="mobile-note__body">
+              <h4>MOBILE ARTICLE</h4>
+              <p>移动端隐藏测绘图标注，日志只留 2 条；标题块折成 2×2，目录行高压缩，尽量把正文提前。</p>
+            </div>
+          </div>
+
+          <div class="thumbs">
+            <figure class="shot">
+              <img src="screens/d2-notes-1440-light.webp" alt="方向二测绘：碎碎念日志" loading="lazy" />
+              <figcaption><span>碎碎念 / LOG</span><span>NOTES</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d2-now-1440-light.webp" alt="方向二测绘：now 状态单" loading="lazy" />
+              <figcaption><span>现在 / STATUS</span><span>NOW</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d2-archive-1440-light.webp" alt="方向二测绘：归档寄存器" loading="lazy" />
+              <figcaption><span>归档 / REGISTER</span><span>ARCHIVE</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d2-post-s2.webp" alt="方向二测绘：公式、图注与代码标题栏" loading="lazy" />
+              <figcaption><span>EQ. / FIG. / LISTING</span><span>D2 · DETAIL</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d2-post-s3.webp" alt="方向二测绘：表格、分节与文末" loading="lazy" />
+              <figcaption><span>表格 / 分节 / 文末</span><span>D2 · DETAIL</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="dir-subhead"><h3>组件与令牌</h3><span class="meta">同一套色板，更强的网格与标注</span></div>
+          <div class="spec-grid">
+            <div>
+              <h4>COLOR TOKENS</h4>
+              <p>与方向一相同：纸、墨、正红、规则线、面。红色只用于最新标记、编号和当前状态；其余靠 1px / 3px 双线与等宽标签建立层级。</p>
+            </div>
+            <div>
+              <h4>TYPE &amp; RHYTHM</h4>
+              <p>标题 Bodoni + 思源宋体；正文 17px / 1.9，measure 42rem；正文左侧 3rem 量尺；标签与刻度 9–11px 等宽；标题块用 4 列网格。</p>
+            </div>
+            <div>
+              <h4>COMPONENTS</h4>
+              <p>测绘板 · 标题块 · CONTENTS 引导线 · 左侧量尺 · NOTE / FIG / LISTING 标签 · 寄存器 · 图例 · 日志 · 状态单 · 双线规则。</p>
+            </div>
+          </div>
+
+          <div class="dir-subhead"><h3>落地说明</h3><span class="meta">方向二</span></div>
+          <div class="table-wrap">
+            <table class="impl">
+              <tr><th>现有 CSS 可完成</th><td>令牌、prose、代码、表格、标签、印记、分页与 .scroll-x；量尺可通过正文左边框 + h2 负边距实现，无需 JS。</td></tr>
+              <tr><th>需要新结构</th><td>测绘 SVG + 标注层；文章标题块（4 格 dl）；CONTENTS 列表；正文量尺；归档寄存器、标签图例、日志、状态单。数据仍是 posts/notes/now 三类。</td></tr>
+              <tr><th>新增 JS</th><td><strong>0</strong>。所有编号、日期、阅读时长在构建期算好；主题切换沿用现有脚本。</td></tr>
+              <tr><th>新资源</th><td>测绘图 SVG 约 2.5KB；无位图、无新字体族。字号极小的小标签（9–10px）只用于 meta，不承载正文信息。</td></tr>
+              <tr><th>预算</th><td>方向 CSS 约 3.5KB gzip 上限；当前 12.9KB → ≤16.4KB；JS 0；仍在 runtime-contract 预算内。</td></tr>
+              <tr><th>风险 / 注意</th><td>密度和冷感是主要风险；短文章会被标题块+目录压住，建议移动端把目录行高再压缩。若读者以“读文章”为主，这个方向需要克制使用全大写标签。</td></tr>
+            </table>
+          </div>
+          <div class="links">
+            <a href="d2/home.html">首页</a>
+            <a href="d2/post.html">文章</a>
+            <a href="d2/archive.html">归档</a>
+            <a href="d2/tags.html">标签</a>
+            <a href="d2/notes.html">碎碎念</a>
+            <a href="d2/now.html">现在</a>
+            <a href="d2/about.html">关于</a>
+          </div>
+        </section>
+
+        <!-- ================= 方向三 ================= -->
+        <section class="dir" id="d3" aria-labelledby="d3-title">
+          <div class="dir-head">
+            <p class="dir-head__no">03</p>
+            <div class="dir-head__body">
+              <h2 id="d3-title">页边</h2>
+              <p class="dir-thesis">把正文保持在 42rem，把 now、碎碎念和目录放进页边；像一册有铅笔批注的读书笔记。</p>
+              <div class="dir-tags">
+                <span class="tag">A 首页第一屏</span>
+                <span class="tag">B 阅读节奏</span>
+                <span class="tag">C 作者在场</span>
+                <span class="tag">D 编辑感</span>
+                <span class="tag">零新增 JS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dir-meta">
+            <div>
+              <h3>它做什么</h3>
+              <ul>
+                <li>首页：导航下先放“此刻”，最近在写；页边承载 3 条碎碎念和现在；文章目录在手机上前移到列表之上。</li>
+                <li>文章：标题页 + 贯通全篇的页边（印记/规格/目录）；摘录在页边标注；正文仍是 42rem。</li>
+                <li>页面壳：日记式碎碎念、信件式 now、阅读日志式归档、书签式标签。</li>
+              </ul>
+            </div>
+            <div>
+              <h3>它牺牲什么</h3>
+              <p>布局工作量最大：贯通页边要处理 56–60rem 的中间宽度；移动端需要重新排序；页边目录不是 sticky（遵守 P0），滚动后会离开视口。</p>
+            </div>
+            <div>
+              <h3>落地要点</h3>
+              <ul>
+                <li>文章用 grid-area：head / margin / body，页边在桌面贯穿全篇，手机折成 head → margin → body。</li>
+                <li>首页在移动端用 order + display:contents 把碎碎念放到文章列表之前。</li>
+                <li>JS 0；只有版式与 SVG 边饰。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="stage">
+            <figure class="shot">
+              <img src="screens/d3-home-1440-light.webp" alt="方向三页边：首页桌面亮色" loading="lazy" />
+              <figcaption><span>首页 / 1440 / 亮色</span><span>D3 · HOME</span></figcaption>
+            </figure>
+            <figure class="shot shot--mobile">
+              <img src="screens/d3-home-390-light.webp" alt="方向三页边：首页移动亮色" loading="lazy" />
+              <figcaption><span>首页 / 390</span><span>D3</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d3-post-1440-light.webp" alt="方向三页边：文章页桌面亮色" loading="lazy" />
+              <figcaption><span>文章 / 亮色</span><span>D3 · POST</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d3-post-1440-dark.webp" alt="方向三页边：文章页桌面暗色" loading="lazy" />
+              <figcaption><span>文章 / 暗色</span><span>D3 · POST</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="mobile-note">
+            <figure class="shot">
+              <img src="screens/d3-post-390-light.webp" alt="方向3：文章页移动端亮色" loading="lazy" />
+              <figcaption><span>文章 / 390</span><span>D3</span></figcaption>
+            </figure>
+            <div class="mobile-note__body">
+              <h4>MOBILE ARTICLE</h4>
+              <p>页边折成 head → margin → body：规格列隐藏，目录仍在正文之前；首页的碎碎念也会前移到文章列表之上。</p>
+            </div>
+          </div>
+
+          <div class="thumbs">
+            <figure class="shot">
+              <img src="screens/d3-notes-1440-light.webp" alt="方向三页边：碎碎念日记" loading="lazy" />
+              <figcaption><span>碎碎念 / 日记</span><span>NOTES</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d3-now-1440-light.webp" alt="方向三页边：now 信件" loading="lazy" />
+              <figcaption><span>现在 / 信件</span><span>NOW</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d3-archive-1440-light.webp" alt="方向三页边：归档阅读日志" loading="lazy" />
+              <figcaption><span>归档 / 阅读日志</span><span>ARCHIVE</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="pair">
+            <figure class="shot">
+              <img src="screens/d3-post-s2.webp" alt="方向三页边：公式、图注与代码标题栏" loading="lazy" />
+              <figcaption><span>公式 / 图注 / 清单</span><span>D3 · DETAIL</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="screens/d3-post-s3.webp" alt="方向三页边：表格、分节与文末" loading="lazy" />
+              <figcaption><span>表格 / 分节 / 文末</span><span>D3 · DETAIL</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="dir-subhead"><h3>组件与令牌</h3><span class="meta">暖意来自语气与留白，不靠新颜色</span></div>
+          <div class="spec-grid">
+            <div>
+              <h4>COLOR TOKENS</h4>
+              <p>仍是纸、墨、正红、规则线、面；没有暖黄、没有纸纹、没有渐变。层次靠 1px 竖线、页边留白和衬线标题。</p>
+            </div>
+            <div>
+              <h4>TYPE &amp; RHYTHM</h4>
+              <p>正文 42rem / 17px / 1.95；页边 13rem；标题页与页边目录使用 Bodoni + 思源宋体；日期用衬线，时间与刻度用等宽。</p>
+            </div>
+            <div>
+              <h4>COMPONENTS</h4>
+              <p>此刻一行 · 页边装饰 · 页边碎碎念 · 贯通页边 · 页边目录 · 摘录页边签 · 日记流 · 信件式 now · 阅读日志 · 书签列表。</p>
+            </div>
+          </div>
+
+          <div class="dir-subhead"><h3>落地说明</h3><span class="meta">方向三</span></div>
+          <div class="table-wrap">
+            <table class="impl">
+              <tr><th>现有 CSS 可完成</th><td>令牌、prose、代码、表格、标签、印记、上下篇、焦点与 .scroll-x；页面壳大多是现有排版的重组。</td></tr>
+              <tr><th>需要新结构</th><td>文章 grid-area（head / margin / body）；首页“此刻”行 + 页边块 + 移动端重排；碎碎念/now/归档/标签的新版式。数据仍是 posts/notes/pages 三类。</td></tr>
+              <tr><th>新增 JS</th><td><strong>0</strong>。移动端重排靠 CSS order + display:contents；主题切换沿用现有脚本。</td></tr>
+              <tr><th>新资源</th><td>页边装饰 SVG 约 0.7KB；无位图。衬线新增用例（页边日期、月份）需要纳入字体子集扫描来源。</td></tr>
+              <tr><th>预算</th><td>方向 CSS 约 3.5KB gzip 上限；JS 0；无新字体族；仍是 18KB gzip 预算内。</td></tr>
+              <tr><th>风险 / 注意</th><td>56–60rem 是页边布局的临界带，必须在 768 / 1024 两档实际看；页边目录不 sticky，长文滚动后只能靠回顶；移动端已把规格列隐藏以让正文上移。</td></tr>
+            </table>
+          </div>
+          <div class="links">
+            <a href="d3/home.html">首页</a>
+            <a href="d3/post.html">文章</a>
+            <a href="d3/archive.html">归档</a>
+            <a href="d3/tags.html">标签</a>
+            <a href="d3/notes.html">碎碎念</a>
+            <a href="d3/now.html">现在</a>
+            <a href="d3/about.html">关于</a>
+          </div>
+        </section>
+
+        <!-- ================= 共同落地 ================= -->
+        <section class="ov-section" aria-labelledby="next-title">
+          <div class="ov-section__head">
+            <h2 id="next-title">共同落地顺序</h2>
+            <span class="meta">P0 不停工；选定方向后再拆 P1</span>
+          </div>
+          <div class="table-wrap">
+            <table class="impl">
+              <tr><th>1 · P0 先做</th><td>抽 <code>src/lib/posts.ts</code>；加 /archive/；文章内联目录；<code>npm run verify</code>（子路径、死链、草稿泄漏、体积）。设计探索不阻塞这些。</td></tr>
+              <tr><th>2 · P1 数据层</th><td>notes collection + /notes/ + 首页最新 3 条 + 锚点；pages collection + /now/；碎碎念独立 RSS。内容模型先按 <code>notes-contract.md</code>、<code>now-contract.md</code>。</td></tr>
+              <tr><th>3 · P1 选定方向</th><td>先改首页与文章页，再改归档/标签；相关文章（共享标签前 3）与代码复制按钮放最后。每个阶段单独 PR。</td></tr>
+              <tr><th>4 · 之后</th><td>JSON-LD / OG、打印规则、<code>prefers-reduced-motion</code>、真机走查。搜索、评论、统计、友链仍不在本阶段。</td></tr>
+            </table>
+          </div>
+        </section>
+
+        <section class="ov-section" aria-labelledby="verify-title">
+          <div class="ov-section__head">
+            <h2 id="verify-title">验收与边界</h2>
+            <span class="meta">对应 design-brief 第 5 节与 runtime-contract</span>
+          </div>
+          <div class="spec-grid">
+            <div>
+              <h4>IDENTITY</h4>
+              <p>仍然是白底、单一正红、几何描边、Bodoni + 思源宋体；没有换配色、没有圆角卡片堆、没有图库照片。Seal 映射与 TAG_SHAPE 未动。</p>
+            </div>
+            <div>
+              <h4>READING</h4>
+              <p>正文 measure 保持 42rem；技术内容继续走 .scroll-x；目录、图注、代码标题栏、摘录都服务于跳读，而不是装饰。</p>
+            </div>
+            <div>
+              <h4>IMPLEMENTATION</h4>
+              <p>三个方向都是静态 HTML/CSS，无新依赖；JS 0。字体子集、明暗双入口、打印、KaTeX/MathML 与 .scroll-x 的约束全部保留。</p>
+            </div>
+            <div>
+              <h4>ACCESSIBILITY</h4>
+              <p>320 / 375 / 768 / 1024 / 1440，亮/暗，禁用 JS；焦点红框、TOC 锚点、标签热区、notes 锚点；装饰 SVG 全部 aria-hidden。</p>
+            </div>
+            <div>
+              <h4>SELF-CHECK</h4>
+              <p>3 方向 × 7 页 × 5 宽度 × 亮/暗共 147 次，加上总览页 3 次，共 150 次自动检查，0 个问题；36 张截图（含总览页）；报告在 <code>screens/audit.json</code>。</p>
+            </div>
+            <div>
+              <h4>NOT CHANGED</h4>
+              <p>不改 URL、不改 Seal、不改字体加载策略、不设计系列、不引入第三方、不写生产代码。文章页用现有文章摘录 + 版式示例块，notes/now 为示例文案；未改动 <code>src/content</code>。所有原型都在 <code>docs/next-phase/design/</code>。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="ov-footer">
+      <div class="shell shell--deck">
+        <div class="colophon__row label">
+          <span>设计交付 · 2026.10.22 · 小鑫</span>
+          <span class="meta">HTML/CSS 原型 · 非线上版本 · 讨论稿</span>
+        </div>
+        <p class="colophon__note meta">从 <code>docs/next-phase/design/</code> 预览；选一个方向后，再收敛成设计契约与 P1/P2 PR。</p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.querySelector('.theme-toggle');
+        if (!toggle) return;
+        function sync() {
+          var dark = root.getAttribute('data-theme') === 'dark';
+          toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+          toggle.setAttribute('title', dark ? '切换到浅色模式' : '切换到深色模式');
+        }
+        toggle.addEventListener('click', function () {
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('xin-blog-proto-theme', next); } catch (e) {}
+          sync();
+        });
+        sync();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,15 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import { SITE, SOCIALS, resolveHref, u } from '../const';
 ---
 
-<Base size="compact" active="about" title="关于">
-  <h1 class="section-title">关于我</h1>
+<Base size="compact" width="mid" active="about" title="关于">
+  <PageHead kicker="关于 / ABOUT" title="关于我" />
+
+  <p class="about-lead">
+    我是 <strong>{SITE.author}</strong>，一名计算机专业的大二学生。这里是我用来整理课程笔记、题解和工具配置的地方——写给一年后（或者多年后）的自己看。
+  </p>
 
   <div class="prose">
-    <p>
-      我是 <strong>{SITE.author}</strong>，一名计算机专业的大二学生。这里是我用来整理课程笔记、题解和工具配置的地方——写给一年后（或者多年后）的自己看。
-    </p>
     <h2>这个博客写什么</h2>
     <ul>
       <li><strong>计算机系统</strong>：CSAPP、操作系统、网络协议里那些课件讲得不完整的地方</li>

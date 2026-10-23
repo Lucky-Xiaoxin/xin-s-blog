@@ -25,11 +25,11 @@ npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 
 | 指标 | 口径 | 当前 | 上限 |
 | --- | --- | --- | --- |
-| CSS | 所有 `.css` gzip 总和 | 13.0 KB | 18 KB |
+| CSS | 所有 `.css` gzip 总和 | 13.8 KB | 18 KB |
 | JS | 所有 `.js` gzip 总和 | 0.0 KB | 3 KB |
-| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.36 MB | 1.5 MB |
-| 最大 HTML | 单个 `.html` 原始大小 | 20.1 KB | 30 KB |
-| `dist` | 全部文件原始大小总和 | 1.5 MB | 2.6 MB |
+| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.37 MB | 1.5 MB |
+| 最大 HTML | 单个 `.html` 原始大小 | 20.2 KB | 30 KB |
+| `dist` | 全部文件原始大小总和 | 1.6 MB | 2.6 MB |
 
 内联主题脚本约 1.5 KB，只报告、不计入 JS 预算（P0 不加运行时 JS）。超限先定位是哪一项、确认新增内容是否必要，不要直接抬上限。
 
@@ -88,8 +88,10 @@ draft: true               # 可选，草稿：dev 可预览、不发布
 ## 视觉规范
 
 - 默认纯白底 + 单一正红 `#D81E1E`（深色下提亮为 `#EF3B3B` 保证对比度），其余只有黑、灰两级——例外是开关上的月亮描边用暗紫 `#2E1065`；不用阴影、渐变（唯一例外：文章题记的硬边"雕刻"——亮色内陷、深色凸出，配左侧 2px 红规线）。明暗模式：页头右侧胶囊开关切换，轨道两端嵌几何描边的月亮（左·暗紫）与太阳（右·白），可见侧即当前模式；首次访问跟随系统 `prefers-color-scheme`，手动选择后写入 `localStorage` 跨页记忆；禁用 JS 时由 `@media (prefers-color-scheme: dark)` 兜底继续跟随系统。深色令牌在 `global.css` 里有两个必须逐字一致的入口（`:root[data-theme='dark']` 与 `@media` 下的 `:root:not([data-theme='light'])`），全站唯一运行时的 JS 就是主题这一小段。
+- 导航 4 项：目录 / 归档 / 标签 / 关于。`/archive/` 按年月分组（全站连续编号、移动端隐藏阅读时长），`/tags/` 是按使用频率排序的索引列表（不是标签云），`/tags/[tag]/` 用紧凑目录列表。
+- 宽度：正文 `--measure: 42rem`；归档/标签/关于/404 当前用 `--mid: 46rem`（`--wide: 58rem` 已定义，首页/文章等 P1c/P1d 再切）。页面壳宽 = 内容宽 + 两侧 `--gutter`，`--gutter` 为 `clamp(1.25rem, 6vw, 4.5rem)`。
 - 标题：拉丁用 Bodoni Moda、中文用思源宋体（Noto Serif SC），不走 Google CDN；中文衬线是**构建产物**——`dev`/`build` 启动前由 `scripts/subset-fonts.mjs` 从 npm 依赖里的源字体按站内标题用字现生成（每字重几十 KB，产物 gitignore 不入库），所以**dev 会话中途新写的标题用字要等下次重启 dev 或下一次构建才进子集**，期间那几个字回退系统宋体。正文用系统无衬线，等宽留给代码与元信息（日期/计数）。
-- 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签云徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
+- 首页的圆/方/三角构图在 `src/components/Hero.astro`；标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
 - 代码高亮由 Shiki 在构建期完成，明暗两套 token 色随 HTML 一起产出：亮色色值内联在 `style` 里，暗色色值与两侧的字体风格（粗体/斜体/下划线）走 `--shiki-dark` / `--shiki-light-*` CSS 变量，浏览器切换只改属性、不重跑高亮。
 - 代码块、独立公式、表格由 `astro.config.mjs` 的 `rehypeScrollable` 在构建期包一层 `.scroll-x`（`tabindex=0`、`role=region`、带 `aria-label`）；各屏用 `--bleed` 向两侧小幅突破正文，内容超出时在容器内横向滚动。全部是构建期 HTML，不增加客户端 JS。
 
