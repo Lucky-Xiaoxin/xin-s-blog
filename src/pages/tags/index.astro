@@ -20,6 +20,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     kicker="索引 / TAGS"
     title="标签"
     description="标签是横切分类：一篇文章可以同时属于算法和题解。按使用频率排序，最近一篇附在右侧。"
+    meta={tags.length > 0}
   >
     {tags.length > 0 && (
       <span class="meta">{pad(tags.length)} 个标签 · {pad(posts.length)} 篇文章</span>

@@ -1031,6 +1031,7 @@ a.tag:hover {
   border-top: 1px solid var(--ink);
 }
 .tag-index li {
+  position: relative;
   display: grid;
   grid-template-columns: 2rem 9rem minmax(0, 1fr) 4rem;
   gap: 1.25rem;
@@ -1046,10 +1047,19 @@ a.tag:hover {
   font-size: 0.95rem;
   font-weight: 600;
 }
+/* 整行可点：文字视觉大小不变，热区覆盖到 60px 高的行高 */
+.tag-index__name::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 .tag-index__name:hover {
   color: var(--red);
 }
 .tag-index__latest {
+  position: relative;
+  z-index: 2;
   min-width: 0;
   overflow: hidden;
   font-size: 0.8125rem;
@@ -1110,6 +1120,7 @@ a.tag:hover {
   padding: 0;
 }
 .archive-list li {
+  position: relative;
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr) 6.5rem 4.5rem;
   gap: 1rem;
@@ -1128,6 +1139,17 @@ a.tag:hover {
   font-size: 1.05rem;
   font-weight: 500;
   line-height: 1.45;
+}
+/* 整行可点；标签链接抬到覆盖层上方，仍可单独点开 */
+.archive-list h4 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.archive-list .tag-list {
+  position: relative;
+  z-index: 2;
 }
 .archive-list h4 a:hover {
   color: var(--red);

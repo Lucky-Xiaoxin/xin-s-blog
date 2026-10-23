@@ -24,7 +24,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   title={`#${tag}`}
   description={`标签 #${tag} 下的全部文章。`}
 >
-  <PageHead kicker="标签 / TAG" title={`#${tag}`} description={`${posts.length} 篇文章`}>
+  <PageHead
+    kicker="标签 / TAG"
+    title={`#${tag}`}
+    description={`${posts.length} 篇文章`}
+    meta={Boolean(latest)}
+  >
     {latest && <span class="meta">最近更新 {formatDay(latest.data.pubDate)}</span>}
   </PageHead>
 

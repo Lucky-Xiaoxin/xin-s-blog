@@ -54,14 +54,14 @@ const ogImage = new URL(u('/og.png'), Astro.site);
       )
     }
     <meta name="generator" content={Astro.generator} />
-    <meta property="og:type" content={ogType} />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
-    {is404 ? null : <meta property="og:url" content={canonical} />}
-    <meta property="og:site_name" content={SITE.title} />
     {
       !is404 && (
         <>
+          <meta property="og:type" content={ogType} />
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={description} />
+          <meta property="og:url" content={canonical} />
+          <meta property="og:site_name" content={SITE.title} />
           <meta property="og:image" content={ogImage} />
           <meta name="twitter:card" content="summary_large_image" />
         </>

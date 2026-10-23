@@ -311,7 +311,13 @@ if (isFile(notFoundPage)) {
   if (links.some((l) => l.rel?.toLowerCase() === 'canonical')) {
     fail('seo', '404.html', '不应有 canonical');
   }
-  if (metas.some((m) => m.property === 'og:url')) fail('seo', '404.html', '不应有 og:url');
+  if (
+    metas.some(
+      (m) => (m.property || '').startsWith('og:') || (m.name || '').startsWith('twitter:'),
+    )
+  ) {
+    fail('seo', '404.html', '不应有 OG/Twitter 卡片');
+  }
 }
 
 // ---------- 3.6 RSS / sitemap ----------
