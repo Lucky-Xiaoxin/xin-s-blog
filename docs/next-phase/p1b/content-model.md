@@ -1,6 +1,6 @@
 # P1b 内容模型：notes 与 pages
 
-> 状态：实施中 · 2026-10-23（P1b 内容模型已按此实现，待用户本地试用确认）
+> 状态：已验收 · 2026-10-24（内容模型已按此实现并通过验收复核）
 > 上游：`notes-contract.md`、`now-contract.md`、`design-contract.md` §5.4/§6.8
 > 下游：`src/content.config.ts`、`src/lib/notes.ts`、`src/lib/now.ts`、`/notes/`、`/now/`
 > Owner：实现规划师

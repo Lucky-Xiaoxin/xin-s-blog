@@ -1,6 +1,6 @@
 # P1b 复核记录：碎碎念与 now
 
-> 状态：实施中 · 2026-10-23（实现与本地验证完成，**待用户本地试用确认**）
+> 状态：已验收 · 2026-10-24（验收复核通过，证据见 §9）
 > 上游：`p1b/README.md`、`content-model.md`、`pages-and-feed.md`、`check-dist-guards.md`、`test-plan.md`
 > 证据：本文件 + `screens/`（生产子路径 `preview:prod` 截图与矩阵 JSON）
 > Owner：实现规划师
@@ -133,4 +133,42 @@ npm run verify
 
 ## 8. 结论
 
-P1b 的两个 collection、数据层校验与排序、两个页面与独立 feed、页脚/about 入口、字体子集扩展与 check-dist 新门禁均已按契约实现：`npm run check` 0/0，`npm run verify` PASS（体积在 P0 预算内），G1–G11 注入 11/11 符合预期，浏览器矩阵 29/29 通过。首版内容按用户已定的口径：notes 0 条（测试夹具已全部删除）、now 为单行 `emo中……`。**待用户本地试用确认后再 push / 开 PR。**
+P1b 的两个 collection、数据层校验与排序、两个页面与独立 feed、页脚/about 入口、字体子集扩展与 check-dist 新门禁均已按契约实现：`npm run check` 0/0，`npm run verify` PASS（体积在 P0 预算内），G1–G11 注入 11/11 符合预期，浏览器矩阵 29/29 通过。首版内容按用户已定的口径：notes 0 条（测试夹具已全部删除）、now 为单行 `emo中……`。
+
+## 9. 验收记录（2026-10-24）
+
+### 跑了什么
+
+| 命令 | 结果 |
+| --- | --- |
+| `npm run check` | `Result (29 files): 0 errors / 0 warnings / 0 hints` |
+| `npm run verify` | `[verify] PASS`（生产子路径 `/xin-s-blog/`） |
+
+`verify` 的 check-dist 输出：
+
+```text
+[check-dist] base=/xin-s-blog files=103
+  artifacts  OK (8/8)
+  links      OK (internal=304, anchors=17)
+  drafts     OK (published=4, notes=0)
+  seo        OK (posts=4)
+  rss/sitemap OK
+  dom        OK (notes)
+  size       CSS 14.3/18.0 KB · JS 0.0/3.0 KB · fonts 1.39/1.50 MB · max HTML 20.3/30.0 KB · dist 1.6/2.6 MB
+  inline JS  1.5 KB (theme script, not budgeted)
+  result     PASS
+```
+
+### 失败注入
+
+- 沿用 §3.3 的 G1–G11（11/11 符合预期）；验收复核未新增注入项。
+
+### 未覆盖
+
+- 与 §7 相同：真机 iOS Safari / Android Chrome、读屏、实体打印、第三方 RSS 阅读器、notes 100+ 条压测——留到 P1e。
+- 验收复核未重跑浏览器矩阵（29/29 的证据来自实施期），沿用既有截图与 JSON。
+
+### 结论
+
+契约范围内的实现、数据校验、门禁与体积全部达标，**P1b 验收通过**，可合并回 main，并作为 P1c 的上游。
+

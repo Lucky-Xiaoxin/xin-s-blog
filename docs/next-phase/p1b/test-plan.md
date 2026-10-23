@@ -1,6 +1,6 @@
 # P1b 测试计划：notes / now / feed
 
-> 状态：实施中 · 2026-10-23（测试已按本计划执行，真实结果见 `review.md`）
+> 状态：已验收 · 2026-10-24（测试按本计划执行完毕，真实结果见 `review.md`）
 > 上游：`p1b/README.md`、`content-model.md`、`pages-and-feed.md`、`check-dist-guards.md`
 > 下游：`p1b/review.md`
 > Owner：实现规划师

@@ -1,6 +1,6 @@
 # P1b 门禁：`check-dist` 新增检查
 
-> 状态：实施中 · 2026-10-23（P1b 门禁已按此实现并跑完注入，待用户本地试用确认）
+> 状态：已验收 · 2026-10-24（P1b 门禁已按此实现并跑完注入，通过验收复核）
 > 上游：`p0/verify.md`、`p1a/check-dist-guards.md`（F1/F2 已修）、`p1b/content-model.md`、`p1b/pages-and-feed.md`
 > 下游：`npm run verify`、CI build job
 > Owner：实现规划师

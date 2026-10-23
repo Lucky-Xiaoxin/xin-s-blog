@@ -1,6 +1,6 @@
 # P1b 实施文档：碎碎念与 now
 
-> 状态：实施中 · 2026-10-23（实现与本地验证完成，待用户本地试用确认）
+> 状态：已验收 · 2026-10-24（实现、验证与验收复核均通过；验收证据见 `review.md` §9）
 > 上游：`design-contract.md`（已批准）、`notes-contract.md`（已批准）、`now-contract.md`（已批准）、`p1a/review.md`（P1a 已验收）
 > 下游：P1c 首页（消费 notes/now 数据）、P1e SEO/a11y/真机
 > Owner：实现规划师
