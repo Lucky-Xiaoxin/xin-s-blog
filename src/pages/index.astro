@@ -1,27 +1,41 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import PostList from '../components/PostList.astro';
-import { formatDay } from '../const';
+import Contents from '../components/Contents.astro';
+import Frontispiece from '../components/Frontispiece.astro';
+import MarginNotes from '../components/MarginNotes.astro';
+import Opening from '../components/Opening.astro';
 import { getPublishedPosts } from '../lib/posts';
+import { getPublishedNotes, getRecentNotes } from '../lib/notes';
+import { getNow } from '../lib/now';
 
+// 首页只算已发布：草稿不进图例、不进页边、不进目录
 const posts = await getPublishedPosts();
-const latest = posts[0];
+const notes = await getPublishedNotes();
+const recentNotes = await getRecentNotes(3);
+const now = await getNow();
+
+const latestPost = posts[0];
+const latestNote = notes[0];
+const nowDescription = now?.data.description;
+const hasMargin = recentNotes.length > 0 || Boolean(nowDescription);
+// 页边块缺席时 frontmatter 退回单列（开卷独占一行）
+const singleColumn = Boolean(latestPost) !== hasMargin;
 ---
 
-<Base active="home">
-  <Hero>
-    <div class="hero__caption">
-      <span class="label">全部文章</span>
-      <span class="meta">
-        {posts.length} 篇 · 最近更新 {latest ? formatDay(latest.data.pubDate) : '—'}
-      </span>
-    </div>
-  </Hero>
+<Base active="home" size="full" width="wide">
+  <Frontispiece
+    postCount={posts.length}
+    latestPostDate={latestPost?.data.pubDate}
+    noteCount={notes.length}
+    latestNoteDate={latestNote?.data.date}
+    nowDescription={nowDescription}
+  />
 
-  <PostList posts={posts} />
+  <div class:list={['frontmatter', singleColumn && 'frontmatter--single']}>
+    {latestPost && <Opening post={latestPost} />}
+    {hasMargin && <MarginNotes notes={recentNotes} nowDescription={nowDescription} />}
+    {!latestPost && !hasMargin && <p class="empty-state">还没写文章。</p>}
+  </div>
 
-  <p class="section-note" style="margin:3rem 0 0">
-    没啦~
-  </p>
+  <Contents posts={posts} />
 </Base>

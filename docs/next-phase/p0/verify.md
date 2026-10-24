@@ -25,7 +25,7 @@
 `verify` 必须显式设置（允许被外部 env 覆盖）：
 
 - `TZ=Etc/UTC`（与 CI 一致，避免日期差一天）
-- `SITE_URL=https://lucky-xiaoxin.github.io`
+- `SITE_URL=https://lucky-xiaoxin.github.io`（`check-dist` 会把它归一化为 URL origin；host 大小写不敏感，不要带路径/尾斜杠）
 - `BASE_PATH=/xin-s-blog`
 - `DIST_DIR=dist`（check-dist）
 - 运行 `npm run build` 时，`prebuild` 会跑字体子集；不要跳过。

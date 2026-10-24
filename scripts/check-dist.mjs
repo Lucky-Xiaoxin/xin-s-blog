@@ -8,7 +8,9 @@ const DIST = path.resolve(ROOT, process.env.DIST_DIR || 'dist');
 // 默认与 astro.config.mjs 的 base 默认值（/）一致；生产子路径由 verify/CI 显式传。
 const BASE = (process.env.BASE_PATH || '/').replace(/\/+$/, '');
 const BASE_PATH_DECODED = decodeURIComponent(BASE);
-const SITE = (process.env.SITE_URL || 'https://lucky-xiaoxin.github.io').replace(/\/+$/, '');
+// SITE_URL 用 URL origin 归一化：canonical/sitemap 里的 host 会被 URL 规范化成小写，
+// 直接拿 env 原字符串比较会因 GitHub 用户名的大小写（Lucky-Xiaoxin）误报。
+const SITE = new URL(process.env.SITE_URL || 'https://lucky-xiaoxin.github.io').origin;
 const SITE_ROOT = `${SITE}${BASE}/`;
 const POSTS_DIR = path.join(ROOT, 'src', 'content', 'posts');
 const NOTES_DIR = path.join(ROOT, 'src', 'content', 'notes');
