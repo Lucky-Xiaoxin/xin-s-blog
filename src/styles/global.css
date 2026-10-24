@@ -1163,7 +1163,7 @@ a.tag:hover {
 }
 
 /* ============ 首页：卷首 / 开卷 / 页边 ============ */
-/* 卷首：几何构图 + 三格图例。图例只是计数，不是链接 */
+/* 卷首：几何构图 + 三格图例；三格都是链接 */
 .frontispiece {
   padding-bottom: 0.9rem;
   border-bottom: 1px solid var(--ink);
@@ -1172,6 +1172,30 @@ a.tag:hover {
   display: block;
   width: 100%;
   height: auto;
+}
+/* 图案热区：三列透明链接盖在 SVG 上，和下面图例三格一一对应 */
+.frontispiece__stage {
+  position: relative;
+}
+.frontispiece__hotspots {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.frontispiece__hotspot {
+  display: block;
+  cursor: pointer;
+}
+.frontispiece__figure circle,
+.frontispiece__figure rect,
+.frontispiece__figure polygon {
+  transition: stroke 0.18s var(--ease);
+}
+.frontispiece__stage:has(.frontispiece__hotspot--article:hover) .frontispiece__figure--article circle,
+.frontispiece__stage:has(.frontispiece__hotspot--notes:hover) .frontispiece__figure--notes,
+.frontispiece__stage:has(.frontispiece__hotspot--now:hover) .frontispiece__figure--now {
+  stroke: var(--red);
 }
 .frontispiece__legend {
   display: grid;
@@ -1184,18 +1208,29 @@ a.tag:hover {
 .frontispiece__legend--2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.frontispiece__legend span {
+.frontispiece__legend a {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.55rem;
+  min-height: 2.75rem; /* 热区 ≥44px，视觉仍是一行小字 */
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   color: var(--ink-3);
+  transition: color 0.18s var(--ease);
+}
+.frontispiece__legend a:hover,
+.frontispiece__legend a:focus-visible {
+  color: var(--red);
 }
 .frontispiece__legend b {
   font-weight: 600;
   color: var(--ink);
+  transition: color 0.18s var(--ease);
+}
+.frontispiece__legend a:hover b,
+.frontispiece__legend a:focus-visible b {
+  color: var(--red);
 }
 
 /* 开卷 + 页边：桌面两列，只剩一块时退回单列 */
@@ -1628,7 +1663,7 @@ a.tag:hover {
   .frontispiece__legend {
     gap: 0.75rem;
   }
-  .frontispiece__legend span {
+  .frontispiece__legend a {
     flex-wrap: wrap;
     gap: 0.15rem 0.4rem;
     font-size: 0.625rem;

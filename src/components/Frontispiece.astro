@@ -1,5 +1,5 @@
 ---
-import { formatMonthDay } from '../const';
+import { formatMonthDay, u } from '../const';
 
 interface Props {
   /** 已发布文章数 */
@@ -20,46 +20,83 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const hasNow = Boolean(nowDescription);
 ---
 
-<!-- 卷首：几何构图 + 三格图例。图例只是计数，不是链接。 -->
+<!-- 卷首：几何构图 + 三格图例。图案与图例三格都链到同一目标：文章→归档，碎碎念→/notes/，现在→/now/。 -->
 <section class="frontispiece" aria-label="本册概览">
-  <svg
-    class="frontispiece__drawing"
-    viewBox="0 0 960 200"
-    role="presentation"
-    aria-hidden="true"
-  >
-    <line x1="24" y1="24" x2="936" y2="24" stroke="var(--rule)" stroke-width="1"></line>
-    <line x1="24" y1="176" x2="936" y2="176" stroke="var(--ink)" stroke-width="1"></line>
-    <line x1="320" y1="24" x2="320" y2="176" stroke="var(--rule)" stroke-width="1"></line>
-    <line x1="640" y1="24" x2="640" y2="176" stroke="var(--rule)" stroke-width="1"></line>
-    <circle cx="160" cy="100" r="62" fill="none" stroke="var(--ink)" stroke-width="1.25"></circle>
-    <circle
-      cx="160"
-      cy="100"
-      r="31"
-      fill="none"
-      stroke="var(--ink)"
-      stroke-width="1"
-      opacity=".22"></circle>
-    <rect x="418" y="38" width="124" height="124" fill="none" stroke="var(--ink)" stroke-width="1.25"
-    ></rect>
-    <polygon
-      points="752,162 848,162 800,38"
-      fill="none"
-      stroke="var(--ink)"
-      stroke-width="1.25"></polygon>
-    <circle cx="222" cy="100" r="5.5" fill="var(--red)"></circle>
-  </svg>
+  <div class="frontispiece__stage">
+    <svg
+      class="frontispiece__drawing"
+      viewBox="0 0 960 200"
+      role="presentation"
+      aria-hidden="true"
+    >
+      <line x1="24" y1="24" x2="936" y2="24" stroke="var(--rule)" stroke-width="1"></line>
+      <line x1="24" y1="176" x2="936" y2="176" stroke="var(--ink)" stroke-width="1"></line>
+      <line x1="320" y1="24" x2="320" y2="176" stroke="var(--rule)" stroke-width="1"></line>
+      <line x1="640" y1="24" x2="640" y2="176" stroke="var(--rule)" stroke-width="1"></line>
+      <g class="frontispiece__figure frontispiece__figure--article">
+        <circle cx="160" cy="100" r="62" fill="none" stroke="var(--ink)" stroke-width="1.25"></circle>
+        <circle
+          cx="160"
+          cy="100"
+          r="31"
+          fill="none"
+          stroke="var(--ink)"
+          stroke-width="1"
+          opacity=".22"></circle>
+      </g>
+      <rect
+        class="frontispiece__figure frontispiece__figure--notes"
+        x="418"
+        y="38"
+        width="124"
+        height="124"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="1.25"></rect>
+      <polygon
+        class="frontispiece__figure frontispiece__figure--now"
+        points="752,162 848,162 800,38"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="1.25"></polygon>
+      <circle cx="222" cy="100" r="5.5" fill="var(--red)"></circle>
+    </svg>
+
+    <!-- 图案的热区：给鼠标/触屏用；键盘走下面图例里的真链接，避免重复读两遍 -->
+    <div class="frontispiece__hotspots" aria-hidden="true">
+      <a
+        class="frontispiece__hotspot frontispiece__hotspot--article"
+        href={u('/archive/')}
+        tabindex="-1"
+        title="查看文章归档"></a>
+      <a
+        class="frontispiece__hotspot frontispiece__hotspot--notes"
+        href={u('/notes/')}
+        tabindex="-1"
+        title="查看碎碎念"></a>
+      {hasNow && (
+        <a
+          class="frontispiece__hotspot frontispiece__hotspot--now"
+          href={u('/now/')}
+          tabindex="-1"
+          title="查看现在页"></a>
+      )}
+    </div>
+  </div>
 
   <div class:list={['frontispiece__legend', !hasNow && 'frontispiece__legend--2']}>
-    <span>
+    <a class="frontispiece__legend-item" href={u('/archive/')}>
       <b>文章</b>
       {pad(postCount)} · {latestPostDate ? `最新 ${formatMonthDay(latestPostDate)}` : '暂无'}
-    </span>
-    <span>
+    </a>
+    <a class="frontispiece__legend-item" href={u('/notes/')}>
       <b>碎碎念</b>
       {pad(noteCount)} · {latestNoteDate ? `最近 ${formatMonthDay(latestNoteDate)}` : '暂无'}
-    </span>
-    {hasNow && <span><b>现在</b> {nowDescription}</span>}
+    </a>
+    {hasNow && (
+      <a class="frontispiece__legend-item" href={u('/now/')}>
+        <b>现在</b> {nowDescription}
+      </a>
+    )}
   </div>
 </section>

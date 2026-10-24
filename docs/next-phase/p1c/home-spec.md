@@ -1,6 +1,6 @@
 # P1c 首页规格：卷首 / 开卷 / 页边 / 目录
 
-> 状态：实施中 · 2026-10-24（按本文实现完成，实测结果见 `review.md`）
+> 状态：已验收 · 2026-10-24（按本文实现；图例与三个图案均可点击，实测结果见 `review.md`）
 > 上游：`design-contract.md` §2/§5.1/§7、`design/d1/home.html`、`design/assets/d1.css`、`p1c/README.md`
 > 下游：`src/pages/index.astro`、首页组件、`global.css`
 > Owner：实现规划师
@@ -76,7 +76,9 @@ export function noteExcerpt(note: Note, limit = 60): string;
 - SVG 用设计稿 `d1/home.html` 的 960×200 版本（圆/方/三角 + 基线 + 红点），`role="presentation" aria-hidden="true"`；`width:100%; height:auto`。
 - 图例 `.frontispiece__legend`：默认 `grid-template-columns: repeat(3, minmax(0,1fr))`；now 缺失时用修饰类 `--2` 改 `repeat(2, minmax(0,1fr))`。
 - 图例文字：`font-family: var(--font-mono)`、`0.6875rem`、`letter-spacing:.08em`、`color: var(--ink-3)`；`<b>` 为 `var(--ink)`、`font-weight:600`。
-- 图例不是链接；不要给格子加 hover/点击。
+- 三格都是链接（2026-10-24 用户确认）：文章 → `/archive/`，碎碎念 → `/notes/`，现在 → `/now/`；`u()` 补子路径。
+- 链接热区高度 ≥44px（`min-height:2.75rem`，视觉仍是一行小字）；hover/focus 时文字与 `<b>` 变红，焦点框沿用全局 `:focus-visible`。
+- 上方三个图案与三格一一对应：圆 → 文章/归档，方 → 碎碎念/notes，三角 → 现在/now。实现为覆盖在 SVG 上的三等分透明热区（`aria-hidden="true"`、`tabindex="-1"`，鼠标/触屏可用；键盘走图例里的真链接，避免读屏重复）；hover 时对应图案描边变红。now 缺失时第三格和第三个图案热区都不渲染。
 
 ### 3.2 opening
 

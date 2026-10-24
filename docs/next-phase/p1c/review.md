@@ -1,6 +1,6 @@
 # P1c 复核记录：首页卷首
 
-> 状态：实施中 · 2026-10-24（实现与本地验证完成，**待用户本地试用确认**）
+> 状态：已验收 · 2026-10-24（实现与本地验证完成；图例与图案可点击补丁已验；用户本地验收通过）
 > 上游：`p1c/README.md`、`home-spec.md`、`test-plan.md`、`p1b/review.md`
 > 证据：本文件 + `screens/`（生产子路径 `preview:prod` 截图与矩阵 JSON）
 > Owner：实现规划师
@@ -116,4 +116,58 @@ npm run verify
 
 ## 9. 结论
 
-契约范围内的首页卷首、开卷/页边、编号目录、动态图例、空状态组合、旧件清理与文档同步均已按 `home-spec.md` 实现：`npm run check` 0/0，`npm run verify` PASS（体积在 P0 预算内），功能矩阵 H1–H13 全部符合，空状态 6 种组合全部成立，浏览器矩阵 24/24 通过。**待用户本地试用确认后再 push / 开 PR。**
+契约范围内的首页卷首、开卷/页边、编号目录、动态图例、空状态组合、旧件清理与文档同步均已按 `home-spec.md` 实现：`npm run check` 0/0，`npm run verify` PASS（体积在 P0 预算内），功能矩阵 H1–H13 全部符合，空状态 6 种组合全部成立，浏览器矩阵 24/24 通过。用户 2026-10-24 本地验收通过；图例与图案可点击补丁见 §10/§11，随后按流程合并发布。
+
+## 10. 补记：图例可点击（2026-10-24）
+
+用户本地试用时指出：卷首三格图例是顶部入口，应该能点，不应只是计数。原 `home-spec` 写的是“图例不是链接”，按用户判断改为可点击（契约已同步）。
+
+改动：
+
+- `Frontispiece.astro`：三格 `<span>` → `<a class="frontispiece__legend-item">`；文章 → `/archive/`，碎碎念 → `/notes/`，现在 → `/now/`；全部走 `u()` 子路径。now 缺失时第三格仍不渲染。
+- `global.css`：`.frontispiece__legend` 的子项改查 `a`；`min-height: 2.75rem` 保证热区 ≥44px；hover/focus 时文字与 `<b>` 变红；焦点框沿用全局 `:focus-visible`。
+- `p1c/home-spec.md` §3.1、`p1c/README.md` 决策 9、`p1c/test-plan.md` H1/H1b/H14 同步。
+
+验证：
+
+```text
+npm run check
+Result (31 files): 0 errors / 0 warnings / 0 hints
+
+npm run verify
+links OK (internal=313, anchors=17)
+CSS 14.7/18.0 KB · max HTML 20.3/30.0 KB
+result PASS
+```
+
+- 产物 `dist/index.html` 三格链接为 `/xin-s-blog/archive/`、`/xin-s-blog/notes/`、`/xin-s-blog/now/`。
+- 额外用 headless Chrome（CDP）在 1440×900 与 320×800 检查：三格高度均 44px；1440 宽 299px/格、320 宽 280px/格；`scrollWidth <= innerWidth`；链接与文案正确。
+- **未重跑**完整 24 次浏览器矩阵；本次只改图例链接样式/结构，其余 P1c 证据仍以 §5 为准。真机/读屏仍未覆盖（P1e）。
+
+## 11. 补记：三个图案也可点击（2026-10-24）
+
+用户继续要求：上面三个几何图案也要像图例三格一样能点。改动仍局限在卷首组件与样式。
+
+改动：
+
+- `Frontispiece.astro`：SVG 外包 `.frontispiece__stage`；在 SVG 上盖一层三等分透明 `.frontispiece__hotspots`：
+  - 圆 → `/archive/`
+  - 方 → `/notes/`
+  - 三角 → `/now/`（now 缺失时不渲染第三块）
+- 热区 `aria-hidden="true" tabindex="-1"`：只服务鼠标/触屏；键盘与读屏走图例里的真链接，避免同一目标读两遍。
+- `global.css`：`.frontispiece__stage` 定位；`.frontispiece__hotspots` 三列网格盖满 SVG；`cursor:pointer`；`:has()` 下 hover 对应图案描边变红。
+- `p1c/home-spec.md` §3.1、`p1c/README.md` 决策 9、`p1c/test-plan.md` H1c/H14 同步。
+
+验证：
+
+```text
+npm run verify
+links OK (internal=316, anchors=17)
+CSS 14.8/18.0 KB · max HTML 20.3/30.0 KB
+result PASS
+```
+
+- headless Chrome 1440×900：stage 928×193；三个热区各 309×193；`elementFromPoint` 在圆/方/三角形中心分别命中 `/xin-s-blog/archive/`、`/xin-s-blog/notes/`、`/xin-s-blog/now/`；`scrollWidth 1425 <= 1440`。
+- headless Chrome 320×800：stage 280×58；三个热区各 93×58（高 ≥44px）；三个中心命中同上；`scrollWidth 320 <= 320`。
+- 三个热区 `tabIndex=-1`、父层 `aria-hidden=true`；图例三格仍是可 Tab 的真链接。
+- 未重跑完整 24 次矩阵；本次只加图案热区与 hover 描边，其余证据仍以 §5 为准。

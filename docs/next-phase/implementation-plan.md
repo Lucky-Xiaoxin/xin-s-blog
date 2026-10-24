@@ -1,6 +1,6 @@
 # 实施计划（设计契约已批准）
 
-> 状态：实施中 · 2026-10-24（P0、P1a、P1b 已验收；P1c 已实现待验收，文档见 `p1c/`）。本文保留 P0→P1e 的拆解、测试与完成定义。
+> 状态：实施中 · 2026-10-24（P0、P1a、P1b、P1c 已验收；下一步 P1d 文章页）。本文保留 P0→P1e 的拆解、测试与完成定义。
 > 依赖：`design-contract.md`（已批准）、`notes-contract.md`、`now-contract.md`、`runtime-contract.md`。
 > 规则：每个阶段单独分支/PR；用户本地试完才 push；文章/碎碎念/now 的个人内容不代写。
 
@@ -143,7 +143,9 @@
 
 ### P1c · `feat/home-frontispiece`
 
-> 规划状态：2026-10-23；详细文档见 `docs/next-phase/p1c/`（README、home-spec、test-plan）。首页顶部 notes/now 入口在这里做，P1b 只负责页脚/路由。
+> 实现状态：已验收（2026-10-24），证据见 `p1c/review.md`；图例三格与三个图案均可点击（2026-10-24 补丁）。
+>
+> 详细文档见 `docs/next-phase/p1c/`（README、home-spec、test-plan）。首页顶部 notes/now 入口在这里做，P1b 只负责页脚/路由。
 
 **目标**：首页卷首 + 开卷/页边 + 编号目录；依赖 P1b 数据。
 
@@ -317,5 +319,5 @@ P0 ──> P1a ──> P1b ──> P1c
 - P0：已验收（`p0/review.md`）；数据层、草稿预览、verify/check-dist 均已落地。
 - P1a：已验收（`p1a/review.md`）；tokens/shell/页头页脚/导航/归档/标签/关于/404 已落地，F1/F2 已修；**宽度 A 已确认**；分支提交/推送按用户安排执行。
 - P1b：已验收（`p1b/review.md` §9）；notes/pages 数据层、`/notes/`、`/notes/rss.xml`、`/now/`、字体子集与门禁。notes 首版 0 条；now 首版单行 `emo中……`。
-- P1c：已实现待验收（`p1c/review.md`）；首页卷首/开卷/页边/编号目录，顶部 notes/now 入口。
-- 下一步：P1c 本地验收；P1d 文章页。P1b 与 P1c/P1d 均会改 `global.css`/`Base` 时，按 `p1a/review.md` 的宽度分期与文档约定协调，不要同时开两个改 `global.css` 的 PR。
+- P1c：已验收（`p1c/review.md`）；首页卷首/开卷/页边/编号目录，顶部 notes/now 入口；图例三格与三个图案可点击。
+- 下一步：P1d 文章页。P1b 与 P1c/P1d 均会改 `global.css`/`Base` 时，按 `p1a/review.md` 的宽度分期与文档约定协调，不要同时开两个改 `global.css` 的 PR。
