@@ -49,6 +49,7 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | `FAIL links ... 锚点 #xxx 在 ... 中找不到 id` | 页内链接指向不存在的标题 id | 检查 TOC/锚点拼写，确认目标页生成了对应 `id`；同页 `#xxx` 也会被查。锚点只认真实 `id` 属性，`data-id` 不算 |
 | `FAIL seo ...` | 文章页缺 canonical/OG/description，或 404 页多了 canonical/OG/Twitter 卡片 | 查 `src/layouts/Base.astro` 的 head；404 只保留 noindex，不要 canonical、`og:*`、`twitter:*` |
 | `FAIL seo ... canonical 与页面地址不一致` | canonical 指错页面、缺尾斜杠，或改页面路径后没同步 | 目录式页面的 canonical 必须精确等于 `SITE_URL + BASE_PATH + 页面路径/`；优先让 `Base.astro` 统一生成，不要在页面里手写。404 例外，不生成 canonical |
+| `FAIL seo ... canonical 不是 https://... 下的绝对地址`，且两边只差 host 大小写 | `SITE_URL` 的 host 大小写与 URL 规范化后的 canonical 不一致（GitHub 用户名可能带大写） | `check-dist` 已把 `SITE_URL` 归一化为 URL origin；仍报就检查 `SITE_URL` 的 scheme/host 是否写错。不要用字符串大小写硬比 |
 | `FAIL rss ...` / `FAIL sitemap ...` | RSS/sitemap 缺已发布文章，或 sitemap 混入了 `/404/` | 检查 `src/lib/posts.ts` 的 `getPublishedPosts()`、`src/pages/rss.xml.js` 和 `@astrojs/sitemap` 的路由输出 |
 | `FAIL size ... 当前 X 上限 Y，超出 Z` | 产物超预算（CSS/JS/字体/最大 HTML/dist） | 看是哪一项；先确认新增内容是否必要，不要直接抬 `scripts/check-dist.mjs` 里的上限。基线见 README |
 | `[notes] 碎碎念 xxx 的 date 与文件名日期不一致` / `正文为空` / `文件名须为 YYYY-MM-DD-slug.md` | 碎碎念的数据层校验没过（故意挡发布） | 改文件名或 `date` 让两者一致；正文至少写一句话；slug 用小写字母/数字/连字符 |
