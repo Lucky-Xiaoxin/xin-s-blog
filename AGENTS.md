@@ -102,7 +102,7 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 
 - 建稿用 `npm run new -- <文件名>` 或双击根目录「新建文章.bat」，不要手抄 frontmatter。
 - 新标签必须登记进 `src/const.ts` 的 `TAG_SHAPE`，否则构建告警。
-- Node 需 22.23.4+（Astro 7 的硬性要求；CI 的 `node-version: 22` 会取最新 22.x）。`@astrojs/check` 的 peer TypeScript 仍只到 `^6`，不要升 TypeScript 7。
+- Node 需 22.23.4+（Astro 7 的硬性要求）。**CI 的 `node-version` 必须钉具体小版本**（现在是 `22.23.4`）：写 `22` 时 runner 按自己的 tool-cache 索引解析、实测取到 22.23.3，差一个补丁版本 `astro check` 直接拒跑——**本地过了不代表 CI 过**。「Astro 7 要求 22.23.4 而 CI 报 Node not supported」先查 deploy.yml 的 node-version。`@astrojs/check` 的 peer TypeScript 仍只到 `^6`，不要升 TypeScript 7。
 - agent shell 里 `git push` 凭据通常已缓存；若报 `/dev/tty` 错误，让用户在输入框用 `! git push` 代跑一次。
 - GitHub Pages HTML 有约 10 分钟浏览器缓存：用户说"推上去没变"先让他 Ctrl+F5 再排查。
 - 不要提议添加 LICENSE（用户已明确拒绝）。

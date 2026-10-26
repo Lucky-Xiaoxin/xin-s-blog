@@ -68,6 +68,7 @@ https://lucky-xiaoxin.github.io/xin-s-blog/（HTML 有约 10 分钟浏览器缓�
 | 升级 Astro 7 后 `src/content.config.ts` 满屏 `'z' is deprecated` | Astro 7 把 `z` 从 `astro:content` 迁到 `astro/zod`，Astro 8 会移除旧导出 | 改成 `import { defineCollection } from 'astro:content'; import { z } from 'astro/zod';` |
 | `npm audit fix --force` 提示安装 `rehype-katex@1.2.0` | npm 对嵌套 KaTeX 的自动修复是降级，不是升级，会破坏公式链 | 不要执行 `--force`。保留根 `katex` 0.18.9 与 `package.json` 的 `overrides`；用 `npm ls katex` 确认只有一个版本 |
 | CI 的 `npm run audit` 报 high/critical | 依赖树里出现达到阈值的漏洞 | 看 `npm audit` 的包与修复建议；先 `npm audit fix`（不加 `--force`），需要跨大版本时单独开分支升级并跑 verify；不要删掉 audit 步骤或降阈值来变绿 |
+| CI 的 Type check 步报 `Node.js v22.23.3 is not supported by Astro!`，但本地 `npm run verify` 全绿 | `deploy.yml` 写了 `node-version: 22`，runner 按自己的 tool-cache 索引把它解析成 22.23.3，比 Astro 7 要求的 `>=22.23.4` 差一个补丁版本（本地是新 Node，所以看不出问题） | 把 `node-version` 钉成具体小版本（现在是 `22.23.4`），别只写大版本线。`nodejs.org/dist/index.json` 能查到该版本确实已发布；同理 `npm ci`/`audit` 步骤不受影响，红点只会出现在第一个真正调用 astro 的步骤 |
 
 ## 这个仓库的地图（一共就这几个地方）
 

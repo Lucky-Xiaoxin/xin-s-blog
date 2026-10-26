@@ -3,8 +3,9 @@ name: 构建并发布到 GitHub Pages
 on:
   push:
     branches: [main]
-  # PR 门禁：把 check + build + check:dist 提前到合并前跑。workflow 文件取自主分支，
-  # 所以这条要合进 main 之后的下一个 PR 才开始生效（本 PR 自己看不到 check）
+  # PR 门禁：把 check + build + check:dist 提前到合并前跑。同仓库的 pull_request
+  # 事件用的是 PR 分支自己的这份 workflow（实测 PR #24 跑到了新增的 audit 步骤），
+  # 所以改完门禁文件，本 PR 就能看到效果；fork 的 PR 才取主分支版本
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -30,8 +31,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          # Astro 7 要求 Node >=22.23.4；22 会取最新 22.x
-          node-version: 22
+          # Astro 7 要求 Node >=22.23.4。这里必须钉死到具体小版本：
+          # 写 22 时 runner 会按自己的 tool-cache 索引解析（实测取到 22.23.3），
+          # 差一个补丁版本就被 astro 直接拒跑，check 步骤红
+          node-version: 22.23.4
           cache: npm
       - run: npm ci
       - name: Audit dependencies
