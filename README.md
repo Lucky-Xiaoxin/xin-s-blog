@@ -7,27 +7,28 @@
 ## 本地开发
 
 ```bash
-node -v            # 需要 20.3+ / 22+，见 package.json 的 engines
+node -v            # 需要 22.23.4+（Astro 7 的最低 Node），见 package.json 的 engines
 npm install
 npm run dev        # http://localhost:4321/
 npm run build      # 产出到 dist/（默认 base=/）
 npm run check:dist # 只检查已有 dist/（默认与普通 build 一致）
+npm run audit      # 依赖审计；high/critical 会返回非零
 npm run preview    # 预览普通 dist/（配合上面的 build），端口看输出
 npm run verify     # check + 生产子路径构建 + 产物检查（链接/草稿/SEO/体积）
 npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 ```
 
-`npm run verify` 用线上同款参数（`BASE_PATH=/xin-s-blog/`、`SITE_URL=https://lucky-xiaoxin.github.io`、`TZ=Etc/UTC`）重新构建，再跑 `scripts/check-dist.mjs`：检查必需产物、站内链接/锚点、草稿泄漏、canonical/OG、RSS/sitemap 与体积预算。任何一项失败都会返回非零退出码，CI 在 build 后会以同款线上参数跑 `npm run check:dist`。
+`npm run verify` 用线上同款参数（`BASE_PATH=/xin-s-blog/`、`SITE_URL=https://lucky-xiaoxin.github.io`、`TZ=Etc/UTC`）重新构建，再跑 `scripts/check-dist.mjs`：检查必需产物、站内链接/锚点、草稿泄漏、canonical/OG、RSS/sitemap 与体积预算。任何一项失败都会返回非零退出码；CI 会先跑 `npm run audit`，build 后再以同款线上参数跑 `npm run check:dist`。
 
 `npm run check:dist` 默认按 `BASE_PATH=/` 检查普通 `npm run build` 的产物；要检查生产子路径请用 `npm run verify`（它会自动以 `/xin-s-blog/` 重建），或显式传入 `BASE_PATH`/`SITE_URL`。`npm run preview` 对应普通构建，`npm run preview:prod` 对应 verify 的产物。（Windows Git Bash 下手动覆盖 `BASE_PATH` 时先 `export MSYS2_ENV_CONV_EXCL=BASE_PATH`，否则 `/xin-s-blog` 会被 shell 改写成 `C:/...`；直接跑 `npm run verify` / `npm run check:dist` / `npm run preview:prod` 不受影响。）
 
-### 体积预算（2026-10-23 基线）
+### 体积预算（2026-10-25 基线）
 
 | 指标 | 口径 | 当前 | 上限 |
 | --- | --- | --- | --- |
-| CSS | 所有 `.css` gzip 总和 | 14.3 KB | 18 KB |
+| CSS | 所有 `.css` gzip 总和 | 14.6 KB | 18 KB |
 | JS | 所有 `.js` gzip 总和 | 0.0 KB | 3 KB |
-| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.39 MB | 1.5 MB |
+| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.40 MB | 1.5 MB |
 | 最大 HTML | 单个 `.html` 原始大小 | 20.3 KB | 30 KB |
 | `dist` | 全部文件原始大小总和 | 1.6 MB | 2.6 MB |
 
@@ -76,7 +77,7 @@ draft: false
 主题、组件、配置的改动影响整站，走这条路：
 
 1. `git switch -c feat/xxx` 开分支，本地 `npm run dev` 验证。
-2. 提交前跑 `npm run verify`——等同 CI 的 check + 构建 + `check:dist`，本地过了线上基本就过。
+2. 提交前跑 `npm run verify` 和 `npm run audit`——合起来等同 CI 的 check + 构建 + `check:dist` + 依赖审计，本地过了线上基本就过。
 3. push 分支，在 GitHub 上开 PR、自查改动说明后合并到 `main`，合并即触发发布。
 4. 改坏了要回滚：revert 那个 merge commit 再推 `main`，Pages 会重新发布旧版内容。
 
@@ -149,9 +150,10 @@ draft: true               # 可选，草稿：dev 可预览、不发布
 
 - 中文标签会生成百分号编码的 URL（`/tags/%E7%AE%97%E6%B3%95/`），访问正常；但 Pages 没有重定向机制，改文章文件名或标签名会让旧链接 404。
 - 正文按相对路径引用的图片会在构建期被 Astro 自动优化（转 webp），但不做尺寸缩放；`public/` 只放站点级文件。
-- 字体产物共 **77 个文件 / 1.36 MB**（整个 `dist` 原始大小 1.5 MB）：woff2 29 个 486 KB、woff 28 个 404 KB、ttf 20 个 502 KB。构成是 Noto 子集 2（思源宋体 400/500，构建期生成）+ Bodoni Moda 16（latin / latin-ext / math / symbols 四子集 × 两字重 × woff2+woff）+ KaTeX 59（20 个字符族 × 最多三档）。
+- 字体产物共 **77 个文件 / 1.40 MB**（整个 `dist` 原始大小 1.60 MB）：woff2 29 个 527 KB、woff 28 个 404 KB、ttf 20 个 502 KB。构成是 Noto 子集 2（思源宋体 400/500，构建期生成）+ Bodoni Moda 16（latin / latin-ext / math / symbols 四子集 × 两字重 × woff2+woff）+ KaTeX 59（20 个字符族 × 最多三档）。
 - 其中 **ttf 502 KB 加 woff 里约 393 KB 是死重**——现代浏览器只请求 woff2，只有 `KaTeX_Size3-Regular` 没有 woff2（上游就没给），它的 woff 是唯一真会被下载的 woff。原因是 `katex.min.css` 每条 `src` 都写了 woff2→woff→ttf 三档，Vite 为 CSS 里引用到的每个 `url()` 都落一份产物，于是三档全进 `dist`。这是上游 CSS 的行为、不是本项目配错；要瘦产物只能构建后按清单删文件，属于新增构建步骤，未做。另外 KaTeX 的字体只在页面真有公式时才懒加载，无公式的页面一份都不下载。
 - 配图链路从未被真实使用过：4 篇文章零图片，上一条「相对路径图片自动转 webp」是按 Astro 的行为写的、不是实测结论。第一次真放配图时留意产物里的 URL 前缀对不对。
+- 依赖与审计：Astro 7；根 `katex` 固定 0.18.9，`package.json` 的 `overrides` 把 `rehype-katex`/`micromark-extension-math` 的嵌套版本也锁到同一版（`npm ls katex` 应只剩一个）。CI 会跑 `npm run audit`，high/critical 直接红；**不要跑 `npm audit fix --force`**，它会把 `rehype-katex` 降到 1.2.0。
 - 碎碎念 feed 在 `/notes/rss.xml` 生成并有门禁校验，但页面上**不放订阅入口**（P1b 契约的决定），要订阅得手动访问该 URL；页脚的 `RSS` 仍指主文章 feed `/rss.xml`。
 - 部署链路已跑通一次：Actions run #1 的 build 与 deploy 全绿，线上页面、CSS、字体、中文标签页、RSS 绝对地址、自定义 404 均验证为 200。
 - 桌面/移动视口已用无头 Chrome 做过亮暗走查（含公式、代码块、短页页脚）；真机（iOS Safari / Android Chrome）和读屏实测仍未覆盖。

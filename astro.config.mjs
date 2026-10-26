@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 import vitesseLight from '@shikijs/themes/vitesse-light';
 import vitesseDark from '@shikijs/themes/vitesse-dark';
 import remarkMath from 'remark-math';
@@ -67,11 +68,16 @@ export default defineConfig({
     // 数学公式构建期排版（浏览器零 JS）；throwOnError/strict 关闭：
     // 坏公式在页面上标红，而不是炸掉构建挡住发布。
     // output 必须保留 MathML：只输出 HTML 时 KaTeX 会把 .katex-html 标成 aria-hidden，读屏读不到公式。
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [
-      [rehypeKatex, { throwOnError: false, strict: false, output: 'htmlAndMathml' }],
-      rehypeScrollable,
-    ],
+    // Astro 7 默认处理器是 Sätteri；本站依赖 remark/rehype 插件链，
+    // 因此显式使用 @astrojs/markdown-remark 的 unified() 处理器（旧的
+    // markdown.remarkPlugins/rehypePlugins 写法已废弃）。
+    processor: unified({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [
+        [rehypeKatex, { throwOnError: false, strict: false, output: 'htmlAndMathml' }],
+        rehypeScrollable,
+      ],
+    }),
     shikiConfig: {
       // 明暗双主题：亮色色值内联、暗色色值走 --shiki-dark，字体风格两侧都走 --shiki-*-font-* 变量
       // （global.css 必须同时消费 light/dark 两侧，缺 light 侧会丢代码粗体/斜体）

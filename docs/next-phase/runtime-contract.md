@@ -11,7 +11,7 @@
 | 最大文章 HTML | 20.1 KB（`math-xor`） |
 | 字体 | 77 个文件 / **1.36 MB**；KaTeX 字体仅公式页按需下载 |
 | `dist` | 约 **1.5 MB**（不含内容配图） |
-| CI | `check + build + check:dist`；PR 门禁；deploy 仅 main |
+| CI | `audit + check + build + check:dist`；PR 门禁；deploy 仅 main |
 
 当前值以根 README 的体积预算表为准；本表只定义运行时准入与上限。
 

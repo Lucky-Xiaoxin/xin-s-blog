@@ -2,12 +2,12 @@
 
 This file provides guidance to the AI agent when working with code in this repository.
 
-Astro 5 静态博客，部署为 GitHub Pages **项目站**（子路径 `/xin-s-blog/`）。维护者是大二学生，单人使用，全程中文交流（文档、注释、commit message 均中文）。
+Astro 7 静态博客，部署为 GitHub Pages **项目站**（子路径 `/xin-s-blog/`）。维护者是大二学生，单人使用，全程中文交流（文档、注释、commit message 均中文）。
 
 ## 交付双轨（用户明确要求，不可混用）
 
 - **写/改文章**（`src/content/posts/`）：直推 main 即可。但**文章是用户的内容，未经同意不要代写代改**；发现语法错只报告，让他自己修（学习导向）。
-- **框架改动**（其余一切）：`git switch -c xxx` 分支 → 本地 `npm run verify`（check + 生产子路径 build + 产物检查）→ 交用户本地试用 → 用户确认 → push → 用 GitHub MCP 建 PR（正文含摘要/明细/测试计划）→ 合并 → `git pull` 同步 main。
+- **框架改动**（其余一切）：`git switch -c xxx` 分支 → 本地 `npm run verify`（check + 生产子路径 build + 产物检查）与 `npm run audit` → 交用户本地试用 → 用户确认 → push → 用 GitHub MCP 建 PR（正文含摘要/明细/测试计划）→ 合并 → `git pull` 同步 main。
 
 Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 
@@ -17,7 +17,8 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 站内链接必须走 `src/const.ts` 的 `u()`/`resolveHref()` 补子路径前缀；文章正文资源用相对路径（`/` 开头构建不补前缀，线上必 404）。
 - `SITE_URL`/`BASE_PATH` 由 `.github/workflows/deploy.yml` 构建期注入，`astro.config.mjs` 的默认值**只影响本地**——改域名/改路径要改 deploy.yml。**不要在 shell 里设 `BASE_URL` 环境变量**：Astro 会把它当站点 base，`u()` 与 404 判定一起坏掉（门禁会同时报「404 缺 noindex」和「RSS 缺已发布文章链接」）；子路径只认 `BASE_PATH`，本地脚本要指预览地址就换变量名（如 `PREVIEW_URL`）。
 - 构建时出现 `Duplicate id "xxx"` 警告多半是**假警报**：其他文件 YAML 错误中断同步所致，先修真正的 `bad indentation`，它会自己消失（详见 TROUBLESHOOTING.md）。
-- KaTeX 配了 `throwOnError: false`：坏公式页面标红但不挡发布，这是有意的。**必须保留 `output: 'htmlAndMathml'`**——改回 `html` 会把 `.katex-html` 标成 `aria-hidden` 且不产出 MathML，读屏读不到任何公式。
+- KaTeX 配了 `throwOnError: false`：坏公式页面标红但不挡发布，这是有意的。**必须保留 `output: 'htmlAndMathml'`**——改回 `html` 会把 `.katex-html` 标成 `aria-hidden` 且不产出 MathML，读屏读不到任何公式。根 `katex` 固定 0.18.9，`package.json` 的 `overrides` 把 `rehype-katex`/`micromark-extension-math` 的嵌套版本统一到同一版；`npm ls katex` 只能有一个版本。**不要跑 `npm audit fix --force`**（它会把 `rehype-katex` 降到 1.2.0）。
+- Astro 7 默认 Markdown 处理器是 Sätteri；本站依赖 remark/rehype 插件链，`astro.config.mjs` 必须显式使用 `@astrojs/markdown-remark` 的 `unified({ remarkPlugins, rehypePlugins })`（`markdown.processor`）。不要移回已废弃的 `markdown.remarkPlugins`/`markdown.rehypePlugins`；内容 schema 的 `z` 从 `astro/zod` 导入，不要从 `astro:content` 导入。
 - 技术内容（代码块/独立公式/表格）由 `astro.config.mjs` 的 `rehypeScrollable` 在构建期包一层 `.scroll-x`；CSS 只对 `.prose > .scroll-x` 生效。它给宽内容两侧 `--bleed` 的突破和可聚焦横向滚动容器；不要删掉 wrapper 或把 `.prose pre`/`.katex-display` 的 overflow 改回去。
 - 首页品牌在 `size='full'` 时是 `h1`，内页是 `a`（每页只留一个 h1）；短页页脚贴底依赖 `body` 的 flex column + `main { flex:1 }`。改页头/页脚骨架时保留这两点。
 - 明暗主题**两个入口**（改配色前先读这条）：`Base.astro` 的 `<head>` 内联脚本负责首屏防闪色（别挪位置、别改成打包脚本），并且**永远显式写 `data-theme='light'` 或 `'dark'`**——属性一缺失就等于"没有 JS"，会被兜底入口接管，用户选的亮色会被系统暗色翻盘。`global.css` 里深色声明有两份，必须逐字一致：入口① `:root[data-theme='dark']`（脚本/手动），入口② `@media (prefers-color-scheme: dark)` 下的 `:root:not([data-theme='light'])`（JS 被禁用时跟随系统）。入口②还各自拷贝了深色态的依赖规则（开关 4 条 + Shiki 覆写），**改这些原规则时必须同步改入口②那份**；`@media print` 的选择器要带上 `:root:not([data-theme='light'])` 形式，否则特异性压不过入口②、无 JS+系统暗色时会打出墨底。Shiki 双主题：亮色色值内联、暗色色值与两侧字体风格走 `--shiki-dark`/`--shiki-light-*` 变量（global.css 的 `.astro-code span` 必须消费 light 侧字体变量，删掉它就丢代码粗体/斜体）；改代码高亮配色要同改 `astro.config.mjs` 的 `themes`。
@@ -101,8 +102,8 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 
 - 建稿用 `npm run new -- <文件名>` 或双击根目录「新建文章.bat」，不要手抄 frontmatter。
 - 新标签必须登记进 `src/const.ts` 的 `TAG_SHAPE`，否则构建告警。
-- Node 需 20.3+/22+（`@shikijs/themes` 要求 >=20）。
+- Node 需 22.23.4+（Astro 7 的硬性要求；CI 的 `node-version: 22` 会取最新 22.x）。`@astrojs/check` 的 peer TypeScript 仍只到 `^6`，不要升 TypeScript 7。
 - agent shell 里 `git push` 凭据通常已缓存；若报 `/dev/tty` 错误，让用户在输入框用 `! git push` 代跑一次。
 - GitHub Pages HTML 有约 10 分钟浏览器缓存：用户说"推上去没变"先让他 Ctrl+F5 再排查。
 - 不要提议添加 LICENSE（用户已明确拒绝）。
-- CI 门禁 = `astro check` + `astro build` + `npm run check:dist`，任一失败不发布、线上保持旧版——不存在"推坏线上"，但也不要跳过 check/verify 直推框架改动。
+- CI 门禁 = `npm run audit`（high/critical）+ `astro check` + `astro build` + `npm run check:dist`，任一失败不发布、线上保持旧版——不存在"推坏线上"，但也不要跳过 check/verify 直推框架改动。
