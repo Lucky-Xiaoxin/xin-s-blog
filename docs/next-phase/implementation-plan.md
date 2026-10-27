@@ -103,7 +103,7 @@
 
 ### P1b · `feat/notes-now`
 
-> 实现状态：已批准、待实施（2026-10-23）；详细文档见 `docs/next-phase/p1b/`（README、content-model、pages-and-feed、check-dist-guards、test-plan）。notes 首版 0 条，now 首版单行 `emo中……`。
+> 实现状态：已验收（2026-10-24），证据见 `p1b/review.md` §9；详细文档见 `docs/next-phase/p1b/`（README、content-model、pages-and-feed、check-dist-guards、test-plan）。notes 首版 0 条，now 首版单行 `emo中……`。
 
 **目标**：notes/pages collection、`/notes/`、`/now/`、notes RSS、字体子集；为首页提供数据。
 

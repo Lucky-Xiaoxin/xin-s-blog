@@ -3,7 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ASTRO_BIN = path.join(ROOT, 'node_modules', 'astro', 'astro.js');
+// Astro 7 的 CLI 入口是 bin/astro.mjs；旧版才是 astro.js
+const ASTRO_BIN = path.join(ROOT, 'node_modules', 'astro', 'bin', 'astro.mjs');
 
 // verify 生成的是生产子路径产物；preview 默认按 base=/ 启动会 404。
 // 这里显式使用同款参数，并把额外参数（如 --port）透传给 astro preview。

@@ -1562,8 +1562,10 @@ a.tag:hover {
 }
 /* 正文有 ## 小节时才分栏；首版正文为空，不触发 */
 .now-body.prose {
-  column-count: 2;
   column-gap: clamp(2rem, 5vw, 4rem);
+}
+.now-body--sections {
+  column-count: 2;
   counter-reset: now-section;
 }
 .now-body.prose h2 {
