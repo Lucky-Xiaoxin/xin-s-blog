@@ -67,7 +67,11 @@ const ogImage = new URL(u('/og.png'), Astro.site);
         </>
       )
     }
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <noscript>
+      <meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)" />
+      <style is:inline>.theme-toggle{display:none}</style>
+    </noscript>
     <script is:inline>
       // 首屏应用明暗主题（必须留在 <head> 内联执行，否则刷新会先闪一下浅色）；
       // 无存储时跟随系统偏好，手动切换后由 localStorage 记忆。
@@ -82,9 +86,11 @@ const ogImage = new URL(u('/og.png'), Astro.site);
           ? stored === 'dark'
           : window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-        if (dark) {
-          var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', '#111214');
+        // JS 可用时由脚本接管主题色：去掉 media 条件，避免手动选亮/暗后仍被系统偏好覆盖
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+          meta.removeAttribute('media');
+          meta.setAttribute('content', dark ? '#111214' : '#ffffff');
         }
       })();
     </script>

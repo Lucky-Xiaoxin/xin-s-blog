@@ -9,7 +9,10 @@ const includeDrafts = import.meta.env.DEV;
 const now = await getNow({ includeDrafts });
 // 正文为空（首版）时不渲染 .now-body / .now-foot，只留页头 + 状态行
 const hasBody = Boolean(now?.body?.trim());
-const Content = now && hasBody ? (await render(now)).Content : undefined;
+const rendered = now && hasBody ? await render(now) : undefined;
+const Content = rendered?.Content;
+// 只有正文真的出现 h2 小节时才分两栏（README 的约定）
+const hasSections = rendered?.headings.some((heading) => heading.depth === 2) ?? false;
 ---
 
 <Base
@@ -39,7 +42,7 @@ const Content = now && hasBody ? (await render(now)).Content : undefined;
     now ? (
       Content && (
         <>
-          <div class="now-body prose">
+          <div class:list={['now-body', 'prose', hasSections && 'now-body--sections']}>
             <Content />
           </div>
           <p class="now-foot">
