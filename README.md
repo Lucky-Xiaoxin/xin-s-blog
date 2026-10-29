@@ -41,10 +41,11 @@ npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 ### 写一篇博客（直推 main）
 
 1. 一键建稿：`npm run new -- <文件名>`，或双击仓库根目录的「新建文章.bat」按提示输入。脚本会在 `src/content/posts/` 生成带注释的 frontmatter 模板，自动填好当天日期和本机时间（`pubTime` 纯显示用，删掉整行即不显示）。文件名即 URL，只用小写字母、数字、连字符。
-2. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
-3. 没写完设 `draft: true`——草稿不进目录页、不进标签、不进 RSS、不生成线上页面；`npm run dev` 可直接打开 `/posts/<文件名>/` 预览，页面会显示“草稿预览”。
-4. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
-5. 安全网：CI 任何一步失败都不会发布，线上继续服务上一次成功的产物——所以写博客不必开分支，推坏了补一版再推即可。
+2. 动笔前扫一眼 [docs/writing-style.md](./docs/writing-style.md)：frontmatter 字段、正文骨架、标题层级、公式/代码/链接的写法、语气与中文排版、发布前自查。不知道怎么下笔就直接照抄 [docs/example.md](./docs/example.md)。
+3. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
+4. 没写完设 `draft: true`——草稿不进目录页、不进标签、不进 RSS、不生成线上页面；`npm run dev` 可直接打开 `/posts/<文件名>/` 预览，页面会显示“草稿预览”。
+5. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
+6. 安全网：CI 任何一步失败都不会发布，线上继续服务上一次成功的产物——所以写博客不必开分支，推坏了补一版再推即可。
 
 ### 写一条碎碎念（直推 main）
 
@@ -96,7 +97,7 @@ draft: false
 | frontmatter 字段 | `src/content.config.ts`（写错字段构建会报错） |
 | 站点域名 | `.github/workflows/deploy.yml` 的 `SITE_URL`（`astro.config.mjs` 里的默认值只影响本地构建） |
 
-文章格式：
+文章格式（完整规范见 [docs/writing-style.md](./docs/writing-style.md)，可照抄的示例见 [docs/example.md](./docs/example.md)）：
 
 ```markdown
 ---

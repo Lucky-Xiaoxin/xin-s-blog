@@ -46,6 +46,9 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 | `README.md` | 用户操作：安装、命令、日常流程、体积预算、已知边界 | agent 内部约定、阶段计划全文 |
 | `AGENTS.md` | agent 约束、不可破坏的约定、文档规范 | 重复命令表/体积数字/文章教程 |
 | `TROUBLESHOOTING.md` | 真实遇到的报错 → 人话 → 修法 | 未验证的猜测 |
+| `docs/README.md` | docs 目录索引（写文章 / 改框架两条入口） | 单篇长文 |
+| `docs/writing-style.md` | 文章写法规范：frontmatter、骨架、标题层级、元素用法、语气 | 阶段计划、命令表 |
+| `docs/example.md` | 可照抄的示例文章（规范的实例化） | 事实快照、清单副本 |
 | `docs/next-phase/README.md` | 阶段索引、决策日志、状态 | 单阶段长契约 |
 | `docs/next-phase/pX/README.md` | 阶段目标、范围、依赖、验收、风险 | 大段重复 token/命令/预算 |
 | `docs/next-phase/pX/*.md` | 详细契约、测试计划、复核 | 长期维护的“当前值”副本 |
@@ -101,6 +104,7 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 ## 工作流杂项
 
 - 建稿用 `npm run new -- <文件名>` 或双击根目录「新建文章.bat」，不要手抄 frontmatter。
+- 文章写法有统一规范：`docs/writing-style.md`（结构/标题层级/元素用法/语气）+ `docs/example.md`（可照抄的示例）。改文章或新建稿按它来。三条最容易踩的：**正文里不要留建稿提示注释**（`<!-- xxx：正文从这里开始…… -->` 会随 HTML 发布并计入阅读时长）；**frontmatter 不要复制标签清单快照**（清单唯一来源是 `src/const.ts` 的 `TAG_SHAPE`，复制的那份必然过期）；**正文只用 h2/h3**（`.prose` 只给 h2/h3 上样式，h4 及以下掉回浏览器默认字号）。
 - 新标签必须登记进 `src/const.ts` 的 `TAG_SHAPE`，否则构建告警。
 - Node 需 22.23.4+（Astro 7 的硬性要求）。**CI 的 `node-version` 必须钉具体小版本**（现在是 `22.23.4`）：写 `22` 时 runner 按自己的 tool-cache 索引解析、实测取到 22.23.3，差一个补丁版本 `astro check` 直接拒跑——**本地过了不代表 CI 过**。「Astro 7 要求 22.23.4 而 CI 报 Node not supported」先查 deploy.yml 的 node-version。`@astrojs/check` 的 peer TypeScript 仍只到 `^6`，不要升 TypeScript 7。
 - agent shell 里 `git push` 凭据通常已缓存；若报 `/dev/tty` 错误，让用户在输入框用 `! git push` 代跑一次。
