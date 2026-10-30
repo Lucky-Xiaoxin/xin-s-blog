@@ -50,7 +50,7 @@ npm run preview:prod
 | H5 | 页边 3 条 | 3 条夹具 | 顺序与 `/notes/` 一致；锚点链接可跳；摘要剥离 Markdown；草稿不出现 |
 | H6 | noteExcerpt | 首行含 `[链接](url)`、`**粗体**`、图片 | 摘要为纯文本，链接保留文字，无 `**`/`![`；超 60 字截断加 `……` |
 | H7 | now 行 | now 单行 | 显示 `emo中……` + 看看 →；链接 `/now/` |
-| H8 | 目录 | 4 文章 | 编号 01–04；日期/分钟/标签正确；整行可点、标签独立可点；无 Seal |
+| H8 | 目录 | 4 文章 | 编号 01–04；日期/分钟/标签正确；整行可点、标签独立可点；01 下方 Seal（48px；390 32px） |
 | H9 | 0 文章 | 临时空文章集合 | 隐藏 opening/contents；图例文章格 `00 · 暂无`；页边有内容时单列，否则 `.empty-state` |
 | H10 | 链接门禁 | `npm run verify` | notes 锚点、now、文章、标签链接全部通过 check-dist |
 | H11 | 删除回归 | grep + verify | 无 `Hero`/`PostList`/`.index`/`.hero` 引用残留；全站页面不回归 |
@@ -90,7 +90,7 @@ npm run preview:prod
   - `p1c-home-no-notes-390-light.webp`、`p1c-home-no-now-390-light.webp`
   - `p1c-home-no-posts-390-light.webp`
   - `p1c-home-390-noscript-dark.webp`、`p1c-home-390-print.webp`
-- 与设计稿差异记录：页边摘要截断、图例换行、目录无 Seal 等。
+- 与设计稿差异记录：页边摘要截断、图例换行；目录 Seal 已于 2026-10-30 恢复（48px，390 32px），不再是差异。
 - 未覆盖风险：真机、读屏、第三方 RSS 不涉及首页但需声明。
 
 ## 7. 退出标准
