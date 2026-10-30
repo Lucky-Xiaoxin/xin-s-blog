@@ -20,7 +20,7 @@ const { Content } = await render(post);
 const { older, newer } = await getAdjacentPosts(post.id, { includeDrafts });
 ---
 
-<Base size="compact" active="home" ogType="article" title={post.data.title} description={post.data.description}>
+<Base size="compact" ogType="article" title={post.data.title} description={post.data.description}>
   <article>
     <header class="article__head">
       <p class="kicker">
