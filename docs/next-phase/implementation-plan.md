@@ -1,6 +1,6 @@
 # 实施计划（设计契约已批准）
 
-> 状态：实施中 · 2026-10-24（P0、P1a、P1b、P1c 已验收；下一步 P1d 文章页）。本文保留 P0→P1e 的拆解、测试与完成定义。
+> 状态：实施中 · 2026-10-30（P0、P1a、P1b、P1c 已验收；前端评审完成，见 `frontend-review.md`；下一步 P1d 文章页）。本文保留 P0→P1e 的拆解、测试与完成定义。
 > 依赖：`design-contract.md`（已批准）、`notes-contract.md`、`now-contract.md`、`runtime-contract.md`。
 > 规则：每个阶段单独分支/PR；用户本地试完才 push；文章/碎碎念/now 的个人内容不代写。
 
