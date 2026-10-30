@@ -1,10 +1,11 @@
 # P0 实施文档：内容基础层与质量门禁
 
 > 状态：已验收 · 2026-10-23
-> 上游：`implementation-plan.md` P0；下游：P1a；Owner：实现规划师
-> 复核：`review.md`（通过；两个 P2 边界项不阻塞 P1a）；当前命令/体积以根 README + verify 输出为准。
+> 上游：`docs/next-phase/implementation-plan.md` 的 P0；设计契约已批准
+> 下游：P1a
+> Owner：实现规划师
+> 复核/证据：`review.md`（通过；两个 P2 边界项不阻塞 P1a）；当前命令/体积以根 README + verify 输出为准。
 > 目标：为 P1a–P1e 提供统一数据层、草稿预览和生产子路径验证；**P0 不改变视觉**。
-> 上游：`docs/next-phase/implementation-plan.md` 的 P0；设计契约已批准。
 
 ## 1. 为什么先做 P0
 

@@ -6,9 +6,9 @@
 
 ## 0. 基线（2026-10-22）
 
-- Astro 5 静态站，GitHub Pages 子路径 `/xin-s-blog/`；4 篇文章。
+- Astro 5 静态站（2026-10-23 已升级 Astro 7），GitHub Pages 子路径 `/xin-s-blog/`；4 篇文章。
 - `npm run check`：0 error / 0 warning。
-- `dist`：约 1.8 MB；CSS 12.9 KB gzip；字体 1.36 MB / 77 文件；无独立 JS 文件。（2026-10-22 快照；当前为 dist 1.5 MB、CSS 13.0 KB，见 README。）
+- `dist`：约 1.8 MB；CSS 12.9 KB gzip；字体 1.36 MB / 77 文件；无独立 JS 文件。（2026-10-22 快照；运行基线以根 README 的体积预算表为准。）
 - 设计方向：方向一「卷首」已选定，契约已批准。
 - 当前范围：碎碎念 + now；系列暂缓；搜索/评论/统计/友链/Newsletter 不做。
 

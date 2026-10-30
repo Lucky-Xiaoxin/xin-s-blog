@@ -144,13 +144,13 @@
 - `p1b/pages-and-feed.md`：`/notes/`、`/notes/rss.xml`、`/now/`、页脚/关于链接、空状态与样式规格。
 - `p1b/check-dist-guards.md`：P1b 新增的产物/草稿/锚点/RSS/sitemap/重复 id 门禁与故障注入。
 - `p1b/test-plan.md`：P1b 测试矩阵、证据清单、退出标准（实施前为计划，不填假结果）。
+- `p1b/review.md`：P1b 实现结果、注入/浏览器矩阵证据、允许差异与未覆盖风险。
+- `p1b/screens/`：P1b 页面截图与浏览器矩阵 JSON（生产子路径预览）。
 - `p1c/README.md`：P1c 首页卷首目标、范围、依赖、文件地图、验收与风险。
 - `p1c/home-spec.md`：首页组件、数据、CSS、响应式、空状态、a11y/打印规格。
 - `p1c/test-plan.md`：P1c 测试矩阵、证据清单、退出标准。
 - `p1c/review.md`：P1c 实现结果、空状态组合、浏览器矩阵证据、允许差异与未覆盖风险。
 - `p1c/screens/`：P1c 首页截图与浏览器矩阵 JSON（生产子路径预览）。
-- `p1b/review.md`：P1b 实现结果、注入/浏览器矩阵证据、允许差异与未覆盖风险。
-- `p1b/screens/`：P1b 页面截图与浏览器矩阵 JSON（生产子路径预览）。
 - `_template.md`：新阶段/契约文档模板；先复制再写，别自创结构。
 - `series-contract.md`：系列的语义、数据契约、URL/UI、校验规则（**当前暂缓**）。
 - `runtime-contract.md`：JS/第三方准入、性能预算、可访问性、测试与验证。
