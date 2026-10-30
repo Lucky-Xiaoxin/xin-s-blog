@@ -1108,6 +1108,14 @@ a.tag:hover {
   padding: 1.65rem 0;
   border-bottom: 1px solid var(--rule);
 }
+/* 首页目录：编号右侧保留 48px 印记；40rem 以下缩到 32px。
+   4 列只作用于首页，标签详情复用 .toc 时仍是 3 列。 */
+.toc--seal .toc__item {
+  grid-template-columns: 2.75rem 3rem minmax(0, 1fr) 8.5rem;
+}
+.toc__seal {
+  padding-top: 0.15rem;
+}
 .toc__no {
   padding-top: 0.35rem;
   font-family: var(--font-mono);
@@ -1646,6 +1654,13 @@ a.tag:hover {
     grid-template-columns: 2rem minmax(0, 1fr);
     gap: 0.75rem;
   }
+  .toc--seal .toc__item {
+    grid-template-columns: 2rem 2rem minmax(0, 1fr);
+  }
+  .toc__seal svg {
+    width: 32px;
+    height: 32px;
+  }
   .toc__meta {
     grid-column: 2;
     flex-direction: row;
@@ -1654,6 +1669,9 @@ a.tag:hover {
     gap: 0.35rem 0.9rem;
     margin-top: 0.45rem;
     text-align: left;
+  }
+  .toc--seal .toc__meta {
+    grid-column: 3;
   }
   /* 首页：图例小字换行，页边碎碎念回到单列 */
   .frontispiece__legend {
