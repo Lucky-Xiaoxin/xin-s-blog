@@ -282,7 +282,7 @@
 - 产物：本地 `dist`，2026-10-29 构建，生产子路径 `/xin-s-blog/`；内容为 4 篇文章、0 条碎碎念、now 一行。
 - 视口：320 / 390 / 768 / 1440；亮/暗；headless Chrome CDP，`deviceScaleFactor=1`。
 - 方法：`Page.captureScreenshot` + `Runtime.evaluate` 取样；`document.documentElement.scrollWidth` 与 `innerWidth` 比对；`getBoundingClientRect` 量壳宽/热区；计算样式取字号/颜色。
-- 临时 CDP 脚本未入库；关键数值可用浏览器 DevTools 复测。关键截图与可视化版为本地评审产物（仓库根目录 `frontend-review/frontend-review.html`，未入库）。
+- 临时 CDP 脚本未入库；关键数值可用浏览器 DevTools 复测。关键截图与可视化版曾是本地评审产物（仓库根目录 `frontend-review/frontend-review.html`，未入库；已于 2026-10-31 卫生清理删除，关键数值都在本文 §2/§4）。
 - 本次没有修改任何站内代码；本文是纯文档。
 
 ## 10. 链接
@@ -294,4 +294,4 @@
 - `docs/next-phase/p1a/ui-foundation.md`：宽度 token、44px 热区、页头/页脚骨架。
 - `docs/next-phase/runtime-contract.md`：JS/第三方准入、性能预算、可访问性。
 - `AGENTS.md`：双轨、文档体系、不可破坏的约定。
-- 可视化版：本地 `frontend-review/frontend-review.html`（未入库，单页无外部依赖）。
+- 可视化版：曾是本地 `frontend-review/frontend-review.html`（未入库，单页无外部依赖；已于 2026-10-31 卫生清理删除）。
