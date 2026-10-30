@@ -15,6 +15,16 @@ export async function getPublishedPosts(): Promise<Post[]> {
   return listPosts(false);
 }
 
+/** “最近更新”口径：每篇取 updatedDate ?? pubDate，再取最大值 */
+export function latestUpdate(posts: Post[]): Date | undefined {
+  let latest: Date | undefined;
+  for (const post of posts) {
+    const date = post.data.updatedDate ?? post.data.pubDate;
+    if (!latest || date > latest) latest = date;
+  }
+  return latest;
+}
+
 /** getStaticPaths 专用：dev 含草稿用于本地预览，build 只生成已发布文章 */
 export async function getPostsForStaticPaths(): Promise<Post[]> {
   return listPosts(import.meta.env.DEV);

@@ -126,6 +126,8 @@ html {
      下面的 rem 全部跟着这个基准走 */
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
+  /* 短页无滚动条时也预留槽位，保证跨页壳宽/品牌左边缘一致（F2） */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -421,9 +423,6 @@ main {
 .colophon a:hover {
   color: var(--red);
 }
-.colophon__note {
-  margin-top: 1.25rem;
-}
 .colophon .sep {
   color: var(--ink-3);
 }
@@ -651,11 +650,6 @@ a.tag:hover {
 .colophon a:hover {
   border-bottom-color: var(--red);
 }
-.colophon__note a {
-  border-bottom-color: var(--ink-3);
-  white-space: nowrap;
-}
-
 /* ============ 文章 ============ */
 .article__head {
   margin-bottom: 3.5rem;

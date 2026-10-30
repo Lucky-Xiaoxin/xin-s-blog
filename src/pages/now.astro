@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { formatDay, u } from '../const';
+import { formatDay, isoDay, u } from '../const';
 import { getNow } from '../lib/now';
 
 const includeDrafts = import.meta.env.DEV;
@@ -29,7 +29,9 @@ const hasSections = rendered?.headings.some((heading) => heading.depth === 2) ??
       now && (
         <p class="now-status meta">
           <i aria-hidden="true" />
-          最后更新于 {formatDay(now.data.updatedDate)}
+          <span>
+            最后更新于 <time datetime={isoDay(now.data.updatedDate)}>{formatDay(now.data.updatedDate)}</time>
+          </span>
           {now.data.draft && includeDrafts && (
             <span class="label" style="color:var(--red)">草稿预览</span>
           )}

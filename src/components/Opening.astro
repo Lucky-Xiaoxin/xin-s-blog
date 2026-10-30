@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDay, readingTime, u } from '../const';
+import { formatDay, isoDay, readingTime, u } from '../const';
 
 interface Props {
   /** 最新一篇已发布文章 */
@@ -20,9 +20,9 @@ const href = u(`/posts/${post.id}/`);
   <p class="opening__desc">{post.data.description}</p>
   <div class="opening__meta">
     <span class="meta">
-      {formatDay(post.data.pubDate)}{post.data.pubTime ? ` ${post.data.pubTime}` : ''}
+      <time datetime={isoDay(post.data.pubDate)}>{formatDay(post.data.pubDate)}</time>
     </span>
-    <span class="meta">{readingTime(post.body)} 分钟读完</span>
+    <span class="meta">{readingTime(post.body)} 分钟</span>
     {
       post.data.tags.length > 0 && (
         <span class="tag-list">

@@ -33,7 +33,7 @@
 ### `width` prop
 
 - `Base.astro` 增加 `width?: 'measure' | 'mid' | 'wide'`，默认 `measure`。
-- 页头、`main`、页脚使用**同一个** shell 宽度。
+- 页头、`main`、页脚使用**同一个** shell 宽度。**2026-10-30 前端评审 F2 已改为页头/页脚固定 `wide`、`main` 按页面分档；本段其余宽度语义不变。**
 - **P1a 使用**：`/archive/`、`/tags/`、`/tags/[tag]/`、`/about/`、404 → `mid`。
 - **P1a 不使用**：首页、文章页保持 `measure`；`wide` 只定义，P1c/P1d 再切。
 - 理由：避免宽壳 + 旧内容区的半成品；首页/文章窄→宽的切换与内容改版同 PR。

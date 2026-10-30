@@ -1,6 +1,6 @@
 # 下一阶段总体设计
 
-> 状态：2026-10-24 P0、P1a、P1b、P1c 已验收；进入 P1d 文章页前的规划。
+> 状态：2026-10-30 P0、P1a、P1b、P1c 已验收；前端评审已完成（`frontend-review.md`，用户确认问题属实）；下一步 P1d 文章页。
 > 本目录写目标、边界、契约与验收，**不包含实现代码**。
 > 按小 PR 拆分，遵守“先交用户本地试用，确认后才 push / 开 PR”的规则。
 > **运行基线/命令以根目录 README、AGENTS、TROUBLESHOOTING 为准**；本目录的“当前值”是设计阶段快照，避免重复维护。
@@ -23,7 +23,7 @@
 | 作者生活层 | 做 **碎碎念 + now**；其它（友链、评论、统计、Newsletter、点赞、Webmention）**暂不做** |
 | 移动端验收 | 用户可以在 iPhone / Android 真机上验收，不再只写“桌面模拟、未真机验证” |
 | 第三方能力 | 当前不引入；未来若要评论/统计等，必须按 `runtime-contract.md` 的准入门槛单独评审，不自动进入路线图 |
-| 当前动作 | P0、P1a、P1b、P1c 已验收；下一步 P1d 文章页（`implementation-plan.md`）；框架改动先本地验收，用户确认后再 push/开 PR |
+| 当前动作 | P0、P1a、P1b、P1c 已验收；2026-10-30 前端评审完成（`frontend-review.md`）；下一步 P1d 文章页（`implementation-plan.md`）；框架改动先本地验收，用户确认后再 push/开 PR |
 
 ## 3. 目标与非目标
 
@@ -126,6 +126,7 @@
 - `notes-contract.md`：碎碎念的语义、内容模型、展示、RSS、发布方式；也解释其它作者生活层选项。
 - `now-contract.md`：now 页的语义、内容模型、导航、更新流程与设计契约。
 - `design-contract.md`：选定方向一「卷首」的 tokens、组件规格、响应式/暗色/打印、内容映射、实现顺序与验收；**已批准**。
+- [frontend-review.md](frontend-review.md)：2026-10-30 前端页面评审问题汇总（用户确认问题属实）；P1d/P1e 的输入，含实测基线、代码位置与未覆盖项；可视化版为本地评审产物（`frontend-review/frontend-review.html`，未入库）。
 - `implementation-plan.md`：P0→P1e 的 PR 拆分、文件范围、依赖、测试与完成定义；P0/P1a 已完成，P1b 实施前先读 `p1b/`。
 - `p0/README.md`：P0 的目标、范围、文件地图、依赖、验收与风险。
 - `p0/data-and-draft.md`：`src/lib/posts.ts` API、调用点、草稿预览行为与边界。

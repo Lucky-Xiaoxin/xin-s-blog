@@ -10,3 +10,6 @@ npm-debug.log*
 .DS_Store
 .qoder/
 .vscode/
+# 本地评审可视化产物 / HTML 分享包（不入库）
+frontend-review/
+.trae-html-share-packages/
