@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Seal from './Seal.astro';
 import { formatDay, isoDay, readingTime, u } from '../const';
 
 interface Props {
@@ -21,10 +22,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
           {pad(posts.length)} 篇 · 按时间倒序
         </span>
       </header>
-      <ol class="toc">
+      <ol class="toc toc--seal">
         {posts.map((post, index) => (
           <li class="toc__item">
-            <span class="toc__no">{pad(index + 1)}</span>
+            <div class="toc__mark">
+              <span class="toc__no">{pad(index + 1)}</span>
+              <div class="toc__seal">
+                <Seal id={post.id} tag={post.data.tags[0]} size={48} />
+              </div>
+            </div>
             <div>
               <h3>
                 <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>

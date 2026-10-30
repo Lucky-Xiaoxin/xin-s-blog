@@ -107,7 +107,7 @@ export function noteExcerpt(note: Note, limit = 60): string;
 - 标题 h3 + 链接；整行可点沿用 `.toc__item h3 a::after`；标签 `.toc__foot` 保持 `z-index:2` 独立可点。
 - 摘要 p 用 `post.data.description`。
 - `.toc__meta` 两行：`formatDay(pubDate)` 与 `${readingTime} 分钟`。
-- 不渲染 Seal 徽章（设计稿首页目录没有）。
+- ~~不渲染 Seal 徽章（设计稿首页目录没有）。~~ **2026-10-30 用户要求恢复：编号下方 48px Seal；40rem 以下缩到 32px。**
 
 ## 4. 空状态矩阵
 
