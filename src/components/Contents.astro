@@ -25,9 +25,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <ol class="toc toc--seal">
         {posts.map((post, index) => (
           <li class="toc__item">
-            <span class="toc__no">{pad(index + 1)}</span>
-            <div class="toc__seal">
-              <Seal id={post.id} tag={post.data.tags[0]} size={48} />
+            <div class="toc__mark">
+              <span class="toc__no">{pad(index + 1)}</span>
+              <div class="toc__seal">
+                <Seal id={post.id} tag={post.data.tags[0]} size={48} />
+              </div>
             </div>
             <div>
               <h3>
