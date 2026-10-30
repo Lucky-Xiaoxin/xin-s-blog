@@ -90,6 +90,11 @@ export function formatDay(date: Date) {
   return `${y}.${m}.${d}`;
 }
 
+/** `<time datetime>` 用的 YYYY-MM-DD，与 formatDay 同为 UTC 口径 */
+export function isoDay(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
 /** 月日（MM.DD，UTC getter）：首页图例与页边摘要用，不带年份 */
 export function formatMonthDay(date: Date) {
   const m = String(date.getUTCMonth() + 1).padStart(2, '0');

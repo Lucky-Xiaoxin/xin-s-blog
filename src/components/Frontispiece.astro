@@ -1,5 +1,5 @@
 ---
-import { formatMonthDay, u } from '../const';
+import { formatMonthDay, isoDay, u } from '../const';
 
 interface Props {
   /** 已发布文章数 */
@@ -87,11 +87,29 @@ const hasNow = Boolean(nowDescription);
   <div class:list={['frontispiece__legend', !hasNow && 'frontispiece__legend--2']}>
     <a class="frontispiece__legend-item" href={u('/archive/')}>
       <b>文章</b>
-      {pad(postCount)} · {latestPostDate ? `最新 ${formatMonthDay(latestPostDate)}` : '暂无'}
+      <span>
+        {pad(postCount)} ·{' '}
+        {
+          latestPostDate ? (
+            <>最新 <time datetime={isoDay(latestPostDate)}>{formatMonthDay(latestPostDate)}</time></>
+          ) : (
+            '暂无'
+          )
+        }
+      </span>
     </a>
     <a class="frontispiece__legend-item" href={u('/notes/')}>
       <b>碎碎念</b>
-      {pad(noteCount)} · {latestNoteDate ? `最近 ${formatMonthDay(latestNoteDate)}` : '暂无'}
+      <span>
+        {pad(noteCount)} ·{' '}
+        {
+          latestNoteDate ? (
+            <>最近 <time datetime={isoDay(latestNoteDate)}>{formatMonthDay(latestNoteDate)}</time></>
+          ) : (
+            '暂无'
+          )
+        }
+      </span>
     </a>
     {hasNow && (
       <a class="frontispiece__legend-item" href={u('/now/')}>

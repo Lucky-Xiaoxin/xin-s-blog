@@ -11,7 +11,7 @@ interface Props {
   active?: string;
   /** full = 首页的大字页头；compact = 内页的窄页头 */
   size?: 'full' | 'compact';
-  /** 页头/main/页脚共用同一个壳宽度；P1a 只给归档/标签/关于/404 用 mid */
+  /** main 的内容壳宽度；页头/页脚固定 wide，翻页时品牌与导航不位移 */
   width?: 'measure' | 'mid' | 'wide';
   ogType?: 'website' | 'article';
 }
@@ -25,7 +25,9 @@ const {
   ogType = 'website',
 } = Astro.props;
 
-const shellClass = width === 'measure' ? 'shell' : `shell shell--${width}`;
+const contentShellClass = width === 'measure' ? 'shell' : `shell shell--${width}`;
+// 站点 chrome 固定 wide：内容列可以窄，但品牌/导航/页脚不跟着页面换档
+const chromeShellClass = 'shell shell--wide';
 
 const pageTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -101,7 +103,7 @@ const ogImage = new URL(u('/og.png'), Astro.site);
     <a class="skip" href="#main">跳到正文</a>
 
     <header class:list={['masthead', size === 'compact' && 'masthead--compact']}>
-      <div class={shellClass}>
+      <div class={chromeShellClass}>
         <div class="masthead__row">
           {
             size === 'full' ? (
@@ -154,13 +156,13 @@ const ogImage = new URL(u('/og.png'), Astro.site);
     </header>
 
     <main id="main">
-      <div class={shellClass}>
+      <div class={contentShellClass}>
         <slot />
       </div>
     </main>
 
     <footer class="colophon">
-      <div class={shellClass}>
+      <div class={chromeShellClass}>
         <div class="colophon__row label">
           <span>© {SITE.year} {SITE.author}</span>
           <nav class="colophon__nav" aria-label="页脚导航">
@@ -176,9 +178,6 @@ const ogImage = new URL(u('/og.png'), Astro.site);
             }
           </nav>
         </div>
-        <p class="colophon__note meta">
-          Astro 构建 · GitHub Pages 托管 · <a href={u('/rss.xml')}>订阅 RSS</a>
-        </p>
       </div>
     </footer>
 

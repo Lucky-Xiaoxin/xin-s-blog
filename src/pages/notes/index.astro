@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import { formatDay, u } from '../../const';
+import { formatDay, isoDay, u } from '../../const';
 import {
   getNotesForPage,
   getPublishedNotes,
@@ -36,7 +36,8 @@ const latest = published[0];
     {
       latest && (
         <span class="meta">
-          {pad(published.length)} 条 · 最近更新 {formatDay(latest.data.date)}
+          {pad(published.length)} 条 · 最近更新{' '}
+          <time datetime={isoDay(latest.data.date)}>{formatDay(latest.data.date)}</time>
         </span>
       )
     }

@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDay, readingTime, u } from '../const';
+import { formatDay, isoDay, readingTime, u } from '../const';
 
 interface Props {
   /** 全部已发布文章（已按发布时间倒序） */
@@ -43,7 +43,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
               )}
             </div>
             <div class="toc__meta">
-              <span class="meta">{formatDay(post.data.pubDate)}</span>
+              <time class="meta" datetime={isoDay(post.data.pubDate)}>
+                {formatDay(post.data.pubDate)}
+              </time>
               <span class="meta">{readingTime(post.body)} 分钟</span>
             </div>
           </li>

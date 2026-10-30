@@ -96,8 +96,8 @@
 
 ## 4. 布局与 Base
 
-- `Base.astro` 增加 `width?: 'measure' | 'mid' | 'wide'`，默认 `measure`；页头、`main`、页脚使用同一个 shell 宽度。
-- 首页/文章页最终用 `wide`；P1a 只定义 `wide`，不提前启用，P1c/P1d 再切。归档/标签/碎碎念/now/关于/404 用 `mid`；标签详情用 `mid`。
+- `Base.astro` 增加 `width?: 'measure' | 'mid' | 'wide'`，默认 `measure`；**只有 `main` 使用页面内容壳，页头/页脚固定 `wide`**（2026-10-30 前端评审 F2：站点 chrome 不随页面换档，避免品牌/导航横向跳动）。
+- 首页/文章页 `main` 最终用 `wide`；P1a 只定义 `wide`，不提前启用，P1c/P1d 再切。归档/标签/碎碎念/now/关于/404 用 `mid`；标签详情用 `mid`。
 - 页头：首页 `masthead--full`（品牌 h1 + tagline + 4 项导航）；内页 `masthead--compact`（品牌 a + 4 项导航，隐藏 tagline/handle）。
 - 导航从 3 项变 4 项：目录 / 归档 / 标签 / 关于。320px 必须不换行、不溢出；如过挤，优先缩小间距而不是删“归档”。
 - 页脚：保留版权/社交；增加“碎碎念 / 现在”两个链接；RSS 仍指向 `/rss.xml`；所有站内链接走 `u()`。
