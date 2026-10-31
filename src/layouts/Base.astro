@@ -155,6 +155,19 @@ const ogImage = new URL(u('/og.png'), Astro.site);
       </div>
     </header>
 
+    <script is:inline>
+      // 主题状态由 <head> 内联脚本应用，但 SSR 里开关的 aria-checked/title 写死为
+      // 「未开启/深色」；打包脚本要等下载执行才纠正，暗色用户会短暂误报（N1）。
+      // 这里在页头解析完就对齐读屏状态：读当前 data-theme，不等任何网络请求。
+      (function () {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var toggle = document.querySelector('.theme-toggle');
+        if (!toggle) return;
+        toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+        toggle.setAttribute('title', dark ? '切换到浅色模式' : '切换到深色模式');
+      })();
+    </script>
+
     <main id="main">
       <div class={contentShellClass}>
         <slot />

@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import { SITE, SOCIALS, resolveHref, u } from '../const';
+
+// 「联系我」只列真联系方式；RSS 是订阅源不是联系方式，入口在页脚与 <head> 的
+// alternate（N2）。页脚仍消费完整 SOCIALS（F12 收敛口径：页脚只有一个 RSS），这里只过滤展示。
+const CONTACTS = SOCIALS.filter((s) => s.label !== 'RSS');
 ---
 
 <Base size="compact" width="mid" active="about" title="关于">
@@ -27,7 +31,7 @@ import { SITE, SOCIALS, resolveHref, u } from '../const';
     <p>
       站内 {SITE.handle} ·
       {
-        SOCIALS.map((s, i) => (
+        CONTACTS.map((s, i) => (
           <>
             {i > 0 && ' · '}
             <a href={resolveHref(s.href)} rel={/^https?:/i.test(s.href) ? 'noopener' : undefined}>
