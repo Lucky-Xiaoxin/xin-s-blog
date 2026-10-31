@@ -22,17 +22,17 @@ npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 
 `npm run check:dist` 默认按 `BASE_PATH=/` 检查普通 `npm run build` 的产物；要检查生产子路径请用 `npm run verify`（它会自动以 `/xin-s-blog/` 重建），或显式传入 `BASE_PATH`/`SITE_URL`。`npm run preview` 对应普通构建，`npm run preview:prod` 对应 verify 的产物。（Windows Git Bash 下手动覆盖 `BASE_PATH` 时先 `export MSYS2_ENV_CONV_EXCL=BASE_PATH`，否则 `/xin-s-blog` 会被 shell 改写成 `C:/...`；直接跑 `npm run verify` / `npm run check:dist` / `npm run preview:prod` 不受影响。）
 
-### 体积预算（2026-10-25 基线）
+### 体积预算（2026-10-25 基线，P1d 后更新当前值）
 
 | 指标 | 口径 | 当前 | 上限 |
 | --- | --- | --- | --- |
-| CSS | 所有 `.css` gzip 总和 | 14.6 KB | 18 KB |
+| CSS | 所有 `.css` gzip 总和 | 15.2 KB | 18 KB |
 | JS | 所有 `.js` gzip 总和 | 0.0 KB | 3 KB |
-| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.40 MB | 1.5 MB |
-| 最大 HTML | 单个 `.html` 原始大小 | 20.3 KB | 30 KB |
+| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.41 MB | 1.5 MB |
+| 最大 HTML | 单个 `.html` 原始大小 | 25.2 KB | 30 KB |
 | `dist` | 全部文件原始大小总和 | 1.6 MB | 2.6 MB |
 
-内联主题脚本约 1.5 KB，只报告、不计入 JS 预算（P0 不加运行时 JS）。超限先定位是哪一项、确认新增内容是否必要，不要直接抬上限。
+内联主题脚本约 2.3 KB，只报告、不计入 JS 预算（P0 不加运行时 JS）。超限先定位是哪一项、确认新增内容是否必要，不要直接抬上限。
 
 ## 日常流程
 
@@ -122,9 +122,9 @@ draft: true               # 可选，草稿：dev 可预览、不发布
 - 碎碎念：按月份分组（`2026 年 10 月`），组内按日期倒序（同日有时间在前）；每条左侧是衬线日期，右边是正文，末尾一个 `#` 是锚点链接（点它或从 feed 进来会看到左侧 2px 红规线）。不显示编号——回填旧条目不会让编号重排。
 - 现在页：页头一行状态（红点 + 最后更新于），正文有 `##` 小节时桌面分两列、编号 `01…`，40rem 以下单列。
 - 首页：卷首（圆/方/三角构图 + 三格图例：文章数 / 碎碎念数 / 现在状态）→ 开卷（最新文章）＋页边（最近 3 条碎碎念 + 现在一行）→ 编号目录（全部文章 `01…`）。图例与页边的计数、日期全部来自数据层，页面上不写死数字；空状态不留空框——0 碎碎念显示 `00 · 暂无`，没有 now 就少一格图例。
-- 宽度：正文 `--measure: 42rem`；归档/标签/关于/404 用 `--mid: 46rem`；**首页用 `--wide: 58rem`**（P1c 已切，文章页 `main` 仍是 measure，P1d 再切）。**页头/页脚固定 `wide`，只有 `main` 随页面分档**（2026-10-30 前端评审 F2：翻页时品牌/导航不横向跳动）。壳宽 = 内容宽 + 两侧 `--gutter`，`--gutter` 为 `clamp(1.25rem, 6vw, 4.5rem)`。注意：P1a 已按契约把 measure 页正文从旧 30rem 修正到 42rem（用户选择 A），并已在本地验收通过。
+- 宽度：正文 `--measure: 42rem`；归档/标签/关于/404 用 `--mid: 46rem`；**首页与文章页用 `--wide: 58rem`**（P1c 切首页、P1d 切文章页——文章页正文列仍锁 42rem，两栏文章头与竖排书脊占右页边，60rem 以下页边折到文章头之后）。**页头/页脚固定 `wide`，只有 `main` 随页面分档**（2026-10-30 前端评审 F2：翻页时品牌/导航不横向跳动）。壳宽 = 内容宽 + 两侧 `--gutter`，`--gutter` 为 `clamp(1.25rem, 6vw, 4.5rem)`。注意：P1a 已按契约把 measure 页正文从旧 30rem 修正到 42rem（用户选择 A），并已在本地验收通过。
 - 标题：拉丁用 Bodoni Moda、中文用思源宋体（Noto Serif SC），不走 Google CDN；中文衬线是**构建产物**——`dev`/`build` 启动前由 `scripts/subset-fonts.mjs` 从 npm 依赖里的源字体按站内标题用字现生成（每字重几十 KB，产物 gitignore 不入库），所以**dev 会话中途新写的标题用字要等下次重启 dev 或下一次构建才进子集**，期间那几个字回退系统宋体。正文用系统无衬线，等宽留给代码与元信息（日期/计数）。
-- 首页卷首（圆/方/三角构图 + 三格图例）在 `src/components/Frontispiece.astro`，开卷/页边/目录分别在 `Opening.astro`、`MarginNotes.astro`、`Contents.astro`；页边摘要由 `src/lib/notes.ts` 的 `noteExcerpt()` 统一生成。标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
+- 首页卷首（圆/方/三角构图 + 三格图例）在 `src/components/Frontispiece.astro`，开卷/页边/目录分别在 `Opening.astro`、`MarginNotes.astro`、`Contents.astro`；页边摘要由 `src/lib/notes.ts` 的 `noteExcerpt()` 统一生成。标签类别到形状的映射在 `src/const.ts` 的 `TAG_SHAPE`，标签徽章在 `src/components/Badge.astro`。文章印记（列表 48px、文章页 104px）＝外框（分类形状）+ 内芯（文章 id 哈希）+ 红点（内芯特征点）：规则在 `const.ts` 的 `SEAL_CORES`/`sealFor`，渲染在 `src/components/Seal.astro`（`part='frame'/'core'` 可单独渲染外框/内芯小图，文章页边规格卡的图注用）。文章页边的规格卡与竖排书脊在 `src/components/SpecList.astro`，文章头主列在 `ArticleHead.astro`；打印时页边/上下篇/面包屑整体隐藏。新标签要登记进 `TAG_SHAPE`，否则构建时会告警且徽章回退为圆形。
 - 代码高亮由 Shiki 在构建期完成，明暗两套 token 色随 HTML 一起产出：亮色色值内联在 `style` 里，暗色色值与两侧的字体风格（粗体/斜体/下划线）走 `--shiki-dark` / `--shiki-light-*` CSS 变量，浏览器切换只改属性、不重跑高亮。
 - 代码块、独立公式、表格由 `astro.config.mjs` 的 `rehypeScrollable` 在构建期包一层 `.scroll-x`（`tabindex=0`、`role=region`、带 `aria-label`）；各屏用 `--bleed` 向两侧小幅突破正文，内容超出时在容器内横向滚动。全部是构建期 HTML，不增加客户端 JS。
 

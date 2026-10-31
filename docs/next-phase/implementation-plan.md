@@ -1,6 +1,6 @@
 # 实施计划（设计契约已批准）
 
-> 状态：实施中 · 2026-10-31（P0、P1a、P1b、P1c 已验收；前端评审完成，见 `frontend-review.md`；P1d 文章页实施中，分支 `feat/article-redesign`）。本文保留 P0→P1e 的拆解、测试与完成定义。
+> 状态：实施中 · 2026-10-31（P0、P1a、P1b、P1c、P1d 已验收；下一步 P1e 收尾）。本文保留 P0→P1e 的拆解、测试与完成定义。
 > 依赖：`design-contract.md`（已批准）、`notes-contract.md`、`now-contract.md`、`runtime-contract.md`。
 > 规则：每个阶段单独分支/PR；用户本地试完才 push；文章/碎碎念/now 的个人内容不代写。
 
@@ -185,6 +185,11 @@
 
 > 2026-10-30 规模收敛（用户确认）：P1d 先做精简版（任务 1、6、7、8 的“本文完+标签”、9 的 pager/seal/kicker 打印隐藏）；TOC(2)、H2 编号(3)、代码标题栏(4)、图注(5)、相关阅读(8 的后半) 延后。触发条件：文章 ≥5 个 h2 或 >8 分钟、出现首张图、>10 篇文章、代码文章增多。
 > 2026-10-31 演示确认（用户看过 `dist/p1d-demo.html` 后拍板，对 design-contract §5.2 的修订）：印记不再进规格表文本行，改为印记下方「图注」——外框/内芯两行，各带 `Seal part='frame'/'core'` 小图（几何与印记同源）；右页边新增竖排书脊（站名+归档年月+发丝线，仅 ≥60rem，打印隐藏）；移动端页边块位于文章头之后（用户明确要求放回顶部，不落文末）。规格表剩 归档/阅读/分类 三行，40rem 以下只留 归档。实现走 `ArticleHead.astro`（主列）+ `SpecList.astro`（整个页边栏），`const.ts` 加 `SHAPE_LABELS`/`CORE_LABELS`/`wordCount()`，`Seal.astro` 加 `part` 属性。
+> 2026-10-31 实施记录（分支 `feat/article-redesign`，用户本地试用确认后合并）：
+> - 落地：`ArticleHead.astro`（文章头主列）+ `SpecList.astro`（页边栏：印记图版/图注/规格表/竖排书脊）+ `Seal.astro part` 属性 + `const.ts` 的 `SHAPE_LABELS`/`CORE_LABELS`/`wordCount()`；文章页 `main` 切 `wide`，正文列仍锁 `--measure`；打印隐藏 pager/页边/面包屑；新增样式全部走现有 token，两个深色入口无新增规则。
+> - 门禁：`npm run verify` PASS（CSS 15.2/18 KB、最大 HTML 25.2/30 KB、内链 307 条全通、无草稿泄漏）、`npm run audit` 0 vulnerabilities。
+> - 实测：1440 亮/暗截图 + 320/390/768 DOM 采样（零横向溢出；移动端页边 `marginAfterMeta`/`marginBeforeProse` 断言通过）；`math-xor` 验证规格卡数据（2026 / 10、1 分钟 · 约 246 字、算法/题解）与公式/表格渲染。
+> - 未覆盖：打印 PDF 未人工导出（规则为 CSS 层实现，用户以 Ctrl+P 抽查）；真机/读屏/禁 JS 矩阵未跑（延续各阶段未覆盖清单）。
 
 **文件**
 
