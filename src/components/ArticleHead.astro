@@ -1,0 +1,56 @@
+---
+import { formatDay, isoDay, readingTime, u } from '../const';
+import type { Post } from '../lib/posts';
+
+interface Props {
+  /** 当前文章（dev 含草稿） */
+  post: Post;
+}
+
+const { post } = Astro.props;
+const includeDrafts = import.meta.env.DEV;
+---
+
+<!-- 文章头主列：面包屑 / 标题 / 题记 / 元信息。页边规格卡（印记/归档/阅读/分类/书脊）在 SpecList.astro -->
+<header class="article__head">
+  <p class="kicker">
+    <a href={u('/')}>目录</a>
+    /
+    <a href={u('/tags/')}>标签</a>
+    {
+      post.data.draft && includeDrafts && (
+        <>
+          <span aria-hidden="true">/</span>
+          <span class="label" style="color:var(--red)">草稿预览</span>
+        </>
+      )
+    }
+  </p>
+  <h1 class="article__title">{post.data.title}</h1>
+  <p class="article__desc">{post.data.description}</p>
+  <div class="article__meta">
+    <span class="meta">
+      <time datetime={isoDay(post.data.pubDate)}>{formatDay(post.data.pubDate)}</time>
+      {post.data.pubTime ? ` ${post.data.pubTime}` : ''} 发布
+    </span>
+    {
+      post.data.updatedDate && (
+        <span class="meta">
+          更新于 <time datetime={isoDay(post.data.updatedDate)}>{formatDay(post.data.updatedDate)}</time>
+        </span>
+      )
+    }
+    <span class="meta">{readingTime(post.body)} 分钟</span>
+    {
+      post.data.tags.length > 0 && (
+        <span class="tag-list">
+          {post.data.tags.map((tag) => (
+            <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+              {tag}
+            </a>
+          ))}
+        </span>
+      )
+    }
+  </div>
+</header>

@@ -654,9 +654,6 @@ a.tag:hover {
 .article__head {
   margin-bottom: 3.5rem;
 }
-.article__seal {
-  margin: 0 0 1.25rem;
-}
 .article__title {
   font-size: clamp(2.1rem, 7vw, 3.2rem);
   margin: 0 0 1.1rem;
@@ -683,6 +680,193 @@ a.tag:hover {
   align-items: center;
   padding-top: 1rem;
   border-top: 1px solid var(--ink);
+}
+
+/* ---- 文章两栏（P1d）：主列 ≈42rem + 页边 12rem；页边整栏贯通，书脊填到文章底 ---- */
+.article-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12rem;
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    'head margin'
+    'prose margin'
+    'end margin'
+    'pager margin';
+  column-gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+.article-grid > .article__head {
+  grid-area: head;
+}
+.article-grid > .prose {
+  grid-area: prose;
+}
+.article-grid > .article-end {
+  grid-area: end;
+}
+.article-grid > .pager {
+  grid-area: pager;
+}
+.article-col-margin {
+  grid-area: margin;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-top: 0.4rem;
+  min-width: 0;
+}
+
+/* 印记图版：印记 + 两行图注（小 glyph 用 Seal 的 part='frame'/'core'，几何同源不复制） */
+.seal-card__figure {
+  display: block;
+  margin: 0 0 0.9rem;
+}
+.seal-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+}
+.seal-caption .seal {
+  color: inherit;
+  flex: none;
+}
+.seal-caption b {
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* 规格表：归档 / 阅读 / 分类（印记由图注承担）；60rem 以下两列，40rem 只留 归档 */
+.spec-list {
+  margin: 0;
+  border-top: 1px solid var(--ink);
+}
+.spec-list > div {
+  padding: 0.55rem 0 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.spec-list dt {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+.spec-list dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink);
+}
+
+/* 竖排书脊：红点 + 竖排站名/归档 + 发丝线，把右页边「留白」变成「页边」 */
+.spine {
+  flex: 1;
+  min-height: 10rem;
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.spine__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  flex: none;
+}
+.spine__text {
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.32em;
+  color: var(--ink-3);
+}
+.spine__rule {
+  flex: 1;
+  width: 1px;
+  background: var(--rule);
+}
+
+/* 本文完 + 红点 + 标签 */
+.article-end {
+  grid-area: end;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 3.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--ink);
+}
+.article-end__label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-2);
+}
+.article-end i {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  flex: none;
+}
+.article-end .tag-list {
+  margin-left: auto;
+}
+
+/* 页边折叠：60rem 以下折到文章头之后（印记居左、规格两列）；书脊只在桌面两栏存在 */
+@media (max-width: 60rem) {
+  .article-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      'head'
+      'margin'
+      'prose'
+      'end'
+      'pager';
+  }
+  .article-col-margin {
+    align-self: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 0;
+    margin-bottom: 3rem;
+  }
+  .seal-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .seal-card__figure {
+    margin: 0;
+  }
+  .spine {
+    display: none;
+  }
+  .spec-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+    flex: 1;
+    min-width: 0;
+  }
+}
+@media (max-width: 40rem) {
+  .spec-list {
+    flex: none;
+    grid-template-columns: 1fr;
+  }
+  .spec-list .spec-opt {
+    display: none;
+  }
 }
 
 /* ============ 正文 ============ */
@@ -917,13 +1101,16 @@ a.tag:hover {
   .skip {
     display: none;
   }
-  /* 打印时正文不分栏，隐藏纯屏幕元素 */
+  /* 打印时正文不分栏，隐藏纯屏幕元素；P1d：上下篇/页边规格/面包屑也不进纸面 */
   .now-body.prose {
     column-count: 1;
   }
   .now-foot,
   .now-status i,
-  .note__link {
+  .note__link,
+  .article-grid .pager,
+  .article-grid .article-col-margin,
+  .article-grid .kicker {
     display: none;
   }
   .note {

@@ -1,8 +1,9 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Seal from '../../components/Seal.astro';
-import { formatDay, isoDay, readingTime, u } from '../../const';
+import ArticleHead from '../../components/ArticleHead.astro';
+import SpecList from '../../components/SpecList.astro';
+import { u } from '../../const';
 import { getAdjacentPosts, getPostBySlug, getPostsForStaticPaths } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -20,54 +21,29 @@ const { Content } = await render(post);
 const { older, newer } = await getAdjacentPosts(post.id, { includeDrafts });
 ---
 
-<Base size="compact" ogType="article" title={post.data.title} description={post.data.description}>
-  <article>
-    <header class="article__head">
-      <p class="kicker">
-        <a href={u('/')}>目录</a>
-        /
-        <a href={u('/tags/')}>标签</a>
-        {
-          post.data.draft && includeDrafts && (
-            <>
-              <span aria-hidden="true">/</span>
-              <span class="label" style="color:var(--red)">草稿预览</span>
-            </>
-          )
-        }
-      </p>
-      <Seal id={post.id} tag={post.data.tags[0]} size={104} class="article__seal" />
-      <h1 class="article__title">{post.data.title}</h1>
-      <p class="article__desc">{post.data.description}</p>
-      <div class="article__meta">
-        <span class="meta">
-          <time datetime={isoDay(post.data.pubDate)}>{formatDay(post.data.pubDate)}</time>
-          {post.data.pubTime ? ` ${post.data.pubTime}` : ''} 发布
-        </span>
-        {
-          post.data.updatedDate && (
-            <span class="meta">
-              更新于 <time datetime={isoDay(post.data.updatedDate)}>{formatDay(post.data.updatedDate)}</time>
-            </span>
-          )
-        }
-        <span class="meta">{readingTime(post.body)} 分钟</span>
-        {
-          post.data.tags.length > 0 && (
-            <span class="tag-list">
-              {post.data.tags.map((tag) => (
-                <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
-                  {tag}
-                </a>
-              ))}
-            </span>
-          )
-        }
-      </div>
-    </header>
+<Base size="compact" width="wide" ogType="article" title={post.data.title} description={post.data.description}>
+  <article class="article-grid">
+    <ArticleHead post={post} />
+    <SpecList post={post} />
 
     <div class="prose">
       <Content />
+    </div>
+
+    <div class="article-end">
+      <span class="article-end__label">本文完</span>
+      <i aria-hidden="true"></i>
+      {
+        post.data.tags.length > 0 && (
+          <span class="tag-list">
+            {post.data.tags.map((tag) => (
+              <a class="tag" href={u(`/tags/${encodeURIComponent(tag)}/`)}>
+                {tag}
+              </a>
+            ))}
+          </span>
+        )
+      }
     </div>
 
     <nav class="pager" aria-label="文章导航">
