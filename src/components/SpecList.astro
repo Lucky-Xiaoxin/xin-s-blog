@@ -1,0 +1,58 @@
+---
+import Seal from './Seal.astro';
+import { CORE_LABELS, SHAPE_LABELS, SITE, readingTime, sealFor, wordCount } from '../const';
+import type { Post } from '../lib/posts';
+
+interface Props {
+  /** 当前文章（dev 含草稿） */
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { shape, core } = sealFor(post.id, post.data.tags[0]);
+const hasTags = post.data.tags.length > 0;
+// 归档口径与列表一致：date-only 的 frontmatter 是 UTC 零点，必须用 UTC getter
+const year = post.data.pubDate.getUTCFullYear();
+const month = String(post.data.pubDate.getUTCMonth() + 1).padStart(2, '0');
+---
+
+<!-- 文章页边（右栏）：印记图版 + 图注 + 规格表 + 竖排书脊。
+     60rem 以下折到文章头之后（印记居左、规格两列），40rem 以下只留 归档/图注；打印整体隐藏 -->
+<div class="article-col-margin">
+  <div class="seal-card">
+    <Seal id={post.id} tag={post.data.tags[0]} size={104} class="seal-card__figure" />
+    <p class="seal-caption">
+      <Seal id={post.id} tag={post.data.tags[0]} size={13} part="frame" />
+      <span>外框 <b>{SHAPE_LABELS[shape]}</b> —— {hasTags ? '分类' : '通用'}</span>
+    </p>
+    <p class="seal-caption">
+      <Seal id={post.id} tag={post.data.tags[0]} size={13} part="core" />
+      <span>内芯 <b>{CORE_LABELS[core]}</b> —— 本篇指纹</span>
+    </p>
+  </div>
+
+  <dl class="spec-list">
+    <div>
+      <dt>归档</dt>
+      <dd>{year} / {month}</dd>
+    </div>
+    <div class="spec-opt">
+      <dt>阅读</dt>
+      <dd>{readingTime(post.body)} 分钟 · 约 {wordCount(post.body)} 字</dd>
+    </div>
+    {
+      hasTags && (
+        <div class="spec-opt">
+          <dt>分类</dt>
+          <dd>{post.data.tags.join(' / ')}</dd>
+        </div>
+      )
+    }
+  </dl>
+
+  <div class="spine" aria-hidden="true">
+    <i class="spine__dot"></i>
+    <span class="spine__text">{SITE.title} · {year} / {month}</span>
+    <i class="spine__rule"></i>
+  </div>
+</div>

@@ -122,6 +122,14 @@ export function readingTime(body?: string) {
   return Math.max(1, Math.round(cjk / 400 + words / 220));
 }
 
+/** 粗略字数：CJK 字符 + 英文/数字词（含代码与公式源码），只做展示，不参与排序（P1d 规格表「约 N 字」） */
+export function wordCount(body?: string) {
+  const text = body ?? '';
+  const cjk = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const words = (text.replace(/[\u4e00-\u9fff]/g, '').match(/[A-Za-z0-9]+/g) || []).length;
+  return cjk + words;
+}
+
 /** 印记内芯：由文章 id 哈希决定，红点落在内芯的特征点上（渲染在 Seal.astro） */
 export type SealCore = 'ring' | 'tri' | 'diamond' | 'cross' | 'diag' | 'axis' | 'hline' | 'orb';
 
@@ -151,3 +159,24 @@ export function sealFor(id: string, tag?: string) {
   const cores = SEAL_CORES[shape];
   return { shape, core: cores[sealHash(id) % cores.length] };
 }
+
+/** 形状/内芯的中文展示名：只供规格卡图注阅读（P1d），改名不动 sealFor 的几何映射 */
+export const SHAPE_LABELS: Record<Shape, string> = {
+  triangle: '三角形',
+  hexagon: '六边形',
+  square: '方形',
+  rhombus: '菱形',
+  semicircle: '半圆',
+  circle: '圆形',
+};
+
+export const CORE_LABELS: Record<SealCore, string> = {
+  ring: '圆环',
+  tri: '小三角',
+  diamond: '小菱形',
+  cross: '十字',
+  diag: '斜线',
+  axis: '轴线',
+  hline: '横线',
+  orb: '圆点',
+};

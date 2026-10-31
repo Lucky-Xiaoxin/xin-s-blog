@@ -6,9 +6,11 @@ interface Props {
   tag?: string;
   size?: number;
   class?: string;
+  /** all = 完整印记（默认）；frame = 只渲染外框；core = 只渲染内芯（规格卡图注用小图） */
+  part?: 'all' | 'frame' | 'core';
 }
 
-const { id, tag, size = 48, class: className } = Astro.props;
+const { id, tag, size = 48, class: className, part = 'all' } = Astro.props;
 const { shape, core } = sealFor(id, tag);
 
 // 红点：内芯的特征点（环→圆顶、三角→顶尖上方、菱形→右顶点、十字→交点……）
@@ -42,12 +44,12 @@ const dot = FRAME_DOTS[shape]?.[core] ?? DOTS[core];
 >
   {/* 外框：分类形状 */}
   {
-    shape === 'triangle' && (
+    part !== 'core' && shape === 'triangle' && (
       <polygon data-frame vector-effect="non-scaling-stroke" points="12,3 21.5,20.5 2.5,20.5" />
     )
   }
   {
-    shape === 'hexagon' && (
+    part !== 'core' && shape === 'hexagon' && (
       <polygon
         data-frame
         vector-effect="non-scaling-stroke"
@@ -56,12 +58,12 @@ const dot = FRAME_DOTS[shape]?.[core] ?? DOTS[core];
     )
   }
   {
-    shape === 'square' && (
+    part !== 'core' && shape === 'square' && (
       <rect data-frame vector-effect="non-scaling-stroke" x="3.5" y="3.5" width="17" height="17" />
     )
   }
   {
-    shape === 'rhombus' && (
+    part !== 'core' && shape === 'rhombus' && (
       <polygon
         data-frame
         vector-effect="non-scaling-stroke"
@@ -70,7 +72,7 @@ const dot = FRAME_DOTS[shape]?.[core] ?? DOTS[core];
     )
   }
   {
-    shape === 'semicircle' && (
+    part !== 'core' && shape === 'semicircle' && (
       <path
         data-frame
         vector-effect="non-scaling-stroke"
@@ -79,32 +81,32 @@ const dot = FRAME_DOTS[shape]?.[core] ?? DOTS[core];
     )
   }
   {
-    shape === 'circle' && (
+    part !== 'core' && shape === 'circle' && (
       <circle data-frame vector-effect="non-scaling-stroke" cx="12" cy="12" r="9.5" />
     )
   }
 
   {/* 内芯：由文章哈希决定 */}
-  {core === 'ring' && <circle data-core vector-effect="non-scaling-stroke" cx="12" cy="12" r="5" />}
+  {part !== 'frame' && core === 'ring' && <circle data-core vector-effect="non-scaling-stroke" cx="12" cy="12" r="5" />}
   {
-    core === 'tri' && (
+    part !== 'frame' && core === 'tri' && (
       <polygon data-core vector-effect="non-scaling-stroke" points="12,9 17,17.5 7,17.5" />
     )
   }
   {
-    core === 'diamond' && (
+    part !== 'frame' && core === 'diamond' && (
       <polygon data-core vector-effect="non-scaling-stroke" points="12,7 17,12 12,17 7,12" />
     )
   }
   {
-    core === 'cross' && (
+    part !== 'frame' && core === 'cross' && (
       <path data-core vector-effect="non-scaling-stroke" d="M12 7.5V16.5M7.5 12H16.5" />
     )
   }
-  {core === 'diag' && <path data-core vector-effect="non-scaling-stroke" d="M6.5 17.5 17.5 6.5" />}
-  {core === 'axis' && <path data-core vector-effect="non-scaling-stroke" d="M12 8.5V17.5" />}
-  {core === 'hline' && <path data-core vector-effect="non-scaling-stroke" d="M6.5 15.5H17.5" />}
-  {core === 'orb' && <circle data-core vector-effect="non-scaling-stroke" cx="12" cy="14" r="3" />}
+  {part !== 'frame' && core === 'diag' && <path data-core vector-effect="non-scaling-stroke" d="M6.5 17.5 17.5 6.5" />}
+  {part !== 'frame' && core === 'axis' && <path data-core vector-effect="non-scaling-stroke" d="M12 8.5V17.5" />}
+  {part !== 'frame' && core === 'hline' && <path data-core vector-effect="non-scaling-stroke" d="M6.5 15.5H17.5" />}
+  {part !== 'frame' && core === 'orb' && <circle data-core vector-effect="non-scaling-stroke" cx="12" cy="14" r="3" />}
 
-  <circle class="seal__dot" cx={dot.x} cy={dot.y} r={dot.r} />
+  {part === 'all' && <circle class="seal__dot" cx={dot.x} cy={dot.y} r={dot.r} />}
 </svg>
