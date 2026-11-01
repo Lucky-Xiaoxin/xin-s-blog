@@ -106,7 +106,8 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 建稿用 `npm run new -- <文件名>` 或双击根目录「新建文章.bat」，不要手抄 frontmatter。
 - 文章写法有统一规范：`docs/writing-style.md`（结构/标题层级/元素用法/语气）+ `docs/example.md`（可照抄的示例）。改文章或新建稿按它来。三条最容易踩的：**正文里不要留建稿提示注释**（`<!-- xxx：正文从这里开始…… -->` 会随 HTML 发布并计入阅读时长）；**frontmatter 不要复制标签清单快照**（清单唯一来源是 `src/const.ts` 的 `TAG_SHAPE`，复制的那份必然过期）；**正文只用 h2/h3**（`.prose` 只给 h2/h3 上样式，h4 及以下掉回浏览器默认字号）。
 - 新标签必须登记进 `src/const.ts` 的 `TAG_SHAPE`，否则构建告警。
-- P1d 已按 2026-10-30 规模收敛为精简版：只做文章头/规格表/印记标签/本文完/打印隐藏；TOC、H2 编号、代码标题栏、图注、相关阅读延后，触发条件见 `docs/next-phase/implementation-plan.md` P1d。44px 热区只覆盖标签/按钮/主导航，正文内联链接维持 WCAG 2.5.8 的 24px；F4/F7/F9/F10/F11/F14 暂缓。
+- P1d 已按 2026-10-30 规模收敛为精简版：只做文章头/规格表/印记标签/本文完/打印隐藏；TOC、H2 编号、代码标题栏、图注、相关阅读延后，触发条件见 `docs/next-phase/implementation-plan.md` P1d。44px 热区覆盖标签/按钮/主导航/页边链接/页脚（P1e F6），正文内联链接维持 WCAG 2.5.8 的 24px；F4/F7/F9/F10/F11/F14 暂缓。
+- P1e（2026-11-01）新增的硬约定：**SEO**——文章页 JSON-LD（BlogPosting/BreadcrumbList）与 article meta 经 `Base.astro` 的 `head` 插槽注入，`check-dist` 校验存在性与可解析性，别删；`og:image` 尺寸锁 1200×630（实测 `public/og.png`），换图必须同步 `Base.astro` 的两个 meta；面包屑取文章首个标签（与印记外框同源）。**字号**——中文 utility 文本 ≥12px，`0.2em` 大字距只给拉丁大写，等宽日期/计数 11–12px 可保留（F5）。**首页文案**——头部只显示 `SITE.tagline` 单行，`SITE.description` 只进 meta；卷首图例「现在」格单行 ellipsis、完整文案在 `/now/`（这是对 p1c「图例不截断」的显式推翻，N3）；热区伪元素扩边量与列表 `gap` 互为 mirror，相邻热区不得重叠（F6）。
 - Node 需 22.23.4+（Astro 7 的硬性要求）。**CI 的 `node-version` 必须钉具体小版本**（现在是 `22.23.4`）：写 `22` 时 runner 按自己的 tool-cache 索引解析、实测取到 22.23.3，差一个补丁版本 `astro check` 直接拒跑——**本地过了不代表 CI 过**。「Astro 7 要求 22.23.4 而 CI 报 Node not supported」先查 deploy.yml 的 node-version。`@astrojs/check` 的 peer TypeScript 仍只到 `^6`，不要升 TypeScript 7。
 - agent shell 里 `git push` 凭据通常已缓存；若报 `/dev/tty` 错误，让用户在输入框用 `! git push` 代跑一次。
 - GitHub Pages HTML 有约 10 分钟浏览器缓存：用户说"推上去没变"先让他 Ctrl+F5 再排查。

@@ -183,9 +183,10 @@ h3 {
   left: 0.5rem;
 }
 
-/* 小标签：大字距无衬线 */
+/* 小标签：大字距无衬线。P1e F5：中文 utility ≥12px，0.2em 字距只给拉丁大写
+   （含中文的实例由 .colophon__row 等就地放宽字距） */
 .label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -313,11 +314,11 @@ h3 {
   cursor: pointer;
   transition: background 0.2s ease;
 }
-/* 扩大触控热区，视觉尺寸不变 */
+/* 扩大触控热区，视觉尺寸不变；P1e F6：40px 补到 44px */
 .theme-toggle::before {
   content: '';
   position: absolute;
-  inset: -0.5rem -0.35rem;
+  inset: -0.625rem -0.35rem;
 }
 .theme-toggle::after {
   content: '';
@@ -413,12 +414,15 @@ main {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
+  /* 页脚文案含中文：0.2em 大字距只留给拉丁大写（P1e F5），这里放宽 */
+  letter-spacing: 0.05em;
 }
 .colophon__nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.25rem 0.6rem;
+  /* 行距 1.8rem ≥ 链接热区上下扩边（-0.875rem × 2），换行时相邻行热区恰好相接不重叠（P1e F6） */
+  gap: 1.8rem 0.6rem;
 }
 .colophon a:hover {
   color: var(--red);
@@ -604,12 +608,14 @@ main {
   fill: var(--red);
 }
 
-/* 标签：直角描边方块 */
+/* 标签：直角描边方块。P1e F5：中文标签 ≥12px；F6：伪元素扩热区到约 44×44，
+   扩边量与 .tag-list 的间距互为 mirror——相邻热区恰好相接不重叠 */
 .tag {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: var(--ink-2);
@@ -617,16 +623,22 @@ main {
   padding: 0.22rem 0.55rem;
   transition: color 0.18s ease, border-color 0.18s ease;
 }
+a.tag::after {
+  content: '';
+  position: absolute;
+  inset: -0.5rem -0.25rem;
+}
 a.tag:hover {
   color: var(--red);
   border-color: var(--red);
 }
-/* 标签作为一整组换行，避免窄屏只剩一个标签孤零零留在下一行 */
+/* 标签作为一整组换行，避免窄屏只剩一个标签孤零零留在下一行；
+   行距 1rem ≥ 标签热区上下扩边（-0.5rem × 2），换行时热区恰好相接不重叠 */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem 0.5rem;
 }
 
 .section-note a {
@@ -728,7 +740,7 @@ a.tag:hover {
   gap: 0.45rem;
   margin: 0 0 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* P1e F5：中文图注 ≥12px */
   letter-spacing: 0.05em;
   color: var(--ink-3);
 }
@@ -753,7 +765,7 @@ a.tag:hover {
 .spec-list dt {
   margin: 0 0 0.15rem;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* P1e F5：中文规格标签 ≥12px */
   letter-spacing: 0.1em;
   color: var(--ink-3);
 }
@@ -1116,6 +1128,13 @@ a.tag:hover {
   .note {
     break-inside: avoid;
   }
+  /* P1e：长代码块/宽表格/图片打印时不从中间切断（纸面可读优先于节省页数） */
+  .prose .scroll-x,
+  .prose pre,
+  .prose table,
+  .prose img {
+    break-inside: avoid;
+  }
 }
 
 /* 系统要求减少动效：只关动画/过渡，不影响主题初始状态 */
@@ -1411,8 +1430,10 @@ a.tag:hover {
   align-items: center;
   gap: 0.55rem;
   min-height: 2.75rem; /* 热区 ≥44px，视觉仍是一行小字 */
+  min-width: 0;
+  overflow: hidden; /* 配合 N3：超长描述在格内截断，不撑破三格 */
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* P1e F5：中文图例 ≥12px */
   letter-spacing: 0.08em;
   color: var(--ink-3);
   transition: color 0.18s var(--ease);
@@ -1429,6 +1450,13 @@ a.tag:hover {
 .frontispiece__legend a:hover b,
 .frontispiece__legend a:focus-visible b {
   color: var(--red);
+}
+/* N3：「现在」格整段直出 now 描述，文案变长会撑破三格布局；
+   单行 ellipsis（对齐标签索引「最近」列策略），完整文案仍以 /now/ 为准 */
+.frontispiece__legend-desc {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* 开卷 + 页边：桌面两列，只剩一块时退回单列 */
@@ -1485,13 +1513,21 @@ a.tag:hover {
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  margin-bottom: 0.35rem;
+  /* 底距 0.9rem ≥ 链接热区向下扩边（0.8rem），不与下方碎碎念行热区重叠（P1e F6） */
+  margin-bottom: 0.9rem;
 }
 .margin-notes__head a {
+  position: relative;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.75rem; /* P1e F5：中文小链接 ≥12px */
   letter-spacing: 0.08em;
   color: var(--ink-3);
+}
+/* P1e F6：「全部碎碎念 →」热区扩到 ≥44×44；扩边量与底距互为 mirror */
+.margin-notes__head a::after {
+  content: '';
+  position: absolute;
+  inset: -0.8rem -0.5rem;
 }
 .margin-notes__head a:hover {
   color: var(--red);
@@ -1551,10 +1587,17 @@ a.tag:hover {
   color: var(--ink-2);
 }
 .now-line p a {
+  position: relative;
   display: inline-block;
   margin-left: 0.35rem;
   color: var(--ink);
   border-bottom: 1px solid var(--ink);
+}
+/* P1e F6：「看看 →」热区扩到 ≥44×44；左右是描述文本（非交互），上下是块边界，扩边安全 */
+.now-line p a::after {
+  content: '';
+  position: absolute;
+  inset: -0.8rem -0.4rem;
 }
 .now-line p a:hover {
   color: var(--red);
@@ -1603,7 +1646,7 @@ a.tag:hover {
 }
 .pager__dir {
   display: block;
-  font-size: 0.625rem;
+  font-size: 0.75rem; /* P1e F5：「更早/更新」中文 ≥12px */
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1866,14 +1909,13 @@ a.tag:hover {
     margin-top: 0.45rem;
     text-align: left;
   }
-  /* 首页：图例小字换行，页边碎碎念回到单列 */
+  /* 首页：图例小字换行（不缩字号，P1e F5），页边碎碎念回到单列 */
   .frontispiece__legend {
     gap: 0.75rem;
   }
   .frontispiece__legend a {
     flex-wrap: wrap;
     gap: 0.15rem 0.4rem;
-    font-size: 0.625rem;
   }
   .note-mini {
     grid-template-columns: 1fr;
@@ -1913,7 +1955,7 @@ a.tag:hover {
     gap: 0.9rem;
   }
   .nav a {
-    font-size: 0.6875rem;
+    font-size: 0.75rem; /* P1e F5：中文导航 ≥12px，窄屏靠缩 gap 不缩字号 */
     letter-spacing: 0.08em;
     padding-left: 0.7rem;
   }

@@ -113,7 +113,8 @@ const hasNow = Boolean(nowDescription);
     </a>
     {hasNow && (
       <a class="frontispiece__legend-item" href={u('/now/')}>
-        <b>现在</b> {nowDescription}
+        <b>现在</b>
+        <span class="frontispiece__legend-desc">{nowDescription}</span>
       </a>
     )}
   </div>

@@ -22,15 +22,15 @@ npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 
 `npm run check:dist` 默认按 `BASE_PATH=/` 检查普通 `npm run build` 的产物；要检查生产子路径请用 `npm run verify`（它会自动以 `/xin-s-blog/` 重建），或显式传入 `BASE_PATH`/`SITE_URL`。`npm run preview` 对应普通构建，`npm run preview:prod` 对应 verify 的产物。（Windows Git Bash 下手动覆盖 `BASE_PATH` 时先 `export MSYS2_ENV_CONV_EXCL=BASE_PATH`，否则 `/xin-s-blog` 会被 shell 改写成 `C:/...`；直接跑 `npm run verify` / `npm run check:dist` / `npm run preview:prod` 不受影响。）
 
-### 体积预算（2026-10-25 基线，P1d 后更新当前值）
+### 体积预算（2026-10-25 基线，P1e 后更新当前值）
 
 | 指标 | 口径 | 当前 | 上限 |
 | --- | --- | --- | --- |
 | CSS | 所有 `.css` gzip 总和 | 15.2 KB | 18 KB |
 | JS | 所有 `.js` gzip 总和 | 0.0 KB | 3 KB |
-| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.41 MB | 1.5 MB |
-| 最大 HTML | 单个 `.html` 原始大小 | 25.2 KB | 30 KB |
-| `dist` | 全部文件原始大小总和 | 1.6 MB | 2.6 MB |
+| 字体 | `.woff2/.woff/.ttf` 原始大小总和 | 1.42 MB | 1.5 MB |
+| 最大 HTML | 单个 `.html` 原始大小 | 26.6 KB（P1e 文章页 JSON-LD/article meta 约 +1.4KB） | 30 KB |
+| `dist` | 全部文件原始大小总和 | 1.7 MB | 2.6 MB |
 
 内联主题脚本约 2.3 KB，只报告、不计入 JS 预算（P0 不加运行时 JS）。超限先定位是哪一项、确认新增内容是否必要，不要直接抬上限。
 
