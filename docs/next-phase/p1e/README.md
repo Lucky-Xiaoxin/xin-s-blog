@@ -1,6 +1,6 @@
 # P1e 实施文档：SEO 补全、可访问性收尾与终验
 
-> 状态：实施中 · 2026-11-01（实现与本地验证完成，证据见 `review.md`；待用户本地试用确认后合并，合并后改「已验收」）
+> 状态：已验收 · 2026-11-01（用户本地试用确认，PR #34 合并，merge commit `08aa15b`；真机走查由用户上线后按 `review.md` §6 一分钟清单执行）
 > 上游：`../implementation-plan.md` P1e（2026-10-30 规模收敛版）、`../frontend-review.md`（F5/F6/F15/N3 原始记录）、`../design-contract.md`（已批准）；上一阶段 P1d 已验收（验收记录见 `../implementation-plan.md` 实施记录）
 > 下游：P1 系列收官；此后的新能力一律走 P2 逐项评审，不再有预设阶段
 > Owner：实现规划师
