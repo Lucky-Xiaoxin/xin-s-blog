@@ -1,6 +1,8 @@
 export const SITE = {
   title: '二进制与诗',
-  tagline: '一个佛大计算机学生的笔记站',
+  // P1e F15（2026-11-01 用户选定方案 A）：首页头部只显示 tagline 单行；
+  // description 不再进入首页显示流，仅用于 meta description / og:description
+  tagline: '计算机系统、算法与开发工具，一个本科生的手记。',
   author: '小鑫',
   handle: '@Xiaoxin',
   description:

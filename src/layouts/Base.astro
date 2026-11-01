@@ -127,7 +127,8 @@ const ogImage = new URL(u('/og.png'), Astro.site);
         {
           size === 'full' && (
             <p class="tagline">
-              {SITE.tagline} · {SITE.description}
+              {/* P1e F15：只显示 tagline 单行（原「tagline · description」两句都含「笔记」且 1440 出现孤行） */}
+              {SITE.tagline}
             </p>
           )
         }
