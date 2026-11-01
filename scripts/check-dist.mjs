@@ -389,6 +389,41 @@ for (const file of htmlFiles) {
   if (!metas.some((m) => m.property === 'og:image' && m.content)) fail('seo', rel, '缺少 og:image');
   if (!/<title>[^<]+<\/title>/i.test(html)) fail('seo', rel, '缺少 <title>');
   if (!metas.some((m) => m.name === 'description' && m.content)) fail('seo', rel, '缺少 meta description');
+
+  // ---------- P1e：OG 补全属性与 JSON-LD（契约 docs/next-phase/p1e/README.md §3） ----------
+  if (!metas.some((m) => m.property === 'og:locale' && m.content === 'zh_CN')) {
+    fail('seo', rel, '缺少 og:locale=zh_CN');
+  }
+  if (!metas.some((m) => m.property === 'og:image:width' && m.content === '1200')) {
+    fail('seo', rel, '缺少 og:image:width=1200');
+  }
+  if (!metas.some((m) => m.property === 'og:image:height' && m.content === '630')) {
+    fail('seo', rel, '缺少 og:image:height=630');
+  }
+  if (!metas.some((m) => m.property === 'article:published_time' && m.content)) {
+    fail('seo', rel, '缺少 article:published_time');
+  }
+  if (!metas.some((m) => m.property === 'article:modified_time' && m.content)) {
+    fail('seo', rel, '缺少 article:modified_time');
+  }
+
+  const ldTypes = [];
+  for (const m of html.matchAll(
+    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi,
+  )) {
+    try {
+      const obj = JSON.parse(m[1]);
+      if (!obj || typeof obj !== 'object' || !obj['@type']) {
+        fail('seo', rel, 'JSON-LD 缺少 @type');
+        continue;
+      }
+      ldTypes.push(obj['@type']);
+    } catch (e) {
+      fail('seo', rel, `JSON-LD 不可解析：${e.message}`);
+    }
+  }
+  if (!ldTypes.includes('BlogPosting')) fail('seo', rel, '缺少 BlogPosting JSON-LD');
+  if (!ldTypes.includes('BreadcrumbList')) fail('seo', rel, '缺少 BreadcrumbList JSON-LD');
 }
 
 const notFoundPage = path.join(DIST, '404.html');

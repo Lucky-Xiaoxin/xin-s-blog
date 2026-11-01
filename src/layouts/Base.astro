@@ -65,6 +65,10 @@ const ogImage = new URL(u('/og.png'), Astro.site);
           <meta property="og:url" content={canonical} />
           <meta property="og:site_name" content={SITE.title} />
           <meta property="og:image" content={ogImage} />
+          <!-- og:image 尺寸写死 1200×630（P1e 契约 §3.4，实测 public/og.png）；换图必须同步 -->
+          <meta property="og:locale" content="zh_CN" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
           <meta name="twitter:card" content="summary_large_image" />
         </>
       )
@@ -98,6 +102,8 @@ const ogImage = new URL(u('/og.png'), Astro.site);
     </script>
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href={u('/rss.xml')} />
     <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
+    <!-- 页面专属 head 内容（如文章页的 JSON-LD/article meta）从这里注入 -->
+    <slot name="head" />
   </head>
   <body>
     <a class="skip" href="#main">跳到正文</a>
