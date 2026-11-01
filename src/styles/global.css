@@ -1128,6 +1128,13 @@ a.tag:hover {
   .note {
     break-inside: avoid;
   }
+  /* P1e：长代码块/宽表格/图片打印时不从中间切断（纸面可读优先于节省页数） */
+  .prose .scroll-x,
+  .prose pre,
+  .prose table,
+  .prose img {
+    break-inside: avoid;
+  }
 }
 
 /* 系统要求减少动效：只关动画/过渡，不影响主题初始状态 */
