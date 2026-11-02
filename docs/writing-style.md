@@ -152,7 +152,7 @@ YAML 注释（`#` 开头）不会发布到线上，可以放心留。
 
 ## 9. 参考
 
-- 示例文章：[example.md](example.md)——上面每条规则都用了一遍，可直接照抄。
+- 示例文章：[example.md](example.md)——覆盖主要规则与元素用法；正文可直接照抄，frontmatter 用 `npm run new` 生成。
 - 已按本规范修订的站内文章：`first_page`、`github-remote-ques`、`happy-number-from-cf1124-div2-d`、`math-xor`（2026-10-29）。
 - 标签清单：`src/const.ts` 的 `TAG_SHAPE`（唯一事实来源）。
 - 写作之外的约定（数据层、路由、构建）：根目录 [AGENTS.md](../AGENTS.md) 与 [README.md](../README.md)。

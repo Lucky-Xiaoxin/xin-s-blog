@@ -1,19 +1,18 @@
 <!--
-示例文章：把 docs/writing-style.md 的每条规则都用了一遍。
+完整示例：按 docs/writing-style.md 的主要规则写的一篇成品文章。
 
-用法：把下面 `---` 开始的全部内容复制到 src/content/posts/<你的文件名>.md，
-然后改 title / description / pubDate / pubTime / tags，并把 draft 改成 false（或删掉整行）。
-文件名只用小写字母、数字和连字符，它就是这篇文章的网址。
+建稿请用 `npm run new -- <文件名>` 生成 frontmatter，不要手抄本文件的 frontmatter；
+正文的骨架、标题层级、代码/公式/表格/引用与语气可以照这篇仿写。
+本文件在 docs/ 下，不会被构建或发布。
 -->
 
 ---
-title: '单调栈：从暴力 O(n^2) 到一遍过'          # 文章标题（目录页、浏览器标签、RSS 都用它）
-description: '下一个更大元素，用单调栈把 O(n^2) 压到 O(n)，顺便记一下我踩过的两个坑'   # 一句话摘要（目录页卡片、RSS、分享预览用）
-pubDate: 2026-10-29                             # 发布日期；排序和 RSS 只认它
-pubTime: '21:30'                                # 发布时间 24h 制，仅显示用；不要显示就删整行
-tags: ['算法', '单调栈']                        # 清单见 src/const.ts 的 TAG_SHAPE，新标签须先去那里登记形状
-updatedDate: 2026-10-29                         # 可选：最后一次修订的日期
-draft: true                                     # 草稿箱：true 时不进目录页/RSS；定稿改成 false 或删整行
+title: '单调栈：从暴力 O(n^2) 到一遍过'
+description: '下一个更大元素，用单调栈把 O(n^2) 压到 O(n)，顺便记一下我踩过的两个坑'
+pubDate: 2026-10-29
+pubTime: '21:30'
+tags: ['算法', '单调栈']
+updatedDate: 2026-10-29
 ---
 
 > *又是被单调栈统治的一天*
