@@ -2,7 +2,7 @@
 
 > 状态：已验收 · 2026-10-24（验收复核通过，证据见 §9）
 > 上游：`p1b/README.md`、`content-model.md`、`pages-and-feed.md`、`check-dist-guards.md`、`test-plan.md`
-> 证据：本文件 + `screens/`（生产子路径 `preview:prod` 截图与矩阵 JSON）
+> 证据：本文件（`screens/` 截图与矩阵 JSON 已于 2026-11-02 收官清理删除，见 [../README.md](../README.md) §9）
 > Owner：实现规划师
 
 ## 1. 完成范围

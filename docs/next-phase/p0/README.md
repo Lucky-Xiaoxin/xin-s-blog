@@ -1,6 +1,6 @@
 # P0 实施文档：内容基础层与质量门禁
 
-> 状态：已验收 · 2026-10-23
+> 状态：已验收 · 2026-10-23（2026-11-02 收官清理：`test-plan.md` 已删，见 [../README.md](../README.md) §9）
 > 上游：`docs/next-phase/implementation-plan.md` 的 P0；设计契约已批准
 > 下游：P1a
 > Owner：实现规划师

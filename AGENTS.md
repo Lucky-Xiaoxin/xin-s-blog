@@ -52,7 +52,6 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 | `docs/next-phase/README.md` | 阶段索引、决策日志、状态 | 单阶段长契约 |
 | `docs/next-phase/pX/README.md` | 阶段目标、范围、依赖、验收、风险 | 大段重复 token/命令/预算 |
 | `docs/next-phase/pX/*.md` | 详细契约、测试计划、复核 | 长期维护的“当前值”副本 |
-| `docs/next-phase/design/` | 设计原型、截图、自检 | 生产 CSS/字体/图片 |
 | `docs/next-phase/_template.md` | 新文档模板 | — |
 
 **当前命令/体积/运行基线的权威来源**：根 README + `scripts/check-dist.mjs` + `npm run verify` 实际输出。阶段文档若引用快照，必须写“快照 YYYY-MM-DD，以 verify 输出为准”，不要写“当前值”然后长期不更新。

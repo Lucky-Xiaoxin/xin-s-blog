@@ -4,7 +4,7 @@
 > 上游：`design-contract.md`（已批准）、`p0/review.md`（P0 已验收）
 > 下游：P1b notes/now、P1c 首页、P1d 文章页
 > Owner：实现规划师
-> 复核/证据：`review.md`；`screens/`（生产子路径预览截图）
+> 复核/证据：`review.md`（`screens/` 截图已于 2026-11-02 收官清理删除，见 [../README.md](../README.md) §9）
 
 ## 1. 目标
 

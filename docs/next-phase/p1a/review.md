@@ -2,7 +2,7 @@
 
 > 状态：已验收 · 2026-10-23（实现与本地验证完成；**宽度 A 已确认**；用户本地验收通过）
 > 上游：`p1a/README.md`、`ui-foundation.md`、`check-dist-guards.md`、`test-plan.md`
-> 证据：本文件 + `screens/`（生产子路径 `preview:prod` 截图）
+> 证据：本文件（`screens/` 截图已于 2026-11-02 收官清理删除，见 [../README.md](../README.md) §9）
 > Owner：实现规划师
 
 ## 1. 完成范围

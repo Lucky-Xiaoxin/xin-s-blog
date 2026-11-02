@@ -4,7 +4,7 @@
 > 上游：`../implementation-plan.md` P1e（2026-10-30 规模收敛版）、`../frontend-review.md`（F5/F6/F15/N3 原始记录）、`../design-contract.md`（已批准）；上一阶段 P1d 已验收（验收记录见 `../implementation-plan.md` 实施记录）
 > 下游：P1 系列收官；此后的新能力一律走 P2 逐项评审，不再有预设阶段
 > Owner：实现规划师
-> 复核/证据：[review.md](review.md)（命令输出、字号/热区实测、两项故障注入、d1 允许差异、人工验收结果）+ `screens/`
+> 复核/证据：[review.md](review.md)（命令输出、字号/热区实测、两项故障注入、d1 允许差异、人工验收结果；`screens/` 截图已于 2026-11-02 收官清理删除，见 [../README.md](../README.md) §9）
 
 ## 1. 目标
 
