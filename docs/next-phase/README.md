@@ -127,7 +127,7 @@
 - `now-contract.md`：now 页的语义、内容模型、导航、更新流程与设计契约。
 - `design-contract.md`：选定方向一「卷首」的 tokens、组件规格、响应式/暗色/打印、内容映射、实现顺序与验收；**已批准**。
 - [frontend-review.md](frontend-review.md)：2026-10-30 前端页面评审问题汇总（用户确认问题属实）；P1d/P1e 的输入，含实测基线、代码位置与未覆盖项；可视化版曾是本地评审产物（未入库，已于 2026-10-31 卫生清理删除，数据已固化在本文）。
-- `implementation-plan.md`：P0→P1e 的 PR 拆分、文件范围、依赖、测试与完成定义；P0/P1a 已完成，P1b 实施前先读 `p1b/`。
+- `implementation-plan.md`：P0→P1e 的 PR 拆分、文件范围、依赖、测试与完成定义；P0–P1e 全部已验收，作为历史实施记录保留。
 - `p0/README.md`：P0 的目标、范围、文件地图、依赖、验收与风险。
 - `p0/data-and-draft.md`：`src/lib/posts.ts` API、调用点、草稿预览行为与边界。
 - `p0/verify.md`：`verify`/`check-dist` 的检查项、预算、输出与 CI 接入。

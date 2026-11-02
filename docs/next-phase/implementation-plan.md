@@ -1,6 +1,6 @@
 # 实施计划（设计契约已批准）
 
-> 状态：实施中 · 2026-10-31（P0、P1a、P1b、P1c、P1d 已验收；下一步 P1e 收尾，契约详见 `p1e/README.md`（规划中 · 2026-11-01），以其为准）。本文保留 P0→P1e 的拆解、测试与完成定义。
+> 状态：已验收 · 2026-11-01（P0–P1e 全部验收，P1 系列收官；本文保留 P0→P1e 的拆解、测试与完成定义，作为历史实施记录。）
 > 依赖：`design-contract.md`（已批准）、`notes-contract.md`、`now-contract.md`、`runtime-contract.md`。
 > 规则：每个阶段单独分支/PR；用户本地试完才 push；文章/碎碎念/now 的个人内容不代写。
 
@@ -189,7 +189,7 @@
 > - 落地：`ArticleHead.astro`（文章头主列）+ `SpecList.astro`（页边栏：印记图版/图注/规格表/竖排书脊）+ `Seal.astro part` 属性 + `const.ts` 的 `SHAPE_LABELS`/`CORE_LABELS`/`wordCount()`；文章页 `main` 切 `wide`，正文列仍锁 `--measure`；打印隐藏 pager/页边/面包屑；新增样式全部走现有 token，两个深色入口无新增规则。
 > - 门禁：`npm run verify` PASS（CSS 15.2/18 KB、最大 HTML 25.2/30 KB、内链 307 条全通、无草稿泄漏）、`npm run audit` 0 vulnerabilities。
 > - 实测：1440 亮/暗截图 + 320/390/768 DOM 采样（零横向溢出；移动端页边 `marginAfterMeta`/`marginBeforeProse` 断言通过）；`math-xor` 验证规格卡数据（2026 / 10、1 分钟 · 约 246 字、算法/题解）与公式/表格渲染。
-> - 未覆盖：打印 PDF 未人工导出（规则为 CSS 层实现，用户以 Ctrl+P 抽查）；真机/读屏/禁 JS 矩阵未跑（延续各阶段未覆盖清单）。
+> - 未覆盖：打印 PDF 未人工导出（规则为 CSS 层实现，用户以 Ctrl+P 抽查）；真机/读屏/禁 JS 矩阵未跑（延续各阶段未覆盖清单）。P1e 收官时已补验打印、真机、读屏与完整 Tab，见 `p1e/review.md` §5；此处保留 P1d 当时记录。
 
 **文件**
 
@@ -327,7 +327,9 @@ P0 ──> P1a ──> P1b ──> P1c
 
 - 设计契约：已批准（`design-contract.md`）。
 - P0：已验收（`p0/review.md`）；数据层、草稿预览、verify/check-dist 均已落地。
-- P1a：已验收（`p1a/review.md`）；tokens/shell/页头页脚/导航/归档/标签/关于/404 已落地，F1/F2 已修；**宽度 A 已确认**；分支提交/推送按用户安排执行。
-- P1b：已验收（`p1b/review.md` §9）；notes/pages 数据层、`/notes/`、`/notes/rss.xml`、`/now/`、字体子集与门禁。notes 首版 0 条；now 首版单行 `emo中……`。
-- P1c：已验收（`p1c/review.md`）；首页卷首/开卷/页边/编号目录，顶部 notes/now 入口；图例三格与三个图案可点击。
-- 下一步：P1d 文章页。P1b 与 P1c/P1d 均会改 `global.css`/`Base` 时，按 `p1a/review.md` 的宽度分期与文档约定协调，不要同时开两个改 `global.css` 的 PR。
+- P1a：已验收（`p1a/review.md`）；tokens/shell/页头页脚/导航/归档/标签/关于/404 已落地，F1/F2 已修；**宽度 A 已确认**。
+- P1b：已验收（`p1b/review.md` §9）；notes/pages 数据层、`/notes/`、`/notes/rss.xml`、`/now/`、字体子集与门禁。
+- P1c：已验收（`p1c/review.md`）；首页卷首/开卷/页边/编号目录，顶部 notes/now 入口。
+- P1d：已验收（实施记录见本文 P1d，PR #29）；文章页两栏头/规格表/印记标签/本文完/打印隐藏。
+- P1e：已验收（`p1e/review.md`，PR #34）；SEO JSON-LD/OG、F5/F6/N3/F15、打印查漏。用户 2026-11-02 补验手机真机、打印、读屏与完整 Tab，均无问题反馈。
+- 结论：P1 系列收官（2026-11-01），日常进入「发布文章」模式；新能力按 `README.md` §5 的 P2 逐项评审。

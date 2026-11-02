@@ -41,7 +41,7 @@ npm run preview:prod # 预览 verify 的生产子路径产物（/xin-s-blog/）
 ### 写一篇博客（直推 main）
 
 1. 一键建稿：`npm run new -- <文件名>`，或双击仓库根目录的「新建文章.bat」按提示输入。脚本会在 `src/content/posts/` 生成带注释的 frontmatter 模板，自动填好当天日期和本机时间（`pubTime` 纯显示用，删掉整行即不显示）。文件名即 URL，只用小写字母、数字、连字符。
-2. 动笔前扫一眼 [docs/writing-style.md](./docs/writing-style.md)：frontmatter 字段、正文骨架、标题层级、公式/代码/链接的写法、语气与中文排版、发布前自查。不知道怎么下笔就直接照抄 [docs/example.md](./docs/example.md)。
+2. 动笔前扫一眼 [docs/writing-style.md](./docs/writing-style.md)：frontmatter 字段、正文骨架、标题层级、公式/代码/链接的写法、语气与中文排版、发布前自查。不知道怎么下笔就照着 [docs/example.md](./docs/example.md) 的正文仿写（frontmatter 仍由建稿脚本生成）。
 3. 用了新标签：去 `src/const.ts` 的 `TAG_SHAPE` 登记形状，否则构建告警、徽章回退圆形。有配图：图片文件放 `src/content/posts/` 内，正文用相对路径引用。
 4. 没写完设 `draft: true`——草稿不进目录页、不进标签、不进 RSS、不生成线上页面；`npm run dev` 可直接打开 `/posts/<文件名>/` 预览，页面会显示“草稿预览”。
 5. 定稿后把 `draft` 删掉或改 `false`，commit 并 push 到 `main`：Actions 会依次跑类型检查、构建、发布，约一分钟后线上即更新。
@@ -97,7 +97,7 @@ draft: false
 | frontmatter 字段 | `src/content.config.ts`（写错字段构建会报错） |
 | 站点域名 | `.github/workflows/deploy.yml` 的 `SITE_URL`（`astro.config.mjs` 里的默认值只影响本地构建） |
 
-文章格式（完整规范见 [docs/writing-style.md](./docs/writing-style.md)，可照抄的示例见 [docs/example.md](./docs/example.md)）：
+文章格式（完整规范见 [docs/writing-style.md](./docs/writing-style.md)，完整示例见 [docs/example.md](./docs/example.md)；正文可照抄，frontmatter 用脚本生成）：
 
 ```markdown
 ---
@@ -157,4 +157,4 @@ draft: true               # 可选，草稿：dev 可预览、不发布
 - 依赖与审计：Astro 7；根 `katex` 固定 0.18.9，`package.json` 的 `overrides` 把 `rehype-katex`/`micromark-extension-math` 的嵌套版本也锁到同一版（`npm ls katex` 应只剩一个）。CI 会跑 `npm run audit`，high/critical 直接红；**不要跑 `npm audit fix --force`**，它会把 `rehype-katex` 降到 1.2.0。
 - 碎碎念 feed 在 `/notes/rss.xml` 生成并有门禁校验，但页面上**不放订阅入口**（P1b 契约的决定），要订阅得手动访问该 URL；页脚的 `RSS` 仍指主文章 feed `/rss.xml`。
 - 部署链路已跑通一次：Actions run #1 的 build 与 deploy 全绿，线上页面、CSS、字体、中文标签页、RSS 绝对地址、自定义 404 均验证为 200。
-- 桌面/移动视口已用无头 Chrome 做过亮暗走查（含公式、代码块、短页页脚）；真机（iOS Safari / Android Chrome）和读屏实测仍未覆盖。
+- 桌面/移动视口已用无头 Chrome 做过亮暗走查（含公式、代码块、短页页脚）；真机（iOS Safari / Android Chrome）、打印、读屏与完整键盘 Tab 已由维护者 2026-11-02 检查。
