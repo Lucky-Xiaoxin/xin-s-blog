@@ -151,8 +151,8 @@ draft: true               # 可选，草稿：dev 可预览、不发布
 
 - 中文标签会生成百分号编码的 URL（`/tags/%E7%AE%97%E6%B3%95/`），访问正常；但 Pages 没有重定向机制，改文章文件名或标签名会让旧链接 404。
 - 正文按相对路径引用的图片会在构建期被 Astro 自动优化（转 webp），但不做尺寸缩放；`public/` 只放站点级文件。
-- 字体产物共 **77 个文件 / 1.40 MB**（整个 `dist` 原始大小 1.60 MB）：woff2 29 个 527 KB、woff 28 个 404 KB、ttf 20 个 502 KB。构成是 Noto 子集 2（思源宋体 400/500，构建期生成）+ Bodoni Moda 16（latin / latin-ext / math / symbols 四子集 × 两字重 × woff2+woff）+ KaTeX 59（20 个字符族 × 最多三档）。
-- 其中 **ttf 502 KB 加 woff 里约 393 KB 是死重**——现代浏览器只请求 woff2，只有 `KaTeX_Size3-Regular` 没有 woff2（上游就没给），它的 woff 是唯一真会被下载的 woff。原因是 `katex.min.css` 每条 `src` 都写了 woff2→woff→ttf 三档，Vite 为 CSS 里引用到的每个 `url()` 都落一份产物，于是三档全进 `dist`。这是上游 CSS 的行为、不是本项目配错；要瘦产物只能构建后按清单删文件，属于新增构建步骤，未做。另外 KaTeX 的字体只在页面真有公式时才懒加载，无公式的页面一份都不下载。
+- 字体产物共 **77 个文件 / 1.42 MB**（整个 `dist` 原始大小约 1.66 MB，预算表按一位小数记 1.7 MB）：woff2 29 个 544 KB、woff 28 个 404 KB、ttf 20 个 502 KB。构成是 Noto 子集 2（思源宋体 400/500，构建期生成）+ Bodoni Moda 16（latin / latin-ext / math / symbols 四子集 × 两字重 × woff2+woff）+ KaTeX 59（20 个字符族 × 最多三档）。
+- 其中 **ttf 502 KB 加 woff 里约 400 KB 是死重**——现代浏览器只请求 woff2，只有 `KaTeX_Size3-Regular` 没有 woff2（上游就没给），它的 woff 是唯一真会被下载的 woff。原因是 `katex.min.css` 每条 `src` 都写了 woff2→woff→ttf 三档，Vite 为 CSS 里引用到的每个 `url()` 都落一份产物，于是三档全进 `dist`。这是上游 CSS 的行为、不是本项目配错；要瘦产物只能构建后按清单删文件，属于新增构建步骤，未做。另外 KaTeX 的字体只在页面真有公式时才懒加载，无公式的页面一份都不下载。
 - 配图链路从未被真实使用过：4 篇文章零图片，上一条「相对路径图片自动转 webp」是按 Astro 的行为写的、不是实测结论。第一次真放配图时留意产物里的 URL 前缀对不对。
 - 依赖与审计：Astro 7；根 `katex` 固定 0.18.9，`package.json` 的 `overrides` 把 `rehype-katex`/`micromark-extension-math` 的嵌套版本也锁到同一版（`npm ls katex` 应只剩一个）。CI 会跑 `npm run audit`，high/critical 直接红；**不要跑 `npm audit fix --force`**，它会把 `rehype-katex` 降到 1.2.0。
 - 碎碎念 feed 在 `/notes/rss.xml` 生成并有门禁校验，但页面上**不放订阅入口**（P1b 契约的决定），要订阅得手动访问该 URL；页脚的 `RSS` 仍指主文章 feed `/rss.xml`。
