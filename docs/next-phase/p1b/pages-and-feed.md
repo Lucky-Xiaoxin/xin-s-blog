@@ -90,6 +90,9 @@ Base(size=compact, width=mid, title=碎碎念)
   - `link`: `${u('/notes/')}#${noteAnchor(note)}`（带 `/xin-s-blog/` 子路径和锚点）。
   - `pubDate`: `note.data.date`（只到日期；**不把 time 合进 Date**，避免时区语义）。
   - `description`: `note.body` 原文（首版不渲染 Markdown/HTML）；短笔记足够。
+
+> 更正（2026-10-24 实施时发现，证据见 `review.md` §3.4）：上文相对路径形式的 `link` 会被 `@astrojs/rss` 补尾斜杠，产出 `…/#n-xxx/`——页面上不存在这个 id，锚点失效。`link` 必须用**绝对 URL**：`new URL(u('/notes/') + '#' + noteAnchor(note), context.site).href`；以本更正与 AGENTS.md 为准。
+
 - 0 条 notes：仍生成合法 feed（0 item）；不允许因为没有 note 就让路由 404。实施时先验证 `@astrojs/rss` 接受空 `items`；若库报错，改用手写的合法最小 RSS（channel 无 item），**不要造占位条目**。
 - 主 `/rss.xml` 不改：只发文章，不混 notes；页脚 RSS 仍指它。
 
