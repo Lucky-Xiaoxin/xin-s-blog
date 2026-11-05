@@ -115,7 +115,7 @@ npm run preview:prod
 | 风险 | 对策 |
 | --- | --- |
 | 320 首屏信息过密 | 图例 24rem 单列；页边 40rem 单列；目录 meta 换行；320 实测 |
-| now 描述过长撑爆图例 | 图例允许换行；不截断 now 描述（它是用户写的一句话） |
+| now 描述过长撑爆图例 | ~~图例允许换行；不截断 now 描述~~（已被 P1e N3 推翻：图例「现在」格单行 ellipsis，完整文案在 `/now/`，见 `../p1e/README.md` §3.8） |
 | 碎碎念摘要带 Markdown 符号 | `noteExcerpt()` 统一剥离图片/链接/强调符号；测试含链接/粗体的 note |
 | 删除 Hero/PostList 影响其它页面 | 先 grep 确认仅首页引用；PR 内同提交删除组件与 CSS |
 | 首页宽壳与 P1d 冲突 | P1c 只切首页 wide；文章页 P1d 再切 |
