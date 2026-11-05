@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDay, isoDay, readingTime, u } from '../const';
+import { formatDay, isoDay, readingTime, titleHtml, u } from '../const';
 
 interface Props {
   /** 最新一篇已发布文章 */
@@ -15,7 +15,7 @@ const href = u(`/posts/${post.id}/`);
 <section class="opening" aria-labelledby="opening-title">
   <p class="kicker">开卷 <span>/ 最新</span></p>
   <h2 class="opening__title" id="opening-title">
-    <a href={href}>{post.data.title}</a>
+    <a href={href} set:html={titleHtml(post.data.title)} />
   </h2>
   <p class="opening__desc">{post.data.description}</p>
   <div class="opening__meta">

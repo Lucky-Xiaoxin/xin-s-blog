@@ -34,6 +34,7 @@ Commit 前缀风格：`ci: / fix: / style: / docs: / content:` + 中文描述。
 - 新增路由/资源必须过 `npm run verify`（check + 生产子路径 build + `check:dist`）：站内链接一律用 `u()`/`resolveHref()`，HTML 里的根绝对 `href`/`src` 会被 check-dist 拦下；字体放 `src/assets/fonts/`（构建生成），内容图放 `src/content/posts/` 内并用相对路径。体积预算见 README，超限先定位、不要直接抬上限。
 - 预览分两种：`npm run preview` 对应普通 `npm run build`（`base=/`）；`npm run preview:prod` 对应 `npm run verify` 的生产子路径产物。`npm run check:dist` 默认也按 `base=/` 检查，生产子路径请走 verify 或显式传 `BASE_PATH`。
 - 文章印记是确定性映射：`const.ts` 的 `sealHash` + `SEAL_CORES`——名单按几何相容性筛选（红点/内芯必须完整落在外框内，triangle/rhombus/hexagon 各有剔除项，semicircle 的 tri/axis 红点由 `Seal.astro` 的 `FRAME_DOTS` 按框覆写）；重排名单、改哈希或换 `TAG_SHAPE` 都会换掉既有文章的印记（有意为之才能动）；新增内芯必须先过一遍框内几何验证再加。
+- 文章标题在所有渲染点（文章 h1、开卷 h2、目录/归档/标签详情 h3~h4、规格卡旁最近一篇、上下篇）必须经 `const.ts` 的 `titleHtml()` 配 `set:html`：它转义后给「数字+分隔符」串（2026-11-01、311/316 这类）包 `.nob`，窄屏不从连字符处把日期拆行。不要把 `set:html` 换回 `{post.data.title}` 纯文本插值（`.nob` 会消失、标题退化），也不要让正文 Markdown 走它（正文该拆就拆）。
 - deploy job 有 `if: github.ref == 'refs/heads/main'` 守卫、`pages: write` 只给 deploy job——不要"简化"回顶层权限。
 - README 与 TROUBLESHOOTING.md 是维护者的主要参照，**行为变更后必须同步更新**（历史审计曾发现多处文档失真；改完核对每条可验证断言）。
 

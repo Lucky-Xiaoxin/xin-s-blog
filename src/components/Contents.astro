@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Seal from './Seal.astro';
-import { formatDay, isoDay, readingTime, u } from '../const';
+import { formatDay, isoDay, readingTime, titleHtml, u } from '../const';
 
 interface Props {
   /** 全部已发布文章（已按发布时间倒序） */
@@ -33,7 +33,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             </div>
             <div>
               <h3>
-                <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
+                <a href={u(`/posts/${post.id}/`)} set:html={titleHtml(post.data.title)} />
               </h3>
               <p>{post.data.description}</p>
               {post.data.tags.length > 0 && (

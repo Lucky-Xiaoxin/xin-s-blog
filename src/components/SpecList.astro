@@ -38,7 +38,7 @@ const month = String(post.data.pubDate.getUTCMonth() + 1).padStart(2, '0');
     </div>
     <div class="spec-opt">
       <dt>阅读</dt>
-      <dd>{readingTime(post.body)} 分钟 · 约 {wordCount(post.body)} 字</dd>
+      <dd>{readingTime(post.body)} 分钟 · <span class="nob">约 {wordCount(post.body)} 字</span></dd>
     </div>
     {
       hasTags && (

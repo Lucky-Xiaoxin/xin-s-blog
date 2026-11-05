@@ -1,5 +1,5 @@
 ---
-import { formatDay, isoDay, readingTime, u } from '../const';
+import { formatDay, isoDay, readingTime, titleHtml, u } from '../const';
 import type { Post } from '../lib/posts';
 
 interface Props {
@@ -26,7 +26,7 @@ const includeDrafts = import.meta.env.DEV;
       )
     }
   </p>
-  <h1 class="article__title">{post.data.title}</h1>
+  <h1 class="article__title" set:html={titleHtml(post.data.title)} />
   <p class="article__desc">{post.data.description}</p>
   <div class="article__meta">
     <span class="meta">

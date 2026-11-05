@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import { formatDay, isoDay, readingTime, u } from '../../const';
+import { formatDay, isoDay, readingTime, titleHtml, u } from '../../const';
 import { getArchiveGroups, getPublishedPosts, latestUpdate } from '../../lib/posts';
 
 const [posts, years] = await Promise.all([getPublishedPosts(), getArchiveGroups()]);
@@ -76,7 +76,7 @@ for (const year of years) {
                       <span class="archive-no">{pad(numbers.get(post.id) ?? 0)}</span>
                       <div>
                         <h4>
-                          <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
+                          <a href={u(`/posts/${post.id}/`)} set:html={titleHtml(post.data.title)} />
                         </h4>
                         {post.data.tags.length > 0 && (
                           <span class="tag-list">
