@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ArticleHead from '../../components/ArticleHead.astro';
 import SpecList from '../../components/SpecList.astro';
-import { SITE, u } from '../../const';
+import { SITE, titleHtml, u } from '../../const';
 import { getAdjacentPosts, getPostBySlug, getPostsForStaticPaths } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -111,7 +111,7 @@ const breadcrumbLd = toLd({
           older && (
             <a href={u(`/posts/${older.id}/`)}>
               <span class="pager__dir">更早</span>
-              {older.data.title}
+              <span set:html={titleHtml(older.data.title)} />
             </a>
           )
         }
@@ -121,7 +121,7 @@ const breadcrumbLd = toLd({
           newer && (
             <a href={u(`/posts/${newer.id}/`)}>
               <span class="pager__dir">更新</span>
-              {newer.data.title}
+              <span set:html={titleHtml(newer.data.title)} />
             </a>
           )
         }

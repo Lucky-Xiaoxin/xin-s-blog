@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
 import PageHead from '../../components/PageHead.astro';
-import { u } from '../../const';
+import { titleHtml, u } from '../../const';
 import { getAllTags, getPublishedPosts } from '../../lib/posts';
 
 const [posts, tags] = await Promise.all([getPublishedPosts(), getAllTags()]);
@@ -19,7 +19,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <PageHead
     kicker="索引 / TAGS"
     title="标签"
-    description="标签是横切分类：一篇文章可以同时属于算法和题解。按使用频率排序，最近一篇附在右侧。"
+    description="标签是横切分类：一篇文章可以同时属于算法和题解。按使用频率排序。"
     meta={tags.length > 0}
   >
     {tags.length > 0 && (
@@ -40,7 +40,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             </a>
             <span class="tag-index__latest">
               <span>最近</span>
-              <a href={u(`/posts/${latest.id}/`)}>{latest.data.title}</a>
+              <a href={u(`/posts/${latest.id}/`)} set:html={titleHtml(latest.data.title)} />
             </span>
             <span class="meta tag-index__count">{pad(count)}</span>
           </li>

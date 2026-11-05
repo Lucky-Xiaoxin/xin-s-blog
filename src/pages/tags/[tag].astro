@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import { formatDay, isoDay, readingTime, u } from '../../const';
+import { formatDay, isoDay, readingTime, titleHtml, u } from '../../const';
 import { getPostsByTag, getPublishedPosts, latestUpdate } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -54,7 +54,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <span class="toc__no">{pad(index + 1)}</span>
               <div>
                 <h3>
-                  <a href={u(`/posts/${post.id}/`)}>{post.data.title}</a>
+                  <a href={u(`/posts/${post.id}/`)} set:html={titleHtml(post.data.title)} />
                 </h3>
                 <p>{post.data.description}</p>
                 {post.data.tags.length > 0 && (

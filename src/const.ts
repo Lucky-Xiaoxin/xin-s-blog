@@ -124,6 +124,19 @@ export function readingTime(body?: string) {
   return Math.max(1, Math.round(cjk / 400 + words / 220));
 }
 
+/** 标题安全 HTML：转义后把「数字+分隔符」串（2026-11-01、2026.11.02、311/316 这类）包进
+ *  .nob 整体不拆行，窄屏标题不再把完整日期从连字符处腰斩（2026-11-06 视觉走查修复）。
+ *  只用于渲染标题的 set:html；正文 Markdown 不经此函数，该拆就拆 */
+export function titleHtml(title: string) {
+  const escaped = title
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+  return escaped.replace(/\d+(?:[.\-/]\d+)+/g, (m) => `<span class="nob">${m}</span>`);
+}
+
 /** 粗略字数：CJK 字符 + 英文/数字词（含代码与公式源码），只做展示，不参与排序（P1d 规格表「约 N 字」） */
 export function wordCount(body?: string) {
   const text = body ?? '';

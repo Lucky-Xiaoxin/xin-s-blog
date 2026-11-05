@@ -150,6 +150,11 @@ a {
   text-decoration: none;
 }
 
+/* 标题/规格值里的「数字+分隔符」串整体不拆行；span 由 const.ts 的 titleHtml() 在构建期包裹 */
+.nob {
+  white-space: nowrap;
+}
+
 h1,
 h2,
 h3 {
