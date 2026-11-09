@@ -4,7 +4,7 @@ description: '解决 GitHub 连接不稳定的问题'   # 一句话摘要（目�
 pubDate: 2026-09-30                      # 发布日期；排序和 RSS 只认它
 pubTime: '20:35'                         # 发布时间 24h 制，仅显示用；不要显示就删整行
 tags: ['工具', 'Git', 'GitHub']           # 清单见 src/const.ts 的 TAG_SHAPE，新标签须先去那里登记形状
-updatedDate: 2026-10-29                  # 可选：最后一次修订的日期
+updatedDate: 2026-11-9                  # 可选：最后一次修订的日期
 draft: false                             # 草稿箱：true 时不进目录页/RSS；定稿改成 false 或删整行
 ---
 
@@ -46,3 +46,42 @@ git config --global --unset https.proxy
 ```
 
 代理算是给自己加的手刹，用完记得拆。
+
+---
+
+##### 更新：2026/11/9 22:38
+
+## 怎么失效了啊……
+
+> 真是神了，现在直接配代理已经不行了
+
+ **现在git 一旦指向 26561 就会死在吊销检查上。** Git for Windows 用 schannel，强制检查证书吊销状态，而 SteamTools 这张自签证书没有 CRL/OCSP 信息，于是报 `CRYPT_E_NO_REVOCATION_CHEC`
+
+现在得这样
+
+```bash
+HTTPS_PROXY=http://127.0.0.1:26561 GIT_SSL_NO_VERIFY=1 git clone https://github.com/xxx/yyy.git
+```
+
+临时用，或者
+
+```bash
+git config --global http.sslBackend schannel
+git config --global http.https://github.com/.proxy http://127.0.0.1:26561
+git config --global http.https://github.com/.schannelCheckRevoke false
+```
+
+撤销
+
+```bash
+git config --global --unset http.https://github.com/.proxy
+git config --global --unset http.https://github.com/.schannelCheckRevoke
+git config --global --unset http.sslBackend
+```
+
+检查
+
+```bash
+git config --global --get-regexp '^http\.'
+```
+
